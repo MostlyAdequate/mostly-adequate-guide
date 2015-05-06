@@ -10,7 +10,7 @@ Think of SQL. There is no "first do this, then do that". There is one expression
 
 For some folks, myself included, it's hard to grasp the concept of declarative coding at first so let's point out a few examples to get a feel for it.
 
-```
+```js
 // imperative
 var makes = []
 for (i = 0; i < cars.length; i++) { 
@@ -32,7 +32,7 @@ For those of you who are thinking "Yes, but it's much faster to do the imperativ
 
 Here is another example.
 
-```
+```js
 // imperative
 var authenticate = function(form) {
   var user = toUser(form);
