@@ -1,4 +1,4 @@
-<img src="cover.png"/>
+<img src="images/cover.png"/>
 
 ## About this book
 
