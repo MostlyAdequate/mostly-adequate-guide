@@ -7,6 +7,25 @@ The concept is simple: You can call a function with fewer arguments than it expe
 
 You can choose to call it all at once or simply feed in each argument piecemeal.
 
+```js
+var add = function(x) {
+  return function(y) {
+    return x + y
+  }
+}
+
+var increment = add(1)
+var addTen = add(10)
+
+increment(2)
+// 3
+
+addTen(2)
+// 12
+```
+
+Here we've made a function `add` that will take one argument and return a function. By calling it, the returned function remembers the first argument from then on via the closure. Calling it all at once is a bit of a pain, however, so we can use a special helper function called `curry` to make defining and calling functions like this easier.
+
 Let's setup a few curried functions for our enjoyment.
 
 ```js
