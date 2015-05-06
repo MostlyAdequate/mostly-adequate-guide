@@ -1,6 +1,6 @@
 <img src="images/cover.png"/>
 
-## About this book
+# About this book
 
 This is a book on the functional paradigm in general. We'll use the world's most popular functional programming language: JavaScript. Some may feel this is a poor choice as it's against the grain of the current culture which, at the moment, feels predominately imperative. However, I believe it is the best way to learn FP for several reasons:
 
@@ -17,6 +17,10 @@ This is a book on the functional paradigm in general. We'll use the world's most
  * The language is fully capable of writing top notch functional code.
 
     We have all the features we need to mimic a language like Scala or Haskell with the help of a tiny library or two. Object-oriented programming currently dominates the industry, but it's clearly awkward in JavaScript. It's akin to camping off of a highway or tap dancing in clogs. We have to `bind` all over the place lest `this` change out from under us, we don't have classes[^Yet], we have various work arounds for the quirky behavior when the `new` keyword is forgotten, private members are only available via closures. To a lot of us, FP feels more natural anyways.
+
+# Part 1
+
+## Table of Contents
 
 * [Chapter 1: What ever are we doing?](ch1.md)
   * [Introductions](ch1.md#introductions)
@@ -45,4 +49,11 @@ This is a book on the functional paradigm in general. We'll use the world's most
   * [A flickr of functional programming](ch6.md#a-flickr-of-functional-programming)
   * [A Principled Refactor](ch6.md#a-principled-refactor)
   * [In Summary](ch6.md#in-summary)
+
+# Plans for the future
+
+* Part 1 is a guide to the basics. I'll be adding exercises for currying and composition as well as including the support libraries and example app. Stay tuned for that.
+* Part 2 will address type classes like functors and monads all the way through to traversable. I hope to squeeze in transformers and a pure react application.
+* Part 3 will start to dance the fine line between practical and academic absurdity. We'll look at comonads, f-algebras, free monads, yoneda, and other categorical constructs.
+
 
