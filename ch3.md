@@ -88,7 +88,7 @@ In other words, it's just a relation between two values: the input and the outpu
 
 To contrast, the following diagram shows a relation that is *not* a function since the input value `5` points to several outputs:
 
-<img src="images/relation-not-function.gif />[^http://www.mathsisfun.com/sets/function.html]
+<img src="images/relation-not-function.gif" />[^http://www.mathsisfun.com/sets/function.html]
  
 Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]`[^It appears this function doubles it's input].
 
