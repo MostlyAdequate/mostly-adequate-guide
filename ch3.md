@@ -96,8 +96,8 @@ Or perhaps a table:
 <table> <tr> <th>Input</th> <th>Output</th> </tr> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>2</td> <td>4</td> </tr> <tr> <td>3</td> <td>6</td> </tr> </table>
 
 Or even as a graph with `x` as the input and `y` as the output:
-<img src="images/fn_graph.png" width="150" height="150" />
-
+<img src="images/fn_graph.png" width="200" height="200" />
+<br/>
 
 There's no need for implementation details if the input dictates the output. Since functions are simply mappings of input to output, one could simply jot down object literals and run them with `[]` instead of `()`.
 
