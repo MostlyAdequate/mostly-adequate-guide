@@ -255,3 +255,4 @@ We hold composition as a design principle above all others. This is because it k
 
 We are now at a point where it would serve us well to see some of this in practice. Let's make an example application.
 
+[Chapter 6: Example Application](ch6.md)

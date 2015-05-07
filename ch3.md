@@ -279,3 +279,4 @@ We've seen what pure functions are and why we, as functional programmers, believ
 
 Writing programs with pure functions is a tad laborious, to say the least, without some extra tools in our belt. We have to juggle data by passing arguments all over the place, we're forbidden to use state, not to mention effects. How does one go about writing these masochistic programs? Let's acquire a new tool called curry.
 
+[Chapter 4: Currying](ch4.md)

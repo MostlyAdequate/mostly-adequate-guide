@@ -120,3 +120,5 @@ When we spoke about *pure functions*, we said they take 1 input to 1 output. Cur
 Currying is handy and I very much enjoy working with curried functions on a daily basis. It is one tool for the belt that makes functional programming less verbose and tedious. We can make new, useful functions on the fly simply by passing in a few arguments and as a bonus, we've retained the mathematical function definition despite multiple arguments.
 
 Let's acquire another essential tool called `compose`.
+
+[Chapter 5: Coding by Composing](ch5.md)

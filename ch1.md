@@ -101,3 +101,4 @@ It may come as a surprise to hear that we can write full, everyday applications 
 
 We've seen a flicker of our functional north star, but there are a few concrete concepts to grasp before we can really begin our journey.
 
+[Chapter 2: First Class Functions](ch2.md)
