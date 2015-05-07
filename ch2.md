@@ -15,7 +15,7 @@ var greeting = function(name) {
 }
 ```
 
-Here, the function wrapper around `hi` in `greeting` is completely redundant. Why? Because functions are *callable* in JavaScript. When `hi` has the `()` at the end it will run and return a value. When it does not, it simply returns the function stored in the variable. Just to be sure, have a looksee:
+Here, the function wrapper around `hi` in `greeting` is completely redundant. Why? Because functions are *callable* in JavaScript. When `hi` has the `()` at the end it will run and return a value. When it does not, it simply returns the function stored in the variable. Just to be sure, have a look-see:
 
 
 ```js
@@ -38,7 +38,7 @@ greeting("times")
 // "Hi times"
 ```
 
-In other words, `hi` is already a function that expects one argument, why place another function around it that simply calls `hi` with the same bloody argument? It doesn't maka any damn sense. It's like dawning your heaviest parka in the dead of july just to blast the air and demand an ice lolly. It is obnoxiously verbose and, as it happens, bad practice[^we'll see why in a moment, but it is to do with maintenance] to surround a function with another function merely to delay evaluation. 
+In other words, `hi` is already a function that expects one argument, why place another function around it that simply calls `hi` with the same bloody argument? It doesn't make any damn sense. It's like dawning your heaviest parka in the dead of july just to blast the air and demand an ice lolly. It is obnoxiously verbose and, as it happens, bad practice[^we'll see why in a moment, but it is to do with maintenance] to surround a function with another function merely to delay evaluation. 
 
 A solid understanding of this is critical before moving on so let's see a few more fun examples excavated from npm modules.
 
