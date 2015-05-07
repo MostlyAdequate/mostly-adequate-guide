@@ -12,4 +12,4 @@ cd exercises/curry
 mocha 
 ```
 
-Some will fail and some will pass. The passing ones are expect to be refactored.
+Some will fail and some will pass. The passing ones expect to be refactored.
