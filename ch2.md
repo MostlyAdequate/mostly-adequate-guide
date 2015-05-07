@@ -168,7 +168,7 @@ fs.readFile('freaky_friday.txt', Db.save.bind(Db))
 
 ```
 
-Having been bound to itself, the `Db` is free to access it's prototypical garbage code. I avoid using `this` like a dirty nappy. There's really no need when writing functional code, however, when interfacing with other libraries, you'll have to acquiesce to the mad world around us. Some will argue `this` is necessary for speed. If you are the micro-optimization sort, please close this book. If you cannot get your money back, Perhaps you can exchange it for something more novice.
+Having been bound to itself, the `Db` is free to access it's prototypical garbage code. I avoid using `this` like a dirty nappy. There's really no need when writing functional code, however, when interfacing with other libraries, you'll have to acquiesce to the mad world around us. Some will argue `this` is necessary for speed. If you are the micro-optimization sort, please close this book. If you cannot get your money back, perhaps you can exchange it for something more novice.
 
 And with that, we're ready to move on.
 
