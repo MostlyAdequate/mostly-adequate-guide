@@ -77,7 +77,7 @@ loudLastUpper(['jumpkick', 'roundhouse', 'uppercut'])
 //=> 'UPPERCUT!'
 ```
 
-Applying the associative property gives us this flexibility and piece of mind that the result will be equivalent. The slightly more complicated variadic definition is included with the support libraries for this book and is the normal definition you'll find in libraries like lodash, underscore, and ramda.
+Applying the associative property gives us this flexibility and peace of mind that the result will be equivalent. The slightly more complicated variadic definition is included with the support libraries for this book and is the normal definition you'll find in libraries like lodash, underscore, and ramda.
 
 One pleasant benefit of associativity is that any group of functions can be extracted and bundled together in their very own composition. Let's play with refactoring our previous example:
 
@@ -182,7 +182,7 @@ dasherize('the world is a vampire')
 
 The `trace` function allows us to view the data at a certain point for debugging purposes. Languages like haskell and purescript have similar functions for ease of development.
 
-Composition will be our tool for constructing programs and, as luck would have it, is backed by a powerful theory that ensures things will work out for us. Let'e examine this theory.
+Composition will be our tool for constructing programs and, as luck would have it, is backed by a powerful theory that ensures things will work out for us. Let's examine this theory.
 
 
 ## Category theory
