@@ -293,7 +293,6 @@ var nameOfFirstCar = undefined;
 // Use the helper function _average to refactor averageDollarValue as a composition
 var _average = function(xs) { return reduce(add, 0, xs) / xs.length; }; // <- leave be
 
-//+ averageDollarValue :: [Car] -> Number
 var averageDollarValue = function(cars) {
   var dollar_values = map(function(c) { return c.dollar_value; }, cars);
   return _average(dollar_values);
