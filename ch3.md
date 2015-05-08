@@ -53,7 +53,13 @@ var checkAge = function(age) {
 }
 ```
 
-In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the cognitive load by introducing an external environment. It might not seem like a lot in this example, but this reliance upon state is one of the largest contributors to system complexity[^http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf]. This `checkAge` may return different results depending on factors external to input which not only disqualifies it from being pure, but also puts our mind through the ringer each time we're reasoning about the software. It's pure form, on the other hand, is completely self sufficient. We could have also made `minimum` immutable, which preserves the purity as the state will never change, however, JavaScript does not have a way to ensure this at the moment.
+In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the cognitive load by introducing an external environment. It might not seem like a lot in this example, but this reliance upon state is one of the largest contributors to system complexity[^http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf]. This `checkAge` may return different results depending on factors external to input which not only disqualifies it from being pure, but also puts our mind through the ringer each time we're reasoning about the software. It's pure form, on the other hand, is completely self sufficient. We could have also made `minimum` immutable, which preserves the purity as the state will never change. To do this, we must create an object to freeze.
+
+```js
+var immutableState = Object.freeze({
+  minimum: 21
+});
+```
 
 ## Side effects may include...
 
