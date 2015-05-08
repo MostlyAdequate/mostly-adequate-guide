@@ -63,7 +63,7 @@ var immutableState = Object.freeze({
 
 ## Side effects may include...
 
-Let's look more at these "side effects" to gain more of an intuition. So what is this undoubtedly nefarious *side effect* mentioned in the definition? We'll be referring to *effect* as anything that occurs in our computation besides the calculation of a result. There's nothing intrinsically bad about effects and we'll be using them all over the place in the chapters to come. It's that *side* part that bears the negative connotation. Water alone is not an inherent larvae incubator, it's the *stagnant* part that yields the swarms, and I assure you, *side* effects are a similar breeding ground in your own programs.
+Let's look more at these "side effects" to gain more of an intuition. So what is this undoubtedly nefarious *side effect* mentioned in the definition of *pure function*? We'll be referring to *effect* as anything that occurs in our computation besides the calculation of a result. There's nothing intrinsically bad about effects and we'll be using them all over the place in the chapters to come. It's that *side* part that bears the negative connotation. Water alone is not an inherent larvae incubator, it's the *stagnant* part that yields the swarms, and I assure you, *side* effects are a similar breeding ground in your own programs.
 
 >A *side effect* is a change of system state or *observable interaction* with the outside world that occurs during the calculation of a result.
 
