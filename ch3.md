@@ -53,7 +53,7 @@ var checkAge = function(age) {
 }
 ```
 
-In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the cognitive load by introducing an external environment. It might not seem like a lot in this example, but this reliance upon state is one of the largest contributors to system complexity[^http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf]. This `checkAge` may return different results depending on factors external to input which not only disqualifies it from being pure, but also puts our mind through the ringer each time we're reasoning about the software. It's pure form, on the other hand, is completely self sufficient. We could have also made `minimum` immutable, which preserves the purity as the state will never change. To do this, we must create an object to freeze.
+In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the cognitive load by introducing an external environment. It might not seem like a lot in this example, but this reliance upon state is one of the largest contributors to system complexity[^http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf]. This `checkAge` may return different results depending on factors external to input which not only disqualifies it from being pure, but also puts our minds through the ringer each time we're reasoning about the software. It's pure form, on the other hand, is completely self sufficient. We could have also made `minimum` immutable, which preserves the purity as the state will never change. To do this, we must create an object to freeze.
 
 ```js
 var immutableState = Object.freeze({
@@ -95,7 +95,7 @@ In other words, it's just a relation between two values: the input and the outpu
 To contrast, the following diagram shows a relation that is *not* a function since the input value `5` points to several outputs:
 
 <img src="images/relation-not-function.gif" />[^http://www.mathsisfun.com/sets/function.html]
- 
+
 Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]`[^It appears this function doubles it's input].
 
 Or perhaps a table:
@@ -139,7 +139,7 @@ squareNumber(4)
 squareNumber(4) // returns cache for input 4
 //=> 16
 
-squareNumber(5) 
+squareNumber(5)
 //=> 25
 
 squareNumber(5) // returns cache for input 5
@@ -168,7 +168,7 @@ var pureHttpCall = memoize(function(url, params){
 });
 ```
 
-The interesting thing here is that we don't actually make the http call - we instead return a function that will do so when called. This function is pure because it will always return the same output given the same input: the function that will make the this particular http call given the `url` and `params`. Our `memoize` function works just fine, though it doesn't not cache the results of the http call, rather it caches the generated function.
+The interesting thing here is that we don't actually make the http call - we instead return a function that will do so when called. This function is pure because it will always return the same output given the same input: the function that will make the particular http call given the `url` and `params`. Our `memoize` function works just fine, though it doesn't cache the results of the http call, rather it caches the generated function.
 
 This is not very useful yet, but we'll soon learn some tricks that will make it so. The take away is that we can cache every function no matter how destructive they seem.
 
@@ -196,9 +196,9 @@ The example here demonstrates that the pure function must be honest about it's d
 
 Something else to notice is that we're forced to "inject" dependencies, or pass them in as arguments, which makes our app much more flexible because we've parameterized our database or mail client or what have you[^Don't worry, we'll see a way to make this less tedious than it sounds]. Should we choose to use a different Db we need only to call our function with it. Should we find ourselves writing a new application in which we'd like to reuse this reliable function, we simply give this function whatever `Db` and `Email` we have at the time.
 
-In a javascript setting, portability could me serializing and sending functions over a socket. It could mean running all our app code in web workers. Portability is a powerful trait.
+In a JavaScript setting, portability could mean serializing and sending functions over a socket. It could mean running all our app code in web workers. Portability is a powerful trait.
 
-Contrary to "typical" methods and procedures in imperative programming which are rooted deep in their environment via state, dependencies, and available effects, pure functions can be run anywhere our hearts desire. When was the last time you copied a method into a new app? One of my favorite quotes comes from erlang creator, Joe Armstrong: "The problem with object-oriented languages is they’ve got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana...and the entire jungle".
+Contrary to "typical" methods and procedures in imperative programming which are rooted deep in their environment via state, dependencies, and available effects, pure functions can be run anywhere our hearts desire. When was the last time you copied a method into a new app? One of my favorite quotes comes from Erlang creator, Joe Armstrong: "The problem with object-oriented languages is they’ve got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana...and the entire jungle".
 
 ### Testable
 Next, we come to realize pure functions make testing much easier. We don't have to mock a "real" payment gateway or setup and assert the state of the world after each test. We simply give it input and assert output. In fact, we find the functional community pioneering new test tools that can blast our functions with generated input and assert that properties hold on the output. It's beyond the scope of this book, but I strongly encourage you to search for and try *Quickcheck* - a testing tool that is tailored for  a purely functional environment.
