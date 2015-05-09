@@ -38,9 +38,9 @@ greeting("times")
 // "Hi times"
 ```
 
-In other words, `hi` is already a function that expects one argument, why place another function around it that simply calls `hi` with the same bloody argument? It doesn't make any damn sense. It's like dawning your heaviest parka in the dead of july just to blast the air and demand an ice lolly. It is obnoxiously verbose and, as it happens, bad practice[^we'll see why in a moment, but it is to do with maintenance] to surround a function with another function merely to delay evaluation. 
+In other words, `hi` is already a function that expects one argument, why place another function around it that simply calls `hi` with the same bloody argument? It doesn't make any damn sense. It's like donning your heaviest parka in the dead of july just to blast the air and demand an ice lolly. It is obnoxiously verbose and, as it happens, bad practice to surround a function with another function merely to delay evaluation. (We'll see why in a moment, but it has to do with maintenance)
 
-A solid understanding of this is critical before moving on so let's see a few more fun examples excavated from npm modules.
+A solid understanding of this is critical before moving on, so let's see a few more fun examples excavated from npm modules.
 
 ```js
 // ignorant
@@ -108,7 +108,7 @@ This ridiculous controller is 99% fluff. We could either rewrite it as:
 var BlogController = {index: Views.index, show: Views.show, create: Db.create, update: Db.update, destroy: Db.destroy}
 ```
 
-...or scrap it all together as it does nothing other than bundle our Views and Db together.
+...or scrap it altogether as it does nothing other than bundle our Views and Db together.
 
 ## Why favor first class?
 
@@ -120,7 +120,7 @@ httpGet('/post/2', function(json){
 });
 ```
 
-Should `httpGet` change to send a possible `err`, we must go back and change the "glue".
+If `httpGet` were to change to send a possible `err`, we would need to go back and change the "glue".
 
 ```js
 // go back to every httpGet call in the application and explicitly pass err along.
@@ -129,13 +129,13 @@ httpGet('/post/2', function(json, err){
 });
 ```
 
-Had we written it using the first class function, much less would need to change:
+Had we written it as a first class function, much less would need to change:
 
 ```js
 httpGet('/post/2', renderPost);  // renderPost is called from within httpGet with however many arguments it wants
 ```
 
-Besides the removal of unnecessary functions, we must name and reference arguments. Names are a bit of an issue, you see. We have potential misnomers - especially as the codebase ages and requirements change. Multiple names for the same concept is a common source of confusion in projects. There is also the issue of generic code. For instance, these two functions do exactly the same thing, but one feels infinitely more general and reusable:
+Besides the removal of unnecessary functions, we must name and reference arguments. Names are a bit of an issue, you see. We have potential misnomers - especially as the codebase ages and requirements change. Having multiple names for the same concept is a common source of confusion in projects. There is also the issue of generic code. For instance, these two functions do exactly the same thing, but one feels infinitely more general and reusable:
 
 ```js
 // specific to our current blog
@@ -168,7 +168,7 @@ fs.readFile('freaky_friday.txt', Db.save.bind(Db))
 
 ```
 
-Having been bound to itself, the `Db` is free to access it's prototypical garbage code. I avoid using `this` like a dirty nappy. There's really no need when writing functional code, however, when interfacing with other libraries, you'll have to acquiesce to the mad world around us. Some will argue `this` is necessary for speed. If you are the micro-optimization sort, please close this book. If you cannot get your money back, perhaps you can exchange it for something more novice.
+Having been bound to itself, the `Db` is free to access it's prototypical garbage code. I avoid using `this` like a dirty nappy. There's really no need when writing functional code. However, when interfacing with other libraries, you'll have to acquiesce to the mad world around us. Some will argue `this` is necessary for speed. If you are the micro-optimization sort, please close this book. If you cannot get your money back, perhaps you can exchange it for something more novice.
 
 And with that, we're ready to move on.
 
