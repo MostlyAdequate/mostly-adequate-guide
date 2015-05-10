@@ -126,7 +126,6 @@ Let's acquire another essential tool called `compose`.
 ## Exercises
 
 ```js
-require('../../support')
 var _ = require('ramda')
 
 
