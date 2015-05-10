@@ -5,7 +5,7 @@ Part 1 Exercises
 `npm install`
 
 **Example of running tests**:
-Tests are all located in their cooresponding folder so you should cd into the folder to run.
+Tests are all located in their corresponding folder so you should cd into the folder to run.
 
 ```
 cd exercises/curry
