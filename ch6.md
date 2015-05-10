@@ -138,7 +138,7 @@ We'd like to construct images out of this json. It looks like the srcs are burie
 Anyhow, to get at these nested properties we can use a nice universal getter function from ramda called `_.prop()`. Here's a homegrown version so you can see what's happening:
 
 ```js
-var prop = curry(function(property, object){
+var prop = _.curry(function(property, object){
   return object[property]
 })
 ```
