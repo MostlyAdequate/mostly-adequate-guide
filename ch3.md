@@ -53,7 +53,7 @@ var checkAge = function(age) {
 }
 ```
 
-In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the cognitive load by introducing an external environment. It might not seem like a lot in this example, but this reliance upon state is one of the largest contributors to system complexity[^http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf]. This `checkAge` may return different results depending on factors external to input which not only disqualifies it from being pure, but also puts our minds through the ringer each time we're reasoning about the software. It's pure form, on the other hand, is completely self sufficient. We could have also made `minimum` immutable, which preserves the purity as the state will never change. To do this, we must create an object to freeze.
+In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the cognitive load by introducing an external environment. It might not seem like a lot in this example, but this reliance upon state is one of the largest contributors to system complexity[^http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf]. This `checkAge` may return different results depending on factors external to input, which not only disqualifies it from being pure, but also puts our minds through the ringer each time we're reasoning about the software. Its pure form, on the other hand, is completely self sufficient. We can  also make `minimum` immutable, which preserves the purity as the state will never change. To do this, we must create an object to freeze.
 
 ```js
 var immutableState = Object.freeze({
@@ -63,7 +63,7 @@ var immutableState = Object.freeze({
 
 ## Side effects may include...
 
-Let's look more at these "side effects" to gain more of an intuition. So what is this undoubtedly nefarious *side effect* mentioned in the definition of *pure function*? We'll be referring to *effect* as anything that occurs in our computation besides the calculation of a result. There's nothing intrinsically bad about effects and we'll be using them all over the place in the chapters to come. It's that *side* part that bears the negative connotation. Water alone is not an inherent larvae incubator, it's the *stagnant* part that yields the swarms, and I assure you, *side* effects are a similar breeding ground in your own programs.
+Let's look more at these "side effects" to improve our intuition. So what is this undoubtedly nefarious *side effect* mentioned in the definition of *pure function*? We'll be referring to *effect* as anything that occurs in our computation besides the calculation of a result. There's nothing intrinsically bad about effects and we'll be using them all over the place in the chapters to come. It's that *side* part that bears the negative connotation. Water alone is not an inherent larvae incubator, it's the *stagnant* part that yields the swarms, and I assure you, *side* effects are a similar breeding ground in your own programs.
 
 >A *side effect* is a change of system state or *observable interaction* with the outside world that occurs during the calculation of a result.
 
@@ -80,7 +80,7 @@ Side effects may include, but are not limited to
 
 And the list goes on and on. Any interaction with the world outside of a function is a side effect, which is a fact that may prompt you to suspect the practicality of programming without them. The philosophy of functional programming postulates that side effects are a primary cause of incorrect behavior. It is not that we're forbidden to use them, rather we want to contain them and run them in a controlled way. We'll learn how to do this when we get to functors and monads in later chapters, but for now, let's try to keep these insidious functions separate from our pure ones.
 
-Side effects disqualify a function from being *pure* and it makes sense: pure functions, by definition, must always return the same output given the same input which is not possible to guarantee when dealing with matters outside our local function. Let's take a closer look at why we insist on the same output per input. Pop your collars, we're going to look at some 8th grade math.
+Side effects disqualify a function from being *pure* and it makes sense: pure functions, by definition, must always return the same output given the same input, which is not possible to guarantee when dealing with matters outside our local function. Let's take a closer look at why we insist on the same output per input. Pop your collars, we're going to look at some 8th grade math.
 
 ## 8th grade math
 
@@ -204,7 +204,7 @@ Contrary to "typical" methods and procedures in imperative programming which are
 Next, we come to realize pure functions make testing much easier. We don't have to mock a "real" payment gateway or setup and assert the state of the world after each test. We simply give it input and assert output. In fact, we find the functional community pioneering new test tools that can blast our functions with generated input and assert that properties hold on the output. It's beyond the scope of this book, but I strongly encourage you to search for and try *Quickcheck* - a testing tool that is tailored for  a purely functional environment.
 
 ### Reasonable
-Many believe the biggest win when working with pure functions is *referential transparency*. A spot of code is referentially transparent when it can be substituted for it's evaluated value without changing the behavior of the program. Since pure functions always return the same output given the same input, we can rely on them to always return the same results and thus preserve referential transparency. Let's see an example.
+Many believe the biggest win when working with pure functions is *referential transparency*. A spot of code is referentially transparent when it can be substituted for its evaluated value without changing the behavior of the program. Since pure functions always return the same output given the same input, we can rely on them to always return the same results and thus preserve referential transparency. Let's see an example.
 
 ```js
 
