@@ -120,11 +120,11 @@ Let's look at another example.
 ```js
 //not pointfree because we mention the data: name
 var initials = function (name) {
-  return name.split(' ').map(toUpperCase).join('. ');
+  return name.split(' ').map(compose(toUpperCase, head)).join('. ');
 }
 
 //pointfree
-var initials = compose(join('. '), map(toUpperCase), split(' '))
+var initials = compose(join('. '), map(compose(toUpperCase, head)), split(' '))
 
 initials("hunter stockton thompson")
 // 'H. S. T'
