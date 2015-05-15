@@ -204,7 +204,7 @@ In category theory, we have something called... a category. It is defined as a c
 Category theory is abstract enough to model many things, but let's apply this to types and functions, which is what we care about at the moment.
 
 **A collection of objects**
-The objects will be data types. For instance, String, Boolean, Number, Object, etc. We often view data types as sets of all the possible values. One could look at Boolean as the set of `[true, false]` and Number as the set of all possible numeric values. Treating types as sets is useful because we can use set theory to work with them. 
+The objects will be data types. For instance, ``String``, ``Boolean``, ``Number``, ``Object``, etc. We often view data types as sets of all the possible values. One could look at ``Boolean`` as the set of `[true, false]` and ``Number`` as the set of all possible numeric values. Treating types as sets is useful because we can use set theory to work with them. 
 
 
 **A collection of morphisms**
