@@ -194,7 +194,7 @@ Category theory is an abstract branch of mathematics that can formalize concepts
 
 Sorry, I didn't mean to frighten you. I don't expect you to be intimately familiar with all these concepts. My point is to show you how much duplication we have so you can see why category theory aims to unify these things.
 
-In category theory, we have something called...a category. It is defined as a collection with the following components:
+In category theory, we have something called... a category. It is defined as a collection with the following components:
 
   * A collection of objects
   * A collection of morphisms
