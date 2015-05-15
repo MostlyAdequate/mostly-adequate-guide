@@ -180,3 +180,5 @@ var slice = undefined
 // use slice to define a function "take" that takes n elements. Make it curried
 var take = undefined
 ```
+
+[Chapter 5: Coding by Composing](ch5.md)

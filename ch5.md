@@ -331,3 +331,5 @@ var fastestCar = function(cars) {
   return fastest.name + ' is the fastest';
 }
 ```
+
+[Chapter 6: Example Application](ch6.md)
