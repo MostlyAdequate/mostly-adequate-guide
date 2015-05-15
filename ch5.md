@@ -78,7 +78,7 @@ loudLastUpper(['jumpkick', 'roundhouse', 'uppercut'])
 //=> 'UPPERCUT!'
 ```
 
-Applying the associative property gives us this flexibility and peace of mind that the result will be equivalent. The slightly more complicated variadic definition is included with the support libraries for this book and is the normal definition you'll find in libraries like lodash, underscore, and ramda.
+Applying the associative property gives us this flexibility and peace of mind that the result will be equivalent. The slightly more complicated variadic definition is included with the support libraries for this book and is the normal definition you'll find in libraries like [lodash][lodash-website], [underscore][underscore-website], and [ramda][ramda-website].
 
 One pleasant benefit of associativity is that any group of functions can be extracted and bundled together in their very own composition. Let's play with refactoring our previous example:
 
@@ -331,3 +331,7 @@ var fastestCar = function(cars) {
   return fastest.name + ' is the fastest';
 }
 ```
+
+[lodash-website]: https://lodash.com/
+[underscore-website]: http://underscorejs.org/
+[ramda-website]: http://ramdajs.com/
