@@ -97,7 +97,7 @@ var loudLastUpper = compose(angry, last)
 // more variations...
 ```
 
-There's no right or wrong answers - we're just plugging our legos together in whatever way we please. Usually it's best to group things in an reusable way like `last` and `angry`. If familiar with Fowler's "Refactoring", one might recognize this process as "extract method"...except without all the object state to worry about.
+There's no right or wrong answers - we're just plugging our legos together in whatever way we please. Usually it's best to group things in an reusable way like `last` and `angry`. If familiar with Fowler's "[Refactoring][refactoring-book]", one might recognize this process as "[extract method][extract-method-refactor]"...except without all the object state to worry about.
 
 ## Pointfree
 
@@ -335,3 +335,5 @@ var fastestCar = function(cars) {
 [lodash-website]: https://lodash.com/
 [underscore-website]: http://underscorejs.org/
 [ramda-website]: http://ramdajs.com/
+[refactoring-book]: http://martinfowler.com/books/refactoring.html
+[extract-method-refactor]: http://refactoring.com/catalog/extractMethod.html
