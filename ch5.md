@@ -78,7 +78,7 @@ loudLastUpper(['jumpkick', 'roundhouse', 'uppercut'])
 //=> 'UPPERCUT!'
 ```
 
-Applying the associative property gives us this flexibility and peace of mind that the result will be equivalent. The slightly more complicated variadic definition is included with the support libraries for this book and is the normal definition you'll find in libraries like lodash, underscore, and ramda.
+Applying the associative property gives us this flexibility and peace of mind that the result will be equivalent. The slightly more complicated variadic definition is included with the support libraries for this book and is the normal definition you'll find in libraries like [lodash][lodash-website], [underscore][underscore-website], and [ramda][ramda-website].
 
 One pleasant benefit of associativity is that any group of functions can be extracted and bundled together in their very own composition. Let's play with refactoring our previous example:
 
@@ -97,7 +97,7 @@ var loudLastUpper = compose(angry, last)
 // more variations...
 ```
 
-There's no right or wrong answers - we're just plugging our legos together in whatever way we please. Usually it's best to group things in an reusable way like `last` and `angry`. If familiar with Fowler's "Refactoring", one might recognize this process as "extract method"...except without all the object state to worry about.
+There's no right or wrong answers - we're just plugging our legos together in whatever way we please. Usually it's best to group things in an reusable way like `last` and `angry`. If familiar with Fowler's "[Refactoring][refactoring-book]", one might recognize this process as "[extract method][extract-method-refactor]"...except without all the object state to worry about.
 
 ## Pointfree
 
@@ -194,7 +194,7 @@ Category theory is an abstract branch of mathematics that can formalize concepts
 
 Sorry, I didn't mean to frighten you. I don't expect you to be intimately familiar with all these concepts. My point is to show you how much duplication we have so you can see why category theory aims to unify these things.
 
-In category theory, we have something called...a category. It is defined as a collection with the following components:
+In category theory, we have something called... a category. It is defined as a collection with the following components:
 
   * A collection of objects
   * A collection of morphisms
@@ -204,7 +204,7 @@ In category theory, we have something called...a category. It is defined as a co
 Category theory is abstract enough to model many things, but let's apply this to types and functions, which is what we care about at the moment.
 
 **A collection of objects**
-The objects will be data types. For instance, String, Boolean, Number, Object, etc. We often view data types as sets of all the possible values. One could look at Boolean as the set of `[true, false]` and Number as the set of all possible numeric values. Treating types as sets is useful because we can use set theory to work with them. 
+The objects will be data types. For instance, ``String``, ``Boolean``, ``Number``, ``Object``, etc. We often view data types as sets of all the possible values. One could look at ``Boolean`` as the set of `[true, false]` and ``Number`` as the set of all possible numeric values. Treating types as sets is useful because we can use set theory to work with them. 
 
 
 **A collection of morphisms**
@@ -331,3 +331,9 @@ var fastestCar = function(cars) {
   return fastest.name + ' is the fastest';
 }
 ```
+
+[lodash-website]: https://lodash.com/
+[underscore-website]: http://underscorejs.org/
+[ramda-website]: http://ramdajs.com/
+[refactoring-book]: http://martinfowler.com/books/refactoring.html
+[extract-method-refactor]: http://refactoring.com/catalog/extractMethod.html
