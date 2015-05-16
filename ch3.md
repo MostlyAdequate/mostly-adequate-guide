@@ -150,12 +150,12 @@ Here is a simplified implementation, though there are plenty of more robust vers
 
 ```js
 var memoize = function(f) {
-  var cache = {}
+  var cache = {};
 
   return function() {
-    var arg_str = String(arguments);
-    cache[arg_str] = cache[arg_str] || f.apply(f, arguments);
-    return cache[arg_str];
+    var argString = String(arguments);
+    cache[argString] = cache[argString] || f.apply(f, arguments);
+    return cache[argString];
   }
 }
 ```
