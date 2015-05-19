@@ -15,23 +15,23 @@ Let's start with a touch of insanity. Here is a seagull application. When flocks
 ```js
 var Flock = function(n) {
   this.seagulls = n;
-}
+};
 
 Flock.prototype.conjoin = function(other) {
   this.seagulls += other.seagulls;
   return this;
-}
+};
 
 Flock.prototype.breed = function(other) {
   this.seagulls = this.seagulls * other.seagulls;
   return this;
-}
+};
 
 var flock_a = new Flock(4);
 var flock_b = new Flock(2);
 var flock_c = new Flock(0);
 
-flock_a.conjoin(flock_c).breed(flock_b).conjoin(flock_a.breed(flock_b)).seagulls;
+var result = flock_a.conjoin(flock_c).breed(flock_b).conjoin(flock_a.breed(flock_b)).seagulls;
 //=> 32
 ```
 
@@ -40,57 +40,57 @@ Who on earth would craft such a ghastly abomination? It is unreasonably difficul
 Let's try again with a more functional approach:
 
 ```js
-var conjoin = function(flock_x, flock_y) { return flock_x + flock_y }
-var breed = function(flock_x, flock_y) { return flock_x * flock_y }
+var conjoin = function(flock_x, flock_y) { return flock_x + flock_y };
+var breed = function(flock_x, flock_y) { return flock_x * flock_y };
 
-var flock_a = 4
-var flock_b = 2
-var flock_c = 0
+var flock_a = 4;
+var flock_b = 2;
+var flock_c = 0;
 
-conjoin(breed(flock_b, conjoin(flock_a, flock_c)), breed(flock_a, flock_b))
+var result = conjoin(breed(flock_b, conjoin(flock_a, flock_c)), breed(flock_a, flock_b));
 //=>16
 ```
 
 Well, we got the right answer this time. There's much less code. It's better, but let's dig deeper. There are benefits to calling a spade a spade. Had we done so, we might have seen we're just working with simple addition(`conjoin`) and multiplication(`breed`). There's really nothing special at all about these two functions other than their names. Let's rename our custom functions to reveal their true identity.
 
 ```js
-var add = function(x, y) { return x + y }
-var multiply = function(x, y) { return x * y }
+var add = function(x, y) { return x + y };
+var multiply = function(x, y) { return x * y };
 
-var flock_a = 4
-var flock_b = 2
-var flock_c = 0
+var flock_a = 4;
+var flock_b = 2;
+var flock_c = 0;
 
-add(multiply(flock_b, add(flock_a, flock_c)), multiply(flock_a, flock_b))
+var result = add(multiply(flock_b, add(flock_a, flock_c)), multiply(flock_a, flock_b));
 //=>16
 ```
 And with that, we gain the knowledge of the ancients:
 
 ```js
 // associative
-add(add(x, y), z) == add(x, add(y, z))
+add(add(x, y), z) == add(x, add(y, z));
 
 // commutative
-add(x, y) == add(y, x)
+add(x, y) == add(y, x);
 
 // identity
-add(x, 0) == x
+add(x, 0) == x;
 
 // distributive
-multiply(x, add(y,z)) == add(multiply(x, y), multiply(x, z))
+multiply(x, add(y,z)) == add(multiply(x, y), multiply(x, z));
 ```
 
 Ah yes, those old faithful mathematical properties should come in handy. Don't worry if you didn't know them right off the top of your head. For a lot of us, it's been a while since we've reviewed this information. Let's see if we can use these properties to simplify our little seagull program.
 
 ```js
 // Original line
-add(multiply(flock_b, add(flock_a, flock_c)), multiply(flock_a, flock_b))
+add(multiply(flock_b, add(flock_a, flock_c)), multiply(flock_a, flock_b));
 
 // Apply the identity property to remove the extra add (add(flock_a, flock_c) == flock_a)
-add(multiply(flock_b, flock_a), multiply(flock_a, flock_b))
+add(multiply(flock_b, flock_a), multiply(flock_a, flock_b));
 
 // Apply distributive property to achieve our result
-multiply(flock_b, add(flock_a, flock_a))
+multiply(flock_b, add(flock_a, flock_a));
 ```
 
 Brilliant! We didn't have to write a lick of custom code other than our calling function. We include `add` and `multiply` definitions here for completeness, but there is really no need to write them - we surely have an `add` and `multiply` provided by some previously written library. Contrast this with our absurd object version which ignores built in functions and data types in order to model the "real world".
