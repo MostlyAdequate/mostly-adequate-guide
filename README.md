@@ -20,9 +20,9 @@ This is a book on the functional paradigm in general. We'll use the world's most
 
 That said, typed functional languages will, without a doubt, be the best place to code in the style presented by this book. JavaScript will be our means of learning a paradigm, where you apply it is up to you. Luckily, the interfaces are mathematical and, as such, ubiquitous. You'll find yourself at home with swiftz, scalaz, haskell, purescript, and other mathematically inclined environments.
 
-# Part 1
+# Table of Contents
 
-## Table of Contents
+## Part 1
 
 * [Chapter 1: What ever are we doing?](ch1.md)
   * [Introductions](ch1.md#introductions)
@@ -52,10 +52,25 @@ That said, typed functional languages will, without a doubt, be the best place t
   * [A Principled Refactor](ch6.md#a-principled-refactor)
   * [In Summary](ch6.md#in-summary)
 
+## Part 2
+
+* [Chapter 7: Hindley-Milner and Me](ch7.md)
+  * [What's your type?](ch7.md#whats-your-type)
+  * [Tales from the cryptic](ch7.md#tales-from-cryptic)
+  * [Narrowing the possibility](ch7.md#narrowing-the-possibility)
+  * [Free as in theorem](ch7.md#free-as-in-theorem)
+  * [In Summary](ch7.md#in-summary)
+* Chapter 8: Tupperware
+  * The Mighty Container
+  * My First Functor
+  * Schrödinger’s Maybe
+  * Future Computations
+
+
 # Plans for the future
 
 * Part 1 is a guide to the basics. I'm updating as I find errors since this is the initial draft. Feel free to help!
-* Part 2 will address type classes like functors and monads all the way through to traversable. I hope to squeeze in transformers and a pure react application.
-* Part 3 will start to dance the fine line between practical and academic absurdity. We'll look at comonads, f-algebras, free monads, yoneda, and other categorical constructs.
+* Part 2 will address type classes like functors and monads all the way through to traversable. I hope to squeeze in transformers and a pure application.
+* Part 3 will start to dance the fine line between practical programming and academic absurdity. We'll look at comonads, f-algebras, free monads, yoneda, and other categorical constructs.
 
 
