@@ -10,17 +10,17 @@ You can choose to call it all at once or simply feed in each argument piecemeal.
 ```js
 var add = function(x) {
   return function(y) {
-    return x + y
-  }
-}
+    return x + y;
+  };
+};
 
-var increment = add(1)
-var addTen = add(10)
+var increment = add(1);
+var addTen = add(10);
 
-increment(2)
+increment(2);
 // 3
 
-addTen(2)
+addTen(2);
 // 12
 ```
 
@@ -33,55 +33,55 @@ var curry = require('lodash').curry;
 
 var match = curry(function(what, x) {
   return x.match(what);
-})
+});
 
 var replace = curry(function(what, replacement, x) {
   return x.replace(what, replacement);
-})
+});
 
 var filter = curry(function(f, xs) {
   return xs.filter(f);
-})
+});
 
 var map = curry(function(f, xs) {
   return xs.map(f);
-})
+});
 ```
 
 The pattern I've followed is a simple, but important one. I've strategically positioned the data we're operating on (String, Array) as the last argument. It will become clear as to why upon use.
 
 ```js
-match(/\s+/g, "hello world")
+match(/\s+/g, "hello world");
 // [ ' ' ]
 
-match(/\s+/g)("hello world")
+match(/\s+/g)("hello world");
 // [ ' ' ]
 
-var hasSpaces = match(/\s+/g)
+var hasSpaces = match(/\s+/g);
 // function(x) { return x.match(/\s+/g) }
 
-hasSpaces("hello world")
+hasSpaces("hello world");
 // [ ' ' ]
 
-hasSpaces("spaceless")
+hasSpaces("spaceless");
 // null
 
-filter(hasSpaces, ["tori_spelling", "tori amos"])
+filter(hasSpaces, ["tori_spelling", "tori amos"]);
 // ["tori amos"]
 
-var findSpaces = filter(hasSpaces)
+var findSpaces = filter(hasSpaces);
 // function(xs) { return xs.filter(function(x) { return x.match(/\s+/g) }) }
 
-findSpaces(["tori_spelling", "tori amos"])
+findSpaces(["tori_spelling", "tori amos"]);
 // ["tori amos"]
 
-var noVowels = replace(/[aeiou]/ig)
+var noVowels = replace(/[aeiou]/ig);
 // function(replacement, x) { return x.replace(/[aeiou]/ig, replacement) }
 
-var censored = noVowels("*")
+var censored = noVowels("*");
 // function(x) { return x.replace(/[aeiou]/ig, "*") }
 
-censored("Chocolate Rain")
+censored("Chocolate Rain");
 // 'Ch*c*l*t* R**n'
 ```
 
@@ -96,18 +96,18 @@ We also have the ability to transform any function that works on single elements
 
 ```js
 var getChildren = function(x) {
-  return x.childNodes
-}
+  return x.childNodes;
+};
 
-var allTheChildren = map(getChildren) 
+var allTheChildren = map(getChildren);
 ```
 
 Giving a function fewer arguments than it expects is typically called *partial application*. Partially applying a function can remove a lot of boiler plate code. Consider what the above `allTheChildren` function would be with the uncurried `map` from lodash[^note the arguments are in a different order]:
 
 ```js
 var allTheChildren = function(elements) {
-  return _.map(elements, getChildren)
-}
+  return _.map(elements, getChildren);
+};
 ```
 
 We typically don't define functions that work on arrays, because we can just call `map(getChildren)` inline. Same with `sort`, `filter`, and other higher order functions[^Higher order function: A function that takes or returns a function].
@@ -126,8 +126,7 @@ Let's acquire another essential tool called `compose`.
 ## Exercises
 
 ```js
-require('../../support')
-var _ = require('ramda')
+var _ = require('ramda');
 
 
 // Exercise 1
@@ -136,7 +135,7 @@ var _ = require('ramda')
 
 var words = function(str) {
   return split(' ', str);
-}
+};
 
 // Exercise 1a
 //==============
@@ -151,7 +150,7 @@ var sentences = undefined;
 
 var filterQs = function(xs) {
   return filter(function(x){ return match(/q/i, x);  }, xs);
-}
+};
 
 
 // Exercise 3
@@ -166,18 +165,18 @@ var max = function(xs) {
   return reduce(function(acc, x){
     return _keepHighest(acc, x);
   }, 0, xs);
-}
+};
 
   
 // Bonus 1:
 // ============
 // wrap array's slice to be functional and curried.
 // //[1,2,3].slice(0, 2)
-var slice = undefined
+var slice = undefined;
 
 
 // Bonus 2:
 // ============
 // use slice to define a function "take" that takes n elements. Make it curried
-var take = undefined
+var take = undefined;
 ```
