@@ -18,7 +18,7 @@ From the dusty pages of math books, across the vast sea of white papers, amongst
 //  capitalize :: String -> String
 var capitalize = function(s){ return toUpperCase(head(s)) + toLowerCase(tail(s)); }
 
-capitalize("smurf")
+capitalize("smurf");
 //=> "Smurf"
 ```
 
@@ -37,17 +37,17 @@ var strLength = function(s){
 //  join :: String -> [String] -> String
 var join = curry(function(what, xs){
   return xs.join(what);
-})
+});
 
 //  match :: Regex -> String -> [String]
 var match = curry(function(reg, s){
   return s.match(reg);
-})
+});
 
 //  replace :: Regex -> String -> String -> String
 var replace = curry(function(reg, sub, s){
   return s.replace(reg, sub);
-})
+});
 ```
 
 `strLength` is the same idea as before: we take a `String` and return you a `Number`.
@@ -60,7 +60,7 @@ For `match` we are free to group the signature like so:
 //  match :: Regex -> (String -> [String])
 var match = curry(function(reg, s){
   return s.match(reg);
-})
+});
 ```
 
 Ah yes, grouping the last part in parenthesis reveals more information. Now it is seen a function that takes a `Regex` and returns us a function from `String` to `[String]`. Because of currying, this is indeed the case: give it a `Regex` and we get a function back waiting for it's `String` argument. Of course, we don't have to think of it this way, but it is good to understand why the last type is the one returned.
@@ -69,7 +69,7 @@ Ah yes, grouping the last part in parenthesis reveals more information. Now it i
 //  replace :: Regex -> (String -> (String -> String))
 var replace = curry(function(reg, sub, s){
   return s.replace(reg, sub);
-})
+});
 ```
 
 As you can see, the parenthesis can get a little noisy and redundant so we simply omit them. We can give all the arguments at once if we choose so it's easier to just think of it as: `replace` takes a `Regex`, a `String`, another `String` and returns you a `String`.
@@ -79,12 +79,12 @@ A few last things here:
 
 ```js
 //  id :: a -> a
-var id = function(x){ return x }
+var id = function(x){ return x; }
 
 //  map :: (a -> b) -> [a] -> [b]
 var map = curry(function(f, xs){
   return xs.map(f);
-})
+});
 ```
 
 The `id` function takes any old type `a` and returns something of the same type `a`. We're able to use variables in types just like in code. Variable names like `a` and `b` are convention, but they are arbitrary and can be replaced with whatever name you'd like. If they are the same variable, they have to be the same type. That's an important rule so let's reiterate: `a -> b` can be any type `a` to any type `b`, but `a -> a` means it has to be the same type. For example, `id` may be `String -> String` or `Number -> Number`, but not `String -> Bool`.
@@ -99,17 +99,17 @@ Here's a few more just to see if you can decipher them on your own.
 
 ```js
 //  head :: [a] -> a
-var head = function(xs){ return xs[0] }
+var head = function(xs){ return xs[0]; }
 
 //  filter :: (a -> Bool) -> [a] -> [a]
 var filter = curry(function(f, xs){
   return xs.filter(f);
-})
+});
 
 //  reduce :: (b -> a -> b) -> b -> [a] -> b
 var reduce = curry(function(f, x, xs){
   return xs.reduce(f, x);
-})
+});
 ```
 
 `reduce` is perhaps, the most expressive of all. It's a tricky one, however, so don't feel inadequate should you struggle with it.
@@ -143,7 +143,7 @@ Besides deducing implementation possibilities, this sort of reasoning gains us *
 compose(f, head) == compose(head, map(f));
 
 // filter :: (a -> Bool) -> [a] -> [a]
-compose(map(f), filter(compose(p, f))) == compose(filter(p), map(f))
+compose(map(f), filter(compose(p, f))) == compose(filter(p), map(f));
 ```
 
 
