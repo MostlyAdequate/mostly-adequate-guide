@@ -2,7 +2,7 @@
 
 ## The Mighty Container
 
- src="images/jar.jpg" alt="http://blog.dwinegar.com/2011/06/another-jar.html" />
+<img src="images/jar.jpg" alt="http://blog.dwinegar.com/2011/06/another-jar.html" />
 
 We've seen how to write programs which pipe data through a series of pure functions. They are declarative specifications of behaviour. But what about control flow, error handling, asynchronous actions, state and, dare I say, effects?! In this chapter, we will discover the foundation upon which all of these helpful abstractions are built.
 
