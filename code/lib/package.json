@@ -1,0 +1,19 @@
+{
+  "name": "MAG_lib",
+  "version": "0.0.1",
+  "description": "Support libs for the book",
+  "main": "index.js",
+  "dependencies": {
+    "ramda": "^0.13.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DrBoolean/mostly-adequate-guide"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DrBoolean/mostly-adequate-guide/issues"
+  },
+  "homepage": "https://github.com/DrBoolean/mostly-adequate-guide"
+}
