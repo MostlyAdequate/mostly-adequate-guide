@@ -61,14 +61,14 @@ That said, typed functional languages will, without a doubt, be the best place t
   * [Free as in theorem](ch7.md#free-as-in-theorem)
   * [In Summary](ch7.md#in-summary)
 * [Chapter 8: Tupperware](ch8.md)
-  * The Mighty Container(ch8.md#the-mighty-container)
-  * My First Functor(ch8.md#my-first-functor)
-  * Schrödinger’s Maybe(ch8.md#schrodingers-maybe)
-  * Pure Error Handling(ch8.md#pure-error-handling)
-  * Old McDonald had Effects…(ch8.md#old-mcdonald-had-effects)
-  * Asynchronous Tasks(ch8.md#asynchronous-tasks)
-  * A Spot of Theory(ch8.md#a-spot-of-theory)
-  * In Summary(ch8.md#in-summary)
+  * [The Mighty Container](ch8.md#the-mighty-container)
+  * [My First Functor](ch8.md#my-first-functor)
+  * [Schrödinger’s Maybe](ch8.md#schrodingers-maybe)
+  * [Pure Error Handling](ch8.md#pure-error-handling)
+  * [Old McDonald had Effects…](ch8.md#old-mcdonald-had-effects)
+  * [Asynchronous Tasks](ch8.md#asynchronous-tasks)
+  * [A Spot of Theory](ch8.md#a-spot-of-theory)
+  * [In Summary](ch8.md#in-summary)
 
 
 # Plans for the future
