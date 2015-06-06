@@ -678,6 +678,7 @@ What about calling a function with multiple functor arguments? How about working
 
 ## Exercises
 
+```js
 require('../../support');
 var Task = require('data.task');
 var _ = require('ramda');
@@ -774,4 +775,4 @@ var save = function(x){
 }
 
 var ex8 = undefined
-
+```
