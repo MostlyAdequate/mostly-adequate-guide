@@ -94,9 +94,9 @@ In other words, it's just a relation between two values: the input and the outpu
 
 To contrast, the following diagram shows a relation that is *not* a function since the input value `5` points to several outputs:
 
-<img src="images/relation-not-function.gif" />[^http://www.mathsisfun.com/sets/function.html]
+<img src="images/function-sets-x2.gif" />[^http://www.mathsisfun.com/sets/function.html]
 
-Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]`[^It appears this function doubles it's input].
+Functions can be described as a set of pairs with the position (input, output): `[(1,1), (3,9), (4,16), (-4,16)]`[^It appears this function squares it's input].
 
 Or perhaps a table:
 <table> <tr> <th>Input</th> <th>Output</th> </tr> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>2</td> <td>4</td> </tr> <tr> <td>3</td> <td>6</td> </tr> </table>
