@@ -526,7 +526,7 @@ Take a moment to consider how linear the control flow is here. We just read bott
 
 Goodness, would you look at that, `Task` has also swallowed up `Either`! It must do so in order to handle futuristic failures since our normal control flow does not apply in the async world. This is all well and good as it provides sufficient and pure error handling out of the box.
 
-Even with `Task`, our `IO` and `Either` functors are not out of a job. Bare with me on a quick example that leans toward the more complex and hypothetical side, but is useful for illustrative purposes.
+Even with `Task`, our `IO` and `Either` functors are not out of a job. Bear with me on a quick example that leans toward the more complex and hypothetical side, but is useful for illustrative purposes.
 
 ```js
 // Postgres.connect :: Url -> DbConnection
