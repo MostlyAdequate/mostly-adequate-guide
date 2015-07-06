@@ -22,7 +22,7 @@ Either.of("The past, present and future walk into a bar...").map(concat("it was 
 
 If you recall, `IO` and `Task`'s constructors expect a function as their argument, but `Maybe` and `Either` do not. The motivation for this interface is a common, consistent way to place a value into our functor without the complexities and specific demands of constructors. The term "default minimal context" lacks precision, yet captures the idea well: we'd like to lift any value in our type and `map` away per usual with the expected behaviour of whichever functor.
 
-One important correction I must make at this point, pun intended, is that `Left.of` doesn't make any sense. Each functor must have one way to place a value inside it and with `Either`, that's `new Right(x)`. We define `of` using `Right` because if our type *can* `map`, it *should* `map`. Looking at the examples above, we should have an intuition about how `of` will usually work and `Left`, like a [TODO], would break that mold.
+One important correction I must make at this point, pun intended, is that `Left.of` doesn't make any sense. Each functor must have one way to place a value inside it and with `Either`, that's `new Right(x)`. We define `of` using `Right` because if our type *can* `map`, it *should* `map`. Looking at the examples above, we should have an intuition about how `of` will usually work and `Left` breaks that mold.
 
 You may have heard of functions such as `pure`, `point`, `unit`, and `return`. These are various monikers for our `of` method, international function of mystery. `of` will become important when we start using monads because, as we will see, it's our responsibility to place values back into the type manually.
 
@@ -321,3 +321,93 @@ They are the category laws after all. Monads form a category called the "Kleisli
 
 #Examples
 
+```js
+// Exercise 1
+// ==========
+// Use safeProp and map/join or chain to safetly get the street name when given a user
+
+var safeProp = _.curry(function (x, o) { return Maybe.of(o[x]); });
+var user = {
+  id: 2,
+  name: "albert",
+  address: {
+    street: {
+      number: 22,
+      name: 'Walnut St'
+    }
+  }
+};
+
+var ex1 = undefined;
+
+
+// Exercise 2
+// ==========
+// Use getFile to get the filename, remove the directory so it's just the file, then purely log it.
+
+var getFile = function() {
+  return new IO(function(){ return __filename; });
+}
+
+var pureLog = function(x) {
+  return new IO(function(){
+    console.log(x);
+    return 'logged ' + x;
+  });
+}
+
+var ex2 = undefined;
+
+
+
+// Exercise 3
+// ==========
+// Use getPost() then pass the post's id to getComments().
+//
+var getPost = function(i) {
+  return new Task(function (rej, res) {
+    setTimeout(function () {
+      res({ id: i, title: 'Love them tasks' });
+    }, 300);
+  });
+}
+
+var getComments = function(i) {
+  return new Task(function (rej, res) {
+    setTimeout(function () {
+      res([{post_id: i, body: "This book should be illegal"}, {post_id: i, body:"Monads are like smelly shallots"}]);
+    }, 300);
+  });
+}
+
+
+var ex3 = undefined;
+
+
+// Exercise 4
+// ==========
+// Use validateEmail, addToMailingList, and emailBlast to implmeent ex4's type signature.
+
+//  addToMailingList :: Email -> IO([Email])
+var addToMailingList = (function(list){
+  return function(email) {
+    return new IO(function(){
+      list.push(email);
+      return list;
+    });
+  }
+})([]);
+
+function emailBlast(list) {
+  return new IO(function(){
+    return 'emailed: ' + list.join(',');
+  });
+}
+
+var validateEmail = function(x){
+  return x.match(/\S+@\S+\.\S+/) ? (new Right(x)) : (new Left('invalid email'));
+}
+
+//  ex4 :: Email -> Either String (IO String)
+var ex4 = undefined;
+```
