@@ -69,6 +69,13 @@ That said, typed functional languages will, without a doubt, be the best place t
   * [Asynchronous Tasks](ch8.md#asynchronous-tasks)
   * [A Spot of Theory](ch8.md#a-spot-of-theory)
   * [In Summary](ch8.md#in-summary)
+* [Chapter 9: Monadic Onions](ch9.md)
+  * [Pointy Functor Factory](ch9.md#pointy-functor-factory)
+  * [Mixing Metaphors](ch9.md#mixing-metaphors)
+  * [My chain hits my chest](ch9.md#my-chain-hits-my-chest)
+  * [Theory](ch9.md#theory)
+  * [In Summary](ch9.md#in-summary)
+
 
 
 # Plans for the future

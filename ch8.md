@@ -675,6 +675,7 @@ We've seen a few different functors, but there are infinitely many. Some notable
 
 What about calling a function with multiple functor arguments? How about working with an order sequence of impure or async actions? We haven't yet acquired the full tool set for working in this boxed up world. Next, we'll cut right to the chase and look at monads.
 
+[Chapter 9: Monadic Onions](ch9.md)
 
 ## Exercises
 

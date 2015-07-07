@@ -1,4 +1,6 @@
-# Pointy Functor Factory
+# Monadic Onions
+
+## Pointy Functor Factory
 
 Before we go any further, I have a confession to make: I haven't been fully honest about that `of` method we've placed on each of our types. Turns out, it is not there to avoid the `new` keyword, but rather to place values in what's called a *default minimal context*. Yes, `of` does not actually take the place of a constructor - it is part of an important interface we call *Pointed*.
 
@@ -28,9 +30,10 @@ You may have heard of functions such as `pure`, `point`, `unit`, and `return`. T
 
 To avoid the `new` keyword, there are several standard JavaScript tricks or libraries so let's use them and use `of` like a responsible adult from here on out. I recommend using functor instances from `folktale`, `ramda` or `fantasy-land` as they provide the correct `of` method as well as nice constructors that don't rely on `new`.
 
-# Monadic Onions
 
 ## Mixing Metaphors
+
+<img src="images/onion.png" alt="http://www.organicchemistry.com/wp-content/uploads/BPOCchapter6-6htm-41.png" />
 
 You see, in addition to space burritos (if you've heard the rumors), monads are like onions. Allow me to demonstrate with a common situation:
 
@@ -101,7 +104,7 @@ There, simple as consuming one's twin in the womb. If we have a `Maybe(Maybe(x))
 Now that we have a `join` method, let's sprinkle some magic monad dust over the `firstAddressStreet` example and see it in action:
 
 ```js
-//  join :: Monad m => m (m a) -> a
+//  join :: Monad m => m (m a) -> m a
 var join = function(mma){ return mmma.join(); }
 
 //  firstAddressStreet :: User -> Maybe Street
@@ -149,6 +152,8 @@ applyPreferences('preferences').unsafePerformIO();
 `getItem` returns an `IO JSON` so we `map` to parse it. Both `log` and `setStyle` return `IO`'s themselves so we must `join` to keep our nesting under control.
 
 ## My chain hits my chest
+
+<img src="images/chain.jpg" alt="chain" />
 
 You might have noticed a pattern. We often end up calling `join` right after a `map`. Let's abstract this into a function called `chain`.
 
@@ -280,7 +285,7 @@ The first law we'll look at is associativity, but perhaps not in the way you're 
 
 These laws get at the nested nature of monads so associativity focuses on joining the inner or outer types first to acheive the same result. A picture might be more instructive:
 
-![](http://localhost:8000/images/monad_associativity.png)
+<img src="images/monad_associativity.png" alt="monad associativity law" />
 
 Starting with the top left moving downward, we can `join` the outer two `M`'s of `M(M(M a))` first then cruise over to our desired `M a` with another `join`. Alternatively, we can pop the hood and flatten the inner to `M`'s with `map(join)`. We end up with the same `M a` regardless of if we join the inner or outer `M`'s first and that's what associativity is all about. It's worth noting that `map(join) != join`. The intermediate steps can vary in value, but the end result of the last `join` will be the same.
 
@@ -293,7 +298,7 @@ The second law is similar:
 
 It states that, for any monad `M`, `of` and `join` amounts to `id`. We can also `map(of)` and attack it from the inside out. We call this "triangle identity" because it makes such a shape when visualized:
 
-![](http://localhost:8000/images/triangle_identity.png)
+<img src="images/triangle_identity.png" alt="monad identity law" />
 
 If we start at the top left heading right, we can see that `of` does indeed drop our `M a` in another `M` container. Then if we move downward and `join` it, we get the same as if we just called `id` in the first place. Moving right to left, we see that if we sneak under the covers with `map` and call `of` of the plain `a`, we'll still end up with `M (M a)` and `join`ing will bring us back to square one.
 
@@ -316,10 +321,21 @@ Now, I've seen these laws, identity and associativity, somewhere before... Hold 
   mcompose(mcompose(f, g), h) == mcompose(f, mcompose(g, h))
 ```
 
-They are the category laws after all. Monads form a category called the "Kleisli category" where all objects are monads and morphisms are chained functions. I don't mean to taunt you with bits and bobs of category theory without much explaination of how the jigsaw fits together. The intention is to scratch the surface enough to show the relevance and spark some interest while focusing on the practical properties we can use each day.
+They are the category laws after all. Monads form a category called the "Kleisli category" where all objects are monads and morphisms are chained functions. I don't mean to taunt you with bits and bobs of category theory without much explanation of how the jigsaw fits together. The intention is to scratch the surface enough to show the relevance and spark some interest while focusing on the practical properties we can use each day.
 
 
-#Examples
+## In Summary
+
+Monads let us drill downward into nested computations. We can assign variables, run sequential effects, perform asynchronous tasks, all without laying one brick in a pyramid of doom. They come to the rescue a value finds itself jailed in multiple layers of the same type. With the help of the trusty sidekick "pointed", monads are able to lend us an unboxed value and know we'll be able to place it back in when we're done.
+
+Yes, monads are very powerful, yet we still find ourselves needing some extra container functions. For instance, what if we wanted to run a list of api calls at once, then gather the results? We can accomplish this task with monads, but we'd have to wait for each one to finish before calling the next. What about combining several validations? We'd like to continue validating to gather the list of errors, but monads would stop the show after the first `Left` entered the picture.
+
+In the next chapter, we'll see how applicative functors fit into the container world and why we prefer them to monads in many cases.
+
+[Chapter 10: Applicative Functors](ch10.md)
+
+
+## Examples
 
 ```js
 // Exercise 1
