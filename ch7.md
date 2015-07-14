@@ -145,7 +145,7 @@ This narrowing of possibility allows us to use type signature search engines lik
 
 ## Free as in theorem
 
-Besides deducing implementation possibilities, this sort of reasoning gains us *free theorems*. What follows are a few random example theorems lifted directly from [Walder's paper on the subject](http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf).
+Besides deducing implementation possibilities, this sort of reasoning gains us *free theorems*. What follows are a few random example theorems lifted directly from [Wadler's paper on the subject](http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf).
 
 ```js
 // head :: [a] -> a
