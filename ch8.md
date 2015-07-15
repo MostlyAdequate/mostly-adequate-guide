@@ -96,7 +96,7 @@ Maybe.of = function(x) {
   return new Maybe(x);
 }
 
-Maybe.prototype.isNothing = function(f) {
+Maybe.prototype.isNothing = function() {
   return (this.__value === null || this.__value === undefined);
 }
 
