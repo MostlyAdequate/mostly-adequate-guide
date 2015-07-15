@@ -19,7 +19,7 @@ for (i = 0; i < cars.length; i++) {
 
 
 // declarative
-cars.map(function(car){ return car.make; });
+var makes = cars.map(function(car){ return car.make; });
 ```
 
 The imperative loop must first instantiate the array. The interpreter must evaluate this statement before moving on. Then it directly iterates through the list of cars, manually increasing a counter and showing its bits and pieces to us in a vulgar display of explicit iteration.
