@@ -57,7 +57,7 @@ In the impure portion, `checkAge` depends on the mutable variable `minimum` to d
 
 ```js
 var immutableState = Object.freeze({
-  minimum: 21;
+  minimum: 21
 });
 ```
 
