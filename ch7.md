@@ -125,7 +125,7 @@ var reduce = curry(function(f, x, xs){
 
 ## Narrowing the possibility
 
-Once a type variable is introduce, there emerges a curious property called *parametricity*[^http://en.wikipedia.org/wiki/Parametricity]. This property states that a function will *act on all types in a uniform manner*. Let's investigate:
+Once a type variable is introduced, there emerges a curious property called *parametricity*[^http://en.wikipedia.org/wiki/Parametricity]. This property states that a function will *act on all types in a uniform manner*. Let's investigate:
 
 ```js
 // head :: [a] -> a
@@ -145,7 +145,7 @@ This narrowing of possibility allows us to use type signature search engines lik
 
 ## Free as in theorem
 
-Besides deducing implementation possibilities, this sort of reasoning gains us *free theorems*. What follows are a few random example theorems lifted directly from [Walder's paper on the subject](http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf).
+Besides deducing implementation possibilities, this sort of reasoning gains us *free theorems*. What follows are a few random example theorems lifted directly from [Wadler's paper on the subject](http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf).
 
 ```js
 // head :: [a] -> a
