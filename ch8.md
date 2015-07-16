@@ -101,7 +101,7 @@ Maybe.prototype.isNothing = function() {
 }
 
 Maybe.prototype.map = function(f) {
-  return this.isNothing() ? this : Maybe.of(f(this.__value));
+  return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value));
 }
 ```
 
