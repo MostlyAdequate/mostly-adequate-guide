@@ -115,7 +115,7 @@ Maybe.of(null).map(match(/a/ig));
 //=> Maybe(null)
 
 Maybe.of({name: "Boris"}).map(_.prop("age")).map(add(10));
-//=> Maybe(undefined)
+//=> Maybe(null)
 
 Maybe.of({name: "Dinah", age: 14}).map(_.prop("age")).map(add(10));
 //=> Maybe(24)
