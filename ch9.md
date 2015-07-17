@@ -125,7 +125,7 @@ IO.prototype.join = function() {
 Again, we simply remove one layer. Mind you, we have not thrown out purity, but merely removed one layer of excess shrink wrap.
 
 ```js
-//  log :: String -> IO String
+//  log :: String -> IO ()
 var log = function(s) {
   return new IO(function() { return console.log(s); });
 }
