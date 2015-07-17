@@ -105,7 +105,7 @@ Now that we have a `join` method, let's sprinkle some magic monad dust over the 
 
 ```js
 //  join :: Monad m => m (m a) -> m a
-var join = function(mma){ return mmma.join(); }
+var join = function(mma){ return mma.join(); }
 
 //  firstAddressStreet :: User -> Maybe Street
 var firstAddressStreet = compose(join, map(safeProp('street')), join, map(safeHead), safeProp('addresses'));
