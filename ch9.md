@@ -84,7 +84,7 @@ var ttt = Task.of(Task.of(Task.of("sewers")));
 // Task(Task(Task("sewers")));
 
 ttt.join()
-// Task(Task("sewers"))
+// Task("sewers")
 ```
 
 If we have two layers of the same type, we can smash them together with `join`. This ability to join together, this functor matrimony, is what makes a monad a monad. Let's inch toward the full definition with something a little more accurate:
