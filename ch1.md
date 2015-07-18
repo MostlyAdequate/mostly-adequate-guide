@@ -10,7 +10,7 @@ The purpose of this chapter is to give you a feel for what we're after when we w
 
 ## A brief encounter
 
-Let's start with a touch of insanity. Here is a seagull application. When flocks conjoin they become a larger flock and when they breed they increase by the number of seagulls with whom they're breeding.
+Let's start with a touch of insanity. Here is a seagull application. When flocks conjoin they become a larger flock and when they breed they increase by the number of seagulls with whom they're breeding. Now this is not intended to be good Object-Oriented code, mind you, it is here to highlight the perils of our modern, assignment based approach. Behold:
 
 ```js
 var Flock = function(n) {
