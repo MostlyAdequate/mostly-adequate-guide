@@ -125,6 +125,13 @@ Let's acquire another essential tool called `compose`.
 
 ## Exercises
 
+A quick word before we start. We'll use a library called *ramda* which curries every function by default. Alternatively you may choose to use *lodash-fp* which does the same and is written/maintained by the creator of lodash. Both will work just fine and it is a matter of preference.
+
+[ramda](http://ramdajs.com)
+[lodash-fp](https://github.com/lodash/lodash-fp)
+
+Answers are provided with the code in the [repository for this book](https://github.com/DrBoolean/mostly-adequate-guide/tree/master/code/part1_exercises/answers)
+
 ```js
 var _ = require('ramda');
 
