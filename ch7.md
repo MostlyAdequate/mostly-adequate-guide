@@ -68,7 +68,7 @@ Ah yes, grouping the last part in parenthesis reveals more information. Now it i
 ```js
 //  match :: Regex -> (String -> [String])
 
-//  onHoliday :: String -> String
+//  onHoliday :: String -> [String]
 var onHoliday = match(/holiday/ig);
 ```
 
