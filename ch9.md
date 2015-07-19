@@ -158,6 +158,7 @@ applyPreferences('preferences').unsafePerformIO();
 You might have noticed a pattern. We often end up calling `join` right after a `map`. Let's abstract this into a function called `chain`.
 
 ```js
+//  chain :: Monad m => (a -> m b) -> m a -> m b
 var chain = curry(function(f, m){
   return m.map(f).join(); // or compose(join, map(f))(m)
 });
