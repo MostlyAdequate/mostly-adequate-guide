@@ -98,7 +98,7 @@ var loudLastUpper = compose(angry, last);
 // more variations...
 ```
 
-There's no right or wrong answers - we're just plugging our legos together in whatever way we please. Usually it's best to group things in an reusable way like `last` and `angry`. If familiar with Fowler's "[Refactoring][refactoring-book]", one might recognize this process as "[extract method][extract-method-refactor]"...except without all the object state to worry about.
+There's no right or wrong answers - we're just plugging our legos together in whatever way we please. Usually it's best to group things in a reusable way like `last` and `angry`. If familiar with Fowler's "[Refactoring][refactoring-book]", one might recognize this process as "[extract method][extract-method-refactor]"...except without all the object state to worry about.
 
 ## Pointfree
 
