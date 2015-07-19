@@ -125,22 +125,14 @@ IO.prototype.join = function() {
 Again, we simply remove one layer. Mind you, we have not thrown out purity, but merely removed one layer of excess shrink wrap.
 
 ```js
-// tap :: (a -> b) -> a -> a
-var tap = curry(function(f, it) { f(it); return it; });
+//  log :: a -> IO a
+var log = function(x) {
+  return new IO(function() { console.log(s); return x; });
+}
 
-//  log :: Object -> IO Object
-var log = function(o) {
-  return new IO(function() { console.log(o); return o; });
-};
-
-//  setStyles :: Selector -> CSSProps -> IO DOM
-var setStyles = curry(function(sel, props) {
-  return new IO(function() {
-    return tap(
-      function(dom) { map(function(key) { dom.style[key] = props[key]; }, Object.keys(props)); },
-      $(el)
-    );
-  });
+//  setStyle :: Selector -> CSSProps -> IO DOM
+var setStyle = curry(function(sel, props) {
+  return new IO(function() { return jQuery(sel).css(props); });
 });
 
 //  getItem :: String -> IO String
