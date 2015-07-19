@@ -127,7 +127,7 @@ Again, we simply remove one layer. Mind you, we have not thrown out purity, but 
 ```js
 //  log :: a -> IO a
 var log = function(x) {
-  return new IO(function() { console.log(s); return x; });
+  return new IO(function() { console.log(x); return x; });
 }
 
 //  setStyle :: Selector -> CSSProps -> IO DOM
