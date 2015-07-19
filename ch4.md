@@ -29,7 +29,7 @@ Here we've made a function `add` that will take one argument and return a functi
 Let's setup a few curried functions for our enjoyment.
 
 ```js
-var curry = require('lodash').curry;
+var curry = require('lodash.curry');
 
 var match = curry(function(what, x) {
   return x.match(what);
