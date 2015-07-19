@@ -35,7 +35,7 @@ var result = flock_a.conjoin(flock_c).breed(flock_b).conjoin(flock_a.breed(flock
 //=> 32
 ```
 
-Who on earth would craft such a ghastly abomination? It is unreasonably difficult to keep track of the mutating internal state. And, good heavens, the answer is even incorrect! It should have been `16`, but `flock_a` wound up permanently altered in the process. Poor `flock_a`. This is anarchy in the I.T.! This is wild animal arithmetic!
+Who on earth would craft such a ghastly abomination? It is unreasonably difficult to keep track of the mutating internal state. And, good heavens, the answer is even incorrect! It should have been `16`, but `flock_a` wound up permanently altered in the process. Poor `flock_a`. This is anarchy in the I.T.! This is wild animal arithmetic! If you don't understand this program, it's okay, neither do I. The point is that state and mutable values are hard to follow even in such a small example.
 
 Let's try again with a more functional approach:
 
@@ -51,7 +51,7 @@ var result = conjoin(breed(flock_b, conjoin(flock_a, flock_c)), breed(flock_a, f
 //=>16
 ```
 
-Well, we got the right answer this time. There's much less code. It's better, but let's dig deeper. There are benefits to calling a spade a spade. Had we done so, we might have seen we're just working with simple addition(`conjoin`) and multiplication(`breed`). There's really nothing special at all about these two functions other than their names. Let's rename our custom functions to reveal their true identity.
+Well, we got the right answer this time. There's much less code. The function nesting is a tad confusing...[^we'll remedy this sitation in ch5]. It's better, but let's dig deeper. There are benefits to calling a spade a spade. Had we done so, we might have seen we're just working with simple addition(`conjoin`) and multiplication(`breed`). There's really nothing special at all about these two functions other than their names. Let's rename our custom functions to reveal their true identity.
 
 ```js
 var add = function(x, y) { return x + y };
@@ -93,7 +93,7 @@ add(multiply(flock_b, flock_a), multiply(flock_a, flock_b));
 multiply(flock_b, add(flock_a, flock_a));
 ```
 
-Brilliant! We didn't have to write a lick of custom code other than our calling function. We include `add` and `multiply` definitions here for completeness, but there is really no need to write them - we surely have an `add` and `multiply` provided by some previously written library. Contrast this with our absurd object version which ignores built in functions and data types in order to model the "real world".
+Brilliant! We didn't have to write a lick of custom code other than our calling function. We include `add` and `multiply` definitions here for completeness, but there is really no need to write them - we surely have an `add` and `multiply` provided by some previously written library.
 
 You may be thinking "how very strawman of you to put such a mathy example up front". Or "real programs are not this simple and cannot be reasoned about in such a way". I've chosen this example because most of us already know about addition and multiplication so it's easy to see how math can be of use to us here. Don't despair, throughout this book, we'll sprinkle in some category theory, set theory, and lambda calculus to write real world examples that achieve the same simplicity and results as our flock of seagulls example. You needn't be a mathematician either, it will feel just like using a normal framework or api.
 
