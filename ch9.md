@@ -220,7 +220,7 @@ Next, we use `querySelector` to find a few different inputs and create a welcomi
 
 ```js
 querySelector("input.username").chain(function(uname) {
-  return querySelector("input.email").map(function(email) {
+  return querySelector("input.email").chain(function(email) {
     return "Welcome " + uname.value + " " + "prepare for spam at " + email.value;
   });
 });
