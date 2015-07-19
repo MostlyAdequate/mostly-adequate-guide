@@ -125,31 +125,31 @@ IO.prototype.join = function() {
 Again, we simply remove one layer. Mind you, we have not thrown out purity, but merely removed one layer of excess shrink wrap.
 
 ```js
-//  log :: String -> IO ()
-var log = function(s) {
-  return new IO(function() { return console.log(s); });
+//  log :: a -> IO a
+var log = function(x) {
+  return new IO(function() { console.log(x); return x; });
 }
 
 //  setStyle :: Selector -> CSSProps -> IO DOM
 var setStyle = curry(function(sel, props) {
-  return new IO(function() { return $(sel).style(props); });
-})
+  return new IO(function() { return jQuery(sel).css(props); });
+});
 
 //  getItem :: String -> IO String
 var getItem = function(key) {
   return new IO(function() { return localStorage.getItem(key); });
-}
+};
 
 //  applyPreferences :: String -> IO DOM
 var applyPreferences = compose(join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem);
 
 
 applyPreferences('preferences').unsafePerformIO();
-// "{backgroundColor: 'green'}"
+// Object {backgroundColor: "green"}
 // <div style="background-color: 'green'"/>
 ```
 
-`getItem` returns an `IO JSON` so we `map` to parse it. Both `log` and `setStyle` return `IO`'s themselves so we must `join` to keep our nesting under control.
+`getItem` returns an `IO String` so we `map` to parse it. Both `log` and `setStyle` return `IO`'s themselves so we must `join` to keep our nesting under control.
 
 ## My chain hits my chest
 
