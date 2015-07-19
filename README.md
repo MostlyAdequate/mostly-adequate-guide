@@ -77,11 +77,9 @@ That said, typed functional languages will, without a doubt, be the best place t
   * [In Summary](ch9.md#in-summary)
 
 
-
 # Plans for the future
 
 * Part 1 is a guide to the basics. I'm updating as I find errors since this is the initial draft. Feel free to help!
 * Part 2 will address type classes like functors and monads all the way through to traversable. I hope to squeeze in transformers and a pure application.
 * Part 3 will start to dance the fine line between practical programming and academic absurdity. We'll look at comonads, f-algebras, free monads, yoneda, and other categorical constructs.
-
 
