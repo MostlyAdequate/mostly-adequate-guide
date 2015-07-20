@@ -67,7 +67,7 @@ Container.of("flamethrowers").map(function(s){ return s.toUpperCase() })
 //=> Container("FLAMETHROWERS")
 
 
-Container.of("bombs").map(concat(' away')).map(_.prop('length'))
+Container.of("bombs").map(_.concat(' away')).map(_.prop('length'))
 //=> Container(10)
 ```
 
