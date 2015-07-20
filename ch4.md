@@ -92,7 +92,7 @@ I encourage you to `npm install lodash`, copy the code above and have a go at it
 ## More than a pun / special sauce
 Currying is useful for many things. We can make new functions just by giving them some arguments as seen in `hasSpaces`, `findSpaces`, and `censored`.
 
-We also have the ability to transform any function that works on single elements in to a function that works on arrays simply by wrapping it with `map`:
+We also have the ability to transform any function that works on single elements into a function that works on arrays simply by wrapping it with `map`:
 
 ```js
 var getChildren = function(x) {
