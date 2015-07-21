@@ -10,7 +10,7 @@ var ex1 = undefined;
 
 
 
-//Exercise 2
+// Exercise 2
 // ==========
 // Use _.head to get the first element of the list
 var xs = Identity.of(['do', 'ray', 'me', 'fa', 'so', 'la', 'ti', 'do']);
@@ -29,6 +29,7 @@ var user = { id: 2, name: "Albert" };
 var ex3 = undefined;
 
 
+
 // Exercise 4
 // ==========
 // Use Maybe to rewrite ex4 without an if statement
@@ -43,7 +44,7 @@ var ex4 = undefined;
 
 // Exercise 5
 // ==========
-// Write a function that will getPost then toUpperCase the post's title
+// Write a function that will getPost then _.toUpper the post's title
 
 // getPost :: Int -> Future({id: Int, title: String})
 var getPost = function (i) {
@@ -86,8 +87,8 @@ var ex7 = function(x) {
 // ==========
 // Use ex7 above and Either as a functor to save the user if they are valid or return the error message string. Remember either's two arguments must return the same type.
 
-var save = function(x){
-  return new IO(function(){
+var save = function(x) {
+  return new IO(function() {
     console.log("SAVED USER!");
     return x + '-saved';
   });
