@@ -156,7 +156,7 @@ var sentences = undefined;
 // Refactor to remove all arguments by partially applying the functions
 
 var filterQs = function(xs) {
-  return _.filter(function(x){ return _.match(/q/i, x);  }, xs);
+  return _.filter(function(x){ return match(/q/i, x);  }, xs);
 };
 
 
