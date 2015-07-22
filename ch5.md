@@ -63,7 +63,7 @@ compose(toUpperCase, compose(head, reverse));
 compose(compose(toUpperCase, head), reverse);
 ```
 
-Since it doesn't matter how we group our calls to `compose`, the result will be the same. That allows use to write a variadic compose and use it as follows:
+Since it doesn't matter how we group our calls to `compose`, the result will be the same. That allows us to write a variadic compose and use it as follows:
 
 ```js
 // previously we'd have to write two composes, but since it's associative, we can give compose as many fn's as we like and let it decide how to group them.
