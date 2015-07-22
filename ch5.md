@@ -66,7 +66,8 @@ compose(compose(toUpperCase, head), reverse);
 Since it doesn't matter how we group our calls to `compose`, the result will be the same. That allows use to write a variadic compose and use it as follows:
 
 ```js
-// previously we'd have to write two composes, but since it's associative, we can give compose as many fn's as we like and let it decide how to group them.
+// previously we'd have to write two composes, but since it's associative, we
+// can give compose as many fn's as we like and let it decide how to group them.
 var lastUpper = compose(toUpperCase, head, reverse);
 
 lastUpper(['jumpkick', 'roundhouse', 'uppercut']);
@@ -137,7 +138,8 @@ Pointfree code can again, help us remove needless names and keep us concise and 
 A common mistake is to compose something like `map`, a function of two arguments, without first partially applying it.
 
 ```js
-//wrong - we end up giving angry an array and we partially applied map with god knows what.
+//wrong - we end up giving angry an array and we partially applied map with god
+// knows what.
 var latin = compose(map, angry, reverse);
 
 latin(["frog", "eyes"]);
@@ -168,7 +170,9 @@ dasherize('the world is a vampire');
 Something is wrong here, let's `trace`
 
 ```js
-var dasherize = compose(join('-'), replace(/\s{2,}/ig, ' '), trace("after split"), split(' '));
+var dasherize = compose(
+  join('-'), replace(/\s{2,}/ig, ' '), trace("after split"), split(' ')
+);
 // after split [ 'the', 'world', 'is', 'a', 'vampire' ]
 ```
 
@@ -205,7 +209,7 @@ In category theory, we have something called... a category. It is defined as a c
 Category theory is abstract enough to model many things, but let's apply this to types and functions, which is what we care about at the moment.
 
 **A collection of objects**
-The objects will be data types. For instance, ``String``, ``Boolean``, ``Number``, ``Object``, etc. We often view data types as sets of all the possible values. One could look at ``Boolean`` as the set of `[true, false]` and ``Number`` as the set of all possible numeric values. Treating types as sets is useful because we can use set theory to work with them. 
+The objects will be data types. For instance, ``String``, ``Boolean``, ``Number``, ``Object``, etc. We often view data types as sets of all the possible values. One could look at ``Boolean`` as the set of `[true, false]` and ``Number`` as the set of all possible numeric values. Treating types as sets is useful because we can use set theory to work with them.
 
 
 **A collection of morphisms**
@@ -227,11 +231,10 @@ var f = function(x){ return x === 4; };
 var isFourLetterWord = compose(f, g);
 ```
 
-**A distinguished morphism called identity**
-Let's introduce a useful function called `id`. This function simply takes some input and spits it back at you. Take a look:
+**A distinguished morphism called identithpintroduce a useful function called `id`. This function simply takes some input and spits ihpke a look:
 
 ```js
-var id = function(x){ return x; };
+var ihp return x; };
 ```
 
 You might ask yourself "What in the bloody hell is that useful for?". We'll make extensive use of this function in the following chapters, but for now think of it as a function that can stand in for our value - a function masquerading as every day data.
@@ -266,16 +269,16 @@ We are now at a point where it would serve us well to see some of this in practi
 require('../../support');
 var _ = require('ramda');
 var accounting = require('accounting');
-  
+
 // Example Data
 var CARS = [
-    {name: "Ferrari FF", horsepower: 660, dollar_value: 700000, in_stock: true},
-    {name: "Spyker C12 Zagato", horsepower: 650, dollar_value: 648000, in_stock: false},
-    {name: "Jaguar XKR-S", horsepower: 550, dollar_value: 132000, in_stock: false},
-    {name: "Audi R8", horsepower: 525, dollar_value: 114200, in_stock: false},
-    {name: "Aston Martin One-77", horsepower: 750, dollar_value: 1850000, in_stock: true},
-    {name: "Pagani Huayra", horsepower: 700, dollar_value: 1300000, in_stock: false}
-  ];
+  {name: "Ferrari FF", hp: 660, dollar_value: 700000, in_stock: true},
+  {name: "Spyker C12 Zagato", hp: 650, dollar_value: 648000, in_stock: false},
+  {name: "Jaguar XKR-S", hp: 550, dollar_value: 132000, in_stock: false},
+  {name: "Audi R8", hp: 525, dollar_value: 114200, in_stock: false},
+  {name: "Aston Martin One-77", hp: 750, dollar_value: 1850000, in_stock: true},
+  {name: "Pagani Huayra", hp: 700, dollar_value: 1300000, in_stock: false}
+];
 
 // Exercise 1:
 // ============
@@ -293,8 +296,9 @@ var nameOfFirstCar = undefined;
 
 // Exercise 3:
 // ============
-// Use the helper function _average to refactor averageDollarValue as a composition
-var _average = function(xs) { return reduce(add, 0, xs) / xs.length; }; // <- leave be
+// Use the helper function _average to refactor averageDollarValue as a
+// composition
+var _average = function(xs) { return reduce(add, 0, xs) / xs.length; };
 
 var averageDollarValue = function(cars) {
   var dollar_values = map(function(c) { return c.dollar_value; }, cars);
@@ -304,9 +308,11 @@ var averageDollarValue = function(cars) {
 
 // Exercise 4:
 // ============
-// Write a function: sanitizeNames() using compose that returns a list of lowercase and underscored names: e.g: sanitizeNames(["Hello World"]) //=> ["hello_world"].
+// Write a function: sanitizeNames() using compose that returns a list of
+// lowercase and underscored names:
+// e.g: sanitizeNames(["Hello World"]) //=> ["hello_world"].
 
-var _underscore = replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
+var _underscore = replace(/\W+/g, '_'); //<-- leave this alone & use to sanitize
 
 var sanitizeNames = undefined;
 
@@ -328,7 +334,7 @@ var availablePrices = function(cars) {
 // Refactor to pointfree. Hint: you can use _.flip()
 
 var fastestCar = function(cars) {
-  var sorted = _.sortBy(function(car){ return car.horsepower }, cars);
+  var sorted = _.sortBy(function(car){ return car.hp }, cars);
   var fastest = _.last(sorted);
   return fastest.name + ' is the fastest';
 };
