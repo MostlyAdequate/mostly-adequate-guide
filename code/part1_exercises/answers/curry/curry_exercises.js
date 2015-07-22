@@ -37,7 +37,7 @@ var slice = _.curry(function(start, end, xs){ return xs.slice(start, end); });
 
 // Bonus 2:
 // ============
-// use slice to define a function "take" that takes n elements. make it's curried
+// use slice to define a function "take" that takes n elements. make it curried
 var take = slice(0);
 
 
