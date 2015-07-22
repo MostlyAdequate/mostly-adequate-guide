@@ -123,7 +123,7 @@ Maybe.of({name: "Dinah", age: 14}).map(_.prop("age")).map(add(10));
 
 Notice our app doesn't explode with errors as we map functions over our null values. This is because `Maybe` will take care to check for a value each and every time it applies a function.
 
-This dot syntax is perfectly fine and functional, but for reasons mentioned in Part 1, we'd like to maintain our pointfree style. As it happens, `map` is fully equip to delegate to whatever functor it receives:
+This dot syntax is perfectly fine and functional, but for reasons mentioned in Part 1, we'd like to maintain our pointfree style. As it happens, `map` is fully equipped to delegate to whatever functor it receives:
 
 ```js
 //  map :: Functor f => (a -> b) -> f a -> f b
