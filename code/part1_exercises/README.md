@@ -4,12 +4,12 @@ Part 1 Exercises
 **Installation**:
 `npm install`
 
-**Example of running tests**:
-Tests are all located in their corresponding folder so you should cd into the folder to run.
+**Running tests**:
+Tests are located in their corresponding folders.  To run:
 
 ```
 cd exercises/curry
-mocha 
+mocha *spec.js
 ```
 
-Some will fail and some will pass. The passing ones expect to be refactored.
+Some will fail and some will pass. You'll need to edit the exercises until the tests pass.
