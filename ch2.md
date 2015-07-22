@@ -7,34 +7,34 @@ That is JavaScript 101, but worth a mention as a quick code search on github wil
 
 ```js
 var hi = function(name){
-  return "Hi " + name;
-};
+  return "Hi " + name
+}
 
 var greeting = function(name) {
-  return hi(name);
-};
+  return hi(name)
+}
 ```
 
 Here, the function wrapper around `hi` in `greeting` is completely redundant. Why? Because functions are *callable* in JavaScript. When `hi` has the `()` at the end it will run and return a value. When it does not, it simply returns the function stored in the variable. Just to be sure, have a look-see:
 
 
 ```js
-hi;
+hi
 // function(name){
 //  return "Hi " + name
 // }
 
-hi("jonas");
+hi("jonas")
 // "Hi jonas"
 ```
 
 Since `greeting` is merely turning around and calling `hi` with the very same argument, we could simply write:
 
 ```js
-var greeting = hi;
+var greeting = hi
 
 
-greeting("times");
+greeting("times")
 // "Hi times"
 ```
 
@@ -46,12 +46,12 @@ A solid understanding of this is critical before moving on, so let's see a few m
 // ignorant
 var getServerStuff = function(callback){
   return ajaxCall(function(json){
-    return callback(json);
-  });
-};
+    return callback(json)
+  })
+}
 
 // enlightened
-var getServerStuff = ajaxCall;
+var getServerStuff = ajaxCall
 ```
 
 The world is littered with ajax code exactly like this. Here is the reason both are equivalent:
@@ -59,16 +59,16 @@ The world is littered with ajax code exactly like this. Here is the reason both 
 ```js
 // this line
 return ajaxCall(function(json){
-  return callback(json);
-});
+  return callback(json)
+})
 
 // is the same as this line
-return ajaxCall(callback);
+return ajaxCall(callback)
 
 // so refactor getServerStuff
 var getServerStuff = function(callback){
-  return ajaxCall(callback);
-};
+  return ajaxCall(callback)
+}
 
 // ...which is equivalent to this
 var getServerStuff = ajaxCall; // <-- look mum, no ()'s
@@ -79,33 +79,33 @@ And that, folks, is how it is done. Once more then we'll see why I'm so insisten
 ```js
 var BlogController = (function() {
   var index = function(posts) {
-    return Views.index(posts);
-  };
+    return Views.index(posts)
+  }
 
   var show = function(post) {
-    return Views.show(post);
-  };
+    return Views.show(post)
+  }
 
   var create = function(attrs) {
-    return Db.create(attrs);
-  };
+    return Db.create(attrs)
+  }
 
   var update = function(post, attrs) {
-    return Db.update(post, attrs);
-  };
+    return Db.update(post, attrs)
+  }
 
   var destroy = function(post) {
-    return Db.destroy(post);
-  };
+    return Db.destroy(post)
+  }
 
-  return {index: index, show: show, create: create, update: update, destroy: destroy};
-})();
+  return {index: index, show: show, create: create, update: update, destroy: destroy}
+})()
 ```
 
 This ridiculous controller is 99% fluff. We could either rewrite it as:
 
 ```js
-var BlogController = {index: Views.index, show: Views.show, create: Db.create, update: Db.update, destroy: Db.destroy};
+var BlogController = {index: Views.index, show: Views.show, create: Db.create, update: Db.update, destroy: Db.destroy}
 ```
 
 ...or scrap it altogether as it does nothing other than bundle our Views and Db together.
@@ -116,8 +116,8 @@ Okay, let's get down to the reasons to favor First class functions. As we saw in
 
 ```js
 httpGet('/post/2', function(json){
-  return renderPost(json);
-});
+  return renderPost(json)
+})
 ```
 
 If `httpGet` were to change to send a possible `err`, we would need to go back and change the "glue".
@@ -125,8 +125,8 @@ If `httpGet` were to change to send a possible `err`, we would need to go back a
 ```js
 // go back to every httpGet call in the application and explicitly pass err along.
 httpGet('/post/2', function(json, err){
-  return renderPost(json, err);
-});
+  return renderPost(json, err)
+})
 ```
 
 Had we written it as a first class function, much less would need to change:
@@ -141,16 +141,16 @@ Besides the removal of unnecessary functions, we must name and reference argumen
 // specific to our current blog
 var validArticles = function(articles) {
   return articles.filter(function(article){
-    return article !== null && article !== undefined;
-  });
-};
+    return article !== null && article !== undefined
+  })
+}
 
 // vastly more relevant for future projects
 var compact = function(xs) {
   return xs.filter(function(x) {
-    return x !== null && x !== undefined;
-  });
-};
+    return x !== null && x !== undefined
+  })
+}
 ```
 
 By naming things, we've seemingly tied ourselves to specific data (in this case `articles`). This happens quite a bit and is a source of much reinvention.
@@ -158,13 +158,13 @@ By naming things, we've seemingly tied ourselves to specific data (in this case 
 I must mention that, just like with Object-Oriented code, you must be aware of `this` coming to bite you in the jugular. If an underlying function uses `this` and we call it first class, we are subject to this leaky abstraction's wrath.
 
 ```js
-var fs = require('fs');
+var fs = require('fs')
 
 // scary
-fs.readFile('freaky_friday.txt', Db.save);
+fs.readFile('freaky_friday.txt', Db.save)
 
 // less so
-fs.readFile('freaky_friday.txt', Db.save.bind(Db));
+fs.readFile('freaky_friday.txt', Db.save.bind(Db))
 
 ```
 
