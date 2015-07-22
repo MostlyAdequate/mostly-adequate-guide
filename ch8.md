@@ -375,7 +375,7 @@ Let's see it in use:
 
 ```js
 //  io_window_ :: IO Window
-var io_window = new IO(function(){ return window; });
+var io_window = IO.of(function(){ return window; });
 
 io_window.map(function(win){ return win.innerWidth });
 // IO(1430)
@@ -386,7 +386,7 @@ io_window.map(_.prop('location')).map(_.prop('href')).map(split('/'));
 
 //  $ :: String -> IO [DOM]
 var $ = function(selector) {
-  return new IO(function(){ return document.querySelectorAll(selector); });
+  return IO.of(function(){ return document.querySelectorAll(selector); });
 }
 
 $('#myDiv').map(head).map(function(div){ return div.innerHTML; });
@@ -404,7 +404,7 @@ Now, we've caged the beast, but we'll still have to set it free at some point. M
 ////// Our pure library: lib/params.js ///////
 
 //  url :: IO String
-var url = new IO(function() { return window.location.href; });
+var url = IO.of(function() { return window.location.href; });
 
 //  toPairs =  String -> [[String]]
 var toPairs = compose(map(split('=')), split('&'));
