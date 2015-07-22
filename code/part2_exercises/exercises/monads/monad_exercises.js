@@ -65,9 +65,10 @@ var ex3 = undefined;
 
 // Exercise 4
 // ==========
-// Use validateEmail and addToMailingList to implmeent ex4's type signature. It should 
+// Use validateEmail, addToMailingList and emailBlast to implmeent ex4's type signature.
+// It should safely add a new subscriber to the list, then email everyone with this happy news.
 
-//  addToMailingList :: Email -> IO([Email])
+//  addToMailingList :: Email -> IO [Email]
 var addToMailingList = (function(list){
   return function(email) {
     return new IO(function(){
@@ -77,12 +78,14 @@ var addToMailingList = (function(list){
   }
 })([]);
 
+//       emailBlast :: [Email] -> IO String
 function emailBlast(list) {
   return new IO(function(){
     return 'emailed: ' + list.join(','); // for testing w/o mocks
   });
 }
 
+//  validateEmail :: Email -> Either String Email
 var validateEmail = function(x){
   return x.match(/\S+@\S+\.\S+/) ? (new Right(x)) : (new Left('invalid email'));
 }
