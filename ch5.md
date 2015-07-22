@@ -50,7 +50,7 @@ last(['jumpkick', 'roundhouse', 'uppercut']);
 
 ```js
 // associativity
-var associative = compose(f, compose(g, h) == compose(compose(f, g), h));
+var associative = compose(f, compose(g, h)) == compose(compose(f, g), h);
 // true
 ```
 
@@ -98,7 +98,7 @@ var loudLastUpper = compose(angry, last);
 // more variations...
 ```
 
-There's no right or wrong answers - we're just plugging our legos together in whatever way we please. Usually it's best to group things in an reusable way like `last` and `angry`. If familiar with Fowler's "[Refactoring][refactoring-book]", one might recognize this process as "[extract method][extract-method-refactor]"...except without all the object state to worry about.
+There's no right or wrong answers - we're just plugging our legos together in whatever way we please. Usually it's best to group things in a reusable way like `last` and `angry`. If familiar with Fowler's "[Refactoring][refactoring-book]", one might recognize this process as "[extract method][extract-method-refactor]"...except without all the object state to worry about.
 
 ## Pointfree
 
@@ -114,7 +114,7 @@ var snakeCase = function (word) {
 var snakeCase = compose(replace(/\s+/ig, '_'), toLowerCase);
 ```
 
-See how we partially applied `replace`? What we're doing is piping our data through each function of 1 argument. Currying allows us to prepare each function to just take it's data, operate on it, and pass it along. Something else to notice is how we don't need the data to construct our function in the pointfree version, whereas in the pointful one, we must have our `word` available before anything else.
+See how we partially applied `replace`? What we're doing is piping our data through each function of 1 argument. Currying allows us to prepare each function to just take its data, operate on it, and pass it along. Something else to notice is how we don't need the data to construct our function in the pointfree version, whereas in the pointful one, we must have our `word` available before anything else.
 
 Let's look at another example.
 

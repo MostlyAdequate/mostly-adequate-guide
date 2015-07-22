@@ -29,7 +29,7 @@ Here we've made a function `add` that will take one argument and return a functi
 Let's setup a few curried functions for our enjoyment.
 
 ```js
-var curry = require('lodash').curry;
+var curry = require('lodash.curry');
 
 var match = curry(function(what, x) {
   return x.match(what);
@@ -92,7 +92,7 @@ I encourage you to `npm install lodash`, copy the code above and have a go at it
 ## More than a pun / special sauce
 Currying is useful for many things. We can make new functions just by giving them some arguments as seen in `hasSpaces`, `findSpaces`, and `censored`.
 
-We also have the ability to transform any function that works on single elements in to a function that works on arrays simply by wrapping it with `map`:
+We also have the ability to transform any function that works on single elements into a function that works on arrays simply by wrapping it with `map`:
 
 ```js
 var getChildren = function(x) {
@@ -125,6 +125,13 @@ Let's acquire another essential tool called `compose`.
 
 ## Exercises
 
+A quick word before we start. We'll use a library called *ramda* which curries every function by default. Alternatively you may choose to use *lodash-fp* which does the same and is written/maintained by the creator of lodash. Both will work just fine and it is a matter of preference.
+
+[ramda](http://ramdajs.com)
+[lodash-fp](https://github.com/lodash/lodash-fp)
+
+Answers are provided with the code in the [repository for this book](https://github.com/DrBoolean/mostly-adequate-guide/tree/master/code/part1_exercises/answers)
+
 ```js
 var _ = require('ramda');
 
@@ -134,7 +141,7 @@ var _ = require('ramda');
 // Refactor to remove all arguments by partially applying the function
 
 var words = function(str) {
-  return split(' ', str);
+  return _.split(' ', str);
 };
 
 // Exercise 1a
@@ -149,7 +156,7 @@ var sentences = undefined;
 // Refactor to remove all arguments by partially applying the functions
 
 var filterQs = function(xs) {
-  return filter(function(x){ return match(/q/i, x);  }, xs);
+  return _.filter(function(x){ return match(/q/i, x);  }, xs);
 };
 
 
@@ -162,7 +169,7 @@ var _keepHighest = function(x,y){ return x >= y ? x : y; };
 
 // REFACTOR THIS ONE:
 var max = function(xs) {
-  return reduce(function(acc, x){
+  return _.reduce(function(acc, x){
     return _keepHighest(acc, x);
   }, 0, xs);
 };

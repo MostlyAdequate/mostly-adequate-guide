@@ -105,7 +105,7 @@ Now that we have a `join` method, let's sprinkle some magic monad dust over the 
 
 ```js
 //  join :: Monad m => m (m a) -> m a
-var join = function(mma){ return mmma.join(); }
+var join = function(mma){ return mma.join(); }
 
 //  firstAddressStreet :: User -> Maybe Street
 var firstAddressStreet = compose(join, map(safeProp('street')), join, map(safeHead), safeProp('addresses'));
@@ -125,31 +125,31 @@ IO.prototype.join = function() {
 Again, we simply remove one layer. Mind you, we have not thrown out purity, but merely removed one layer of excess shrink wrap.
 
 ```js
-//  log :: String -> IO String
-var log = function(s) {
-  return new IO(function() { return console.log(s); });
+//  log :: a -> IO a
+var log = function(x) {
+  return new IO(function() { console.log(x); return x; });
 }
 
 //  setStyle :: Selector -> CSSProps -> IO DOM
 var setStyle = curry(function(sel, props) {
-  return new IO(function() { return $(sel).style(props); });
-})
+  return new IO(function() { return jQuery(sel).css(props); });
+});
 
 //  getItem :: String -> IO String
 var getItem = function(key) {
   return new IO(function() { return localStorage.getItem(key); });
-}
+};
 
 //  applyPreferences :: String -> IO DOM
 var applyPreferences = compose(join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem);
 
 
 applyPreferences('preferences').unsafePerformIO();
-// "{backgroundColor: 'green'}"
+// Object {backgroundColor: "green"}
 // <div style="background-color: 'green'"/>
 ```
 
-`getItem` returns an `IO JSON` so we `map` to parse it. Both `log` and `setStyle` return `IO`'s themselves so we must `join` to keep our nesting under control.
+`getItem` returns an `IO String` so we `map` to parse it. Both `log` and `setStyle` return `IO`'s themselves so we must `join` to keep our nesting under control.
 
 ## My chain hits my chest
 
@@ -158,6 +158,7 @@ applyPreferences('preferences').unsafePerformIO();
 You might have noticed a pattern. We often end up calling `join` right after a `map`. Let's abstract this into a function called `chain`.
 
 ```js
+//  chain :: Monad m => (a -> m b) -> m a -> m b
 var chain = curry(function(f, m){
   return m.map(f).join(); // or compose(join, map(f))(m)
 });
@@ -216,7 +217,7 @@ We could have written these examples with `compose`, but we'd need a few helper 
 
 Anyways, let's get to the examples above. In the first example, we see two `Task`'s chained in a sequence of asynchronous actions - first it retrieves the `user`, then it finds the friends with that user's id. We use `chain` to avoid a `Task(Task([Friend]))` situation.
 
-Next, we use `querySelector` to find a few different inputs and create a welcoming message. Notice how we have access to both `uname` and `email` at the innermost function - this is functional variable assignment at it's finest. Since `IO` is graciously lending us the its value, we are in charge of putting it back how we found it - we wouldn't want to break its trust (and our program). `IO.of` is the perfect tool for the job and it's why Pointed is an important prerequisite to the Monad interface. However, we could choose to `map` as that would also return the correct type:
+Next, we use `querySelector` to find a few different inputs and create a welcoming message. Notice how we have access to both `uname` and `email` at the innermost function - this is functional variable assignment at its finest. Since `IO` is graciously lending us the its value, we are in charge of putting it back how we found it - we wouldn't want to break its trust (and our program). `IO.of` is the perfect tool for the job and it's why Pointed is an important prerequisite to the Monad interface. However, we could choose to `map` as that would also return the correct type:
 
 ```js
 querySelector("input.username").chain(function(uname) {

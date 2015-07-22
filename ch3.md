@@ -5,7 +5,7 @@ One thing we need to get straight is the idea of a pure function.
 
 >A pure function is a function that, given the same input, will always return the same output and does not have any observable side effect.
 
-Take `slice` and `splice`. They are two functions that do the exact same thing - in a vastly different way, mind you, but the same thing nonetheless. We say `slice` is *pure* because it returns the same output per input every time, guaranteed. `splice`, however, will chew up it's array and spit it back out forever changed which is an observable effect.
+Take `slice` and `splice`. They are two functions that do the exact same thing - in a vastly different way, mind you, but the same thing nonetheless. We say `slice` is *pure* because it returns the same output per input every time, guaranteed. `splice`, however, will chew up its array and spit it back out forever changed which is an observable effect.
 
 ```js
 var xs = [1,2,3,4,5];
@@ -96,7 +96,7 @@ To contrast, the following diagram shows a relation that is *not* a function sin
 
 <img src="images/relation-not-function.gif" />[^http://www.mathsisfun.com/sets/function.html]
 
-Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]`[^It appears this function doubles it's input].
+Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]`[^It appears this function doubles its input].
 
 Or perhaps a table:
 <table> <tr> <th>Input</th> <th>Output</th> </tr> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>2</td> <td>4</td> </tr> <tr> <td>3</td> <td>6</td> </tr> </table>
@@ -192,7 +192,7 @@ var signUp = function(Db, Email, attrs) {
 };
 ```
 
-The example here demonstrates that the pure function must be honest about it's dependencies and, as such, tell us exactly what it's up to. Just from it's signature, we know that it will use a `Db`, `Email`, and `attrs` which should be telling to say the least. We'll learn how to make functions like this pure without merely deferring evaluation, but the point should be clear that the pure form is much more informative than it's sneaky impure counterpart which is up to God knows what.
+The example here demonstrates that the pure function must be honest about its dependencies and, as such, tell us exactly what it's up to. Just from its signature, we know that it will use a `Db`, `Email`, and `attrs` which should be telling to say the least. We'll learn how to make functions like this pure without merely deferring evaluation, but the point should be clear that the pure form is much more informative than its sneaky impure counterpart which is up to God knows what.
 
 Something else to notice is that we're forced to "inject" dependencies, or pass them in as arguments, which makes our app much more flexible because we've parameterized our database or mail client or what have you[^Don't worry, we'll see a way to make this less tedious than it sounds]. Should we choose to use a different Db we need only to call our function with it. Should we find ourselves writing a new application in which we'd like to reuse this reliable function, we simply give this function whatever `Db` and `Email` we have at the time.
 
