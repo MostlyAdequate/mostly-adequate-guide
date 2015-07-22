@@ -1,6 +1,6 @@
 require('../../support');
 var E = require('./functor_exercises');
-var assert = require("chai").assert
+var assert = require("chai").assert;
 
 describe("Functor Exercises", function(){
 
@@ -24,23 +24,23 @@ describe("Functor Exercises", function(){
 
   it('Exercise 5', function(done){
     E.ex5(13).fork(console.log, function(res){
-      assert.deepEqual('LOVE THEM FUTURES', res)
+      assert.deepEqual('LOVE THEM FUTURES', res);
       done();
     })
   });
 
   it('Exercise 6', function(){
-    assert.deepEqual(Left.of('Your account is not active'), E.ex6({active: false, name: 'Gary'}))
-    assert.deepEqual(Right.of('Welcome Theresa'), E.ex6({active: true, name: 'Theresa'}))
+    assert.deepEqual(Left.of('Your account is not active'), E.ex6({active: false, name: 'Gary'}));
+    assert.deepEqual(Right.of('Welcome Theresa'), E.ex6({active: true, name: 'Theresa'}));
   });
 
   it('Exercise 7', function(){
-    assert.deepEqual(Right.of("fpguy99"), E.ex7("fpguy99"))
-    assert.deepEqual(Left.of("You need > 3"), E.ex7("..."))
+    assert.deepEqual(Right.of("fpguy99"), E.ex7("fpguy99"));
+    assert.deepEqual(Left.of("You need > 3"), E.ex7("..."));
   });
 
   it('Exercise 8', function(){
-    assert.deepEqual("fpguy99-saved", E.ex8("fpguy99").unsafePerformIO())
-    assert.deepEqual("You need > 3", E.ex8("...").unsafePerformIO())
+    assert.deepEqual("fpguy99-saved", E.ex8("fpguy99").unsafePerformIO());
+    assert.deepEqual("You need > 3", E.ex8("...").unsafePerformIO());
   });
 });

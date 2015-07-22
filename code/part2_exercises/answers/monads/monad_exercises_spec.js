@@ -1,6 +1,6 @@
 require('../../support');
 var E = require('./monad_exercises');
-var assert = require("chai").assert
+var assert = require("chai").assert;
 var _ = require('ramda');
 
 describe("Monad Exercises", function(){

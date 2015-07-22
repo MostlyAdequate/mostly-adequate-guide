@@ -1,5 +1,5 @@
 var E = require('./curry_exercises');
-var assert = require("chai").assert
+var assert = require("chai").assert;
 
 describe("Curry Exercises", function(){
   

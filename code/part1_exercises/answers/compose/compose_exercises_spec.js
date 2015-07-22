@@ -1,8 +1,8 @@
-var E = require('./compose_exercises')
-var assert = require("chai").assert
+var E = require('./compose_exercises');
+var assert = require("chai").assert;
 
 describe("Compose Exercises", function(){  
-  var CARS = E.CARS
+  var CARS = E.CARS;
 
   it('Exercise 1', function(){
     assert.equal(E.isLastInStock(CARS), false);
