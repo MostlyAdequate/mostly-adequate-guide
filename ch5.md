@@ -7,9 +7,9 @@ Here's `compose`:
 ```js
 var compose = function(f,g) {
   return function(x) {
-    return f(g(x));
-  };
-};
+    return f(g(x))
+  }
+}
 ```
 
 `f` and `g` are functions and `x` is the value being "piped" through them.
@@ -17,11 +17,11 @@ var compose = function(f,g) {
 Composition feels like function husbandry. You, breeder of functions, select two with traits you'd like to combine and mash them together to spawn a brand new one. Usage is as follows:
 
 ```js
-var toUpperCase = function(x) { return x.toUpperCase(); };
-var exclaim = function(x) { return x + '!'; };
-var shout = compose(exclaim, toUpperCase);
+var toUpperCase = function(x) { return x.toUpperCase(); }
+var exclaim = function(x) { return x + '!'; }
+var shout = compose(exclaim, toUpperCase)
 
-shout("send in the clowns");
+shout("send in the clowns")
 //=> "SEND IN THE CLOWNS!"
 ```
 
@@ -31,18 +31,18 @@ In our definition of `compose`, the `g` will run before the `f`, creating a righ
 
 ```js
 var shout = function(x){
-  return exclaim(toUpperCase(x));
-};
+  return exclaim(toUpperCase(x))
+}
 ```
 
 Instead of inside to outside, we run right to left, which I suppose is a step in the left direction[^boo]. Let's look at an example where sequence matters:
 
 ```js
-var head = function(x) { return x[0]; };
-var reverse = reduce(function(acc, x){ return [x].concat(acc); }, []);
-var last = compose(head, reverse);
+var head = function(x) { return x[0]; }
+var reverse = reduce(function(acc, x){ return [x].concat(acc); }, [])
+var last = compose(head, reverse)
 
-last(['jumpkick', 'roundhouse', 'uppercut']);
+last(['jumpkick', 'roundhouse', 'uppercut'])
 //=> 'uppercut'
 ```
 
@@ -50,32 +50,32 @@ last(['jumpkick', 'roundhouse', 'uppercut']);
 
 ```js
 // associativity
-var associative = compose(f, compose(g, h)) == compose(compose(f, g), h);
+var associative = compose(f, compose(g, h)) == compose(compose(f, g), h)
 // true
 ```
 
 Composition is associative, meaning it doesn't matter how you group two of them. So, should we choose to uppercase the string, we can write:
 
 ```js
-compose(toUpperCase, compose(head, reverse));
+compose(toUpperCase, compose(head, reverse))
 
 // or
-compose(compose(toUpperCase, head), reverse);
+compose(compose(toUpperCase, head), reverse)
 ```
 
 Since it doesn't matter how we group our calls to `compose`, the result will be the same. That allows use to write a variadic compose and use it as follows:
 
 ```js
 // previously we'd have to write two composes, but since it's associative, we can give compose as many fn's as we like and let it decide how to group them.
-var lastUpper = compose(toUpperCase, head, reverse);
+var lastUpper = compose(toUpperCase, head, reverse)
 
-lastUpper(['jumpkick', 'roundhouse', 'uppercut']);
+lastUpper(['jumpkick', 'roundhouse', 'uppercut'])
 //=> 'UPPERCUT'
 
 
 var loudLastUpper = compose(exclaim, toUpperCase, head, reverse)
 
-loudLastUpper(['jumpkick', 'roundhouse', 'uppercut']);
+loudLastUpper(['jumpkick', 'roundhouse', 'uppercut'])
 //=> 'UPPERCUT!'
 ```
 
@@ -84,16 +84,16 @@ Applying the associative property gives us this flexibility and peace of mind th
 One pleasant benefit of associativity is that any group of functions can be extracted and bundled together in their very own composition. Let's play with refactoring our previous example:
 
 ```js
-var loudLastUpper = compose(exclaim, toUpperCase, head, reverse);
+var loudLastUpper = compose(exclaim, toUpperCase, head, reverse)
 
 // or
-var last = compose(head, reverse);
-var loudLastUpper = compose(exclaim, toUpperCase, last);
+var last = compose(head, reverse)
+var loudLastUpper = compose(exclaim, toUpperCase, last)
 
 // or
-var last = compose(head, reverse);
-var angry = compose(exclaim, toUpperCase);
-var loudLastUpper = compose(angry, last);
+var last = compose(head, reverse)
+var angry = compose(exclaim, toUpperCase)
+var loudLastUpper = compose(angry, last)
 
 // more variations...
 ```
@@ -107,11 +107,11 @@ Pointfree style means never having to say your data. Excuse me. It means functio
 ```js
 //not pointfree because we mention the data: word
 var snakeCase = function (word) {
-  return word.toLowerCase().replace(/\s+/ig, '_');
-};
+  return word.toLowerCase().replace(/\s+/ig, '_')
+}
 
 //pointfree
-var snakeCase = compose(replace(/\s+/ig, '_'), toLowerCase);
+var snakeCase = compose(replace(/\s+/ig, '_'), toLowerCase)
 ```
 
 See how we partially applied `replace`? What we're doing is piping our data through each function of 1 argument. Currying allows us to prepare each function to just take its data, operate on it, and pass it along. Something else to notice is how we don't need the data to construct our function in the pointfree version, whereas in the pointful one, we must have our `word` available before anything else.
@@ -121,13 +121,13 @@ Let's look at another example.
 ```js
 //not pointfree because we mention the data: name
 var initials = function (name) {
-  return name.split(' ').map(compose(toUpperCase, head)).join('. ');
-};
+  return name.split(' ').map(compose(toUpperCase, head)).join('. ')
+}
 
 //pointfree
-var initials = compose(join('. '), map(compose(toUpperCase, head)), split(' '));
+var initials = compose(join('. '), map(compose(toUpperCase, head)), split(' '))
 
-initials("hunter stockton thompson");
+initials("hunter stockton thompson")
 // 'H. S. T'
 ```
 
@@ -138,16 +138,16 @@ A common mistake is to compose something like `map`, a function of two arguments
 
 ```js
 //wrong - we end up giving angry an array and we partially applied map with god knows what.
-var latin = compose(map, angry, reverse);
+var latin = compose(map, angry, reverse)
 
-latin(["frog", "eyes"]);
+latin(["frog", "eyes"])
 // error
 
 
 // right - each function expects 1 argument.
-var latin = compose(map(angry), reverse);
+var latin = compose(map(angry), reverse)
 
-latin(["frog", "eyes"]);
+latin(["frog", "eyes"])
 // ["SEYE!", "GORF!"])
 ```
 
@@ -155,29 +155,29 @@ If you are having trouble debugging a composition, we can use this helpful, but 
 
 ```js
 var trace = curry(function(tag, x){
-  console.log(tag, x);
-  return x;
-});
+  console.log(tag, x)
+  return x
+})
 
-var dasherize = compose(join('-'), replace(/\s{2,}/ig, ' '), split(' '));
+var dasherize = compose(join('-'), replace(/\s{2,}/ig, ' '), split(' '))
 
-dasherize('the world is a vampire');
+dasherize('the world is a vampire')
 // TypeError: Object the,world,is,a,vampire has no method 'replace'
 ```
 
 Something is wrong here, let's `trace`
 
 ```js
-var dasherize = compose(join('-'), replace(/\s{2,}/ig, ' '), trace("after split"), split(' '));
+var dasherize = compose(join('-'), replace(/\s{2,}/ig, ' '), trace("after split"), split(' '))
 // after split [ 'the', 'world', 'is', 'a', 'vampire' ]
 ```
 
 Ah! We need to `map` this `replace` since it's working on an array.
 
 ```js
-var dasherize = compose(join('-'), map(replace(/\s{2,}/ig, ' ')), split(' '));
+var dasherize = compose(join('-'), map(replace(/\s{2,}/ig, ' ')), split(' '))
 
-dasherize('the world is a vampire');
+dasherize('the world is a vampire')
 
 // 'the-world-is-a-vampire'
 ```
@@ -222,16 +222,16 @@ Here is an image demonstrating composition:
 Here is a concrete example in code:
 
 ```js
-var g = function(x){ return x.length; };
-var f = function(x){ return x === 4; };
-var isFourLetterWord = compose(f, g);
+var g = function(x){ return x.length; }
+var f = function(x){ return x === 4; }
+var isFourLetterWord = compose(f, g)
 ```
 
 **A distinguished morphism called identity**
 Let's introduce a useful function called `id`. This function simply takes some input and spits it back at you. Take a look:
 
 ```js
-var id = function(x){ return x; };
+var id = function(x){ return x; }
 ```
 
 You might ask yourself "What in the bloody hell is that useful for?". We'll make extensive use of this function in the following chapters, but for now think of it as a function that can stand in for our value - a function masquerading as every day data.
@@ -240,7 +240,7 @@ You might ask yourself "What in the bloody hell is that useful for?". We'll make
 
 ```js
 // identity
-var identity = compose(id, f) == compose(f, id) == f;
+var identity = compose(id, f) == compose(f, id) == f
 // true
 ```
 
@@ -263,9 +263,9 @@ We are now at a point where it would serve us well to see some of this in practi
 ## Exercises
 
 ```js
-require('../../support');
-var _ = require('ramda');
-var accounting = require('accounting');
+require('../../support')
+var _ = require('ramda')
+var accounting = require('accounting')
   
 // Example Data
 var CARS = [
@@ -275,20 +275,20 @@ var CARS = [
     {name: "Audi R8", horsepower: 525, dollar_value: 114200, in_stock: false},
     {name: "Aston Martin One-77", horsepower: 750, dollar_value: 1850000, in_stock: true},
     {name: "Pagani Huayra", horsepower: 700, dollar_value: 1300000, in_stock: false}
-  ];
+  ]
 
 // Exercise 1:
 // ============
 // use _.compose() to rewrite the function below. Hint: _.prop() is curried.
 var isLastInStock = function(cars) {
-  var last_car = _.last(cars);
-  return _.prop('in_stock', last_car);
-};
+  var last_car = _.last(cars)
+  return _.prop('in_stock', last_car)
+}
 
 // Exercise 2:
 // ============
 // use _.compose(), _.prop() and _.head() to retrieve the name of the first car
-var nameOfFirstCar = undefined;
+var nameOfFirstCar = undefined
 
 
 // Exercise 3:
@@ -297,9 +297,9 @@ var nameOfFirstCar = undefined;
 var _average = function(xs) { return reduce(add, 0, xs) / xs.length; }; // <- leave be
 
 var averageDollarValue = function(cars) {
-  var dollar_values = map(function(c) { return c.dollar_value; }, cars);
-  return _average(dollar_values);
-};
+  var dollar_values = map(function(c) { return c.dollar_value; }, cars)
+  return _average(dollar_values)
+}
 
 
 // Exercise 4:
@@ -308,7 +308,7 @@ var averageDollarValue = function(cars) {
 
 var _underscore = replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
 
-var sanitizeNames = undefined;
+var sanitizeNames = undefined
 
 
 // Bonus 1:
@@ -316,11 +316,11 @@ var sanitizeNames = undefined;
 // Refactor availablePrices with compose.
 
 var availablePrices = function(cars) {
-  var available_cars = _.filter(_.prop('in_stock'), cars);
+  var available_cars = _.filter(_.prop('in_stock'), cars)
   return available_cars.map(function(x){
-    return accounting.formatMoney(x.dollar_value);
-  }).join(', ');
-};
+    return accounting.formatMoney(x.dollar_value)
+  }).join(', ')
+}
 
 
 // Bonus 2:
@@ -328,10 +328,10 @@ var availablePrices = function(cars) {
 // Refactor to pointfree. Hint: you can use _.flip()
 
 var fastestCar = function(cars) {
-  var sorted = _.sortBy(function(car){ return car.horsepower }, cars);
-  var fastest = _.last(sorted);
-  return fastest.name + ' is the fastest';
-};
+  var sorted = _.sortBy(function(car){ return car.horsepower }, cars)
+  var fastest = _.last(sorted)
+  return fastest.name + ' is the fastest'
+}
 ```
 
 [lodash-website]: https://lodash.com/

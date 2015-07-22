@@ -9,16 +9,16 @@ Before we go any further, I have a confession to make: I haven't been fully hone
 What's important here is the ability to drop any value in our type and start mapping away.
 
 ```js
-IO.of("tetris").map(concat(" master"));
+IO.of("tetris").map(concat(" master"))
 // IO("tetris master")
 
-Maybe.of(1336).map(add(1));
+Maybe.of(1336).map(add(1))
 // Maybe(1337)
 
-Task.of([{id: 2}, {id: 3}]).map(_.prop('id'));
+Task.of([{id: 2}, {id: 3}]).map(_.prop('id'))
 // Task([2,3])
 
-Either.of("The past, present and future walk into a bar...").map(concat("it was tense."));
+Either.of("The past, present and future walk into a bar...").map(concat("it was tense."))
 // Right("The past, present and future walk into a bar...it was tense.")
 ```
 
@@ -39,7 +39,7 @@ You see, in addition to space burritos (if you've heard the rumors), monads are 
 
 ```js
 //  cat :: IO (IO String)
-var cat = compose(map(print), readFile);
+var cat = compose(map(print), readFile)
 
 cat(".git/config")
 // IO(IO("[core]\nrepositoryformatversion = 0\n"))
@@ -50,16 +50,16 @@ What we've got here is an `IO` trapped inside another `IO`. To work with it, we 
 ```js
 //  safeProp :: Key -> {Key: a} -> Maybe a
 var safeProp = curry(function(x, obj) {
-  return new Maybe(obj[x]);
-});
+  return new Maybe(obj[x])
+})
 
 //  safeHead :: [a] -> Maybe a
-var safeHead = safeProp(0);
+var safeHead = safeProp(0)
 
 //  firstAddressStreet :: User -> Maybe (Maybe (Maybe Street) )
-var firstAddressStreet = compose(map(map(safeProp('street'))), map(safeHead), safeProp('addresses'));
+var firstAddressStreet = compose(map(map(safeProp('street'))), map(safeHead), safeProp('addresses'))
 
-firstAddressStreet({addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]});
+firstAddressStreet({addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]})
 // Maybe(Maybe(Maybe({name: 'Mulburry', number: 8402})))
 ```
 
@@ -68,20 +68,20 @@ Again, we see this nested functor situation where it's neat to see there are thr
 I said monads are like onions because tears well up as we peel back layer of the nested functor with `map` to get at the inner value. We can dry our eyes, take a deep breath, and use a method called `join`.
 
 ```js
-var mmo = Maybe.of(Maybe.of("nunchucks"));
+var mmo = Maybe.of(Maybe.of("nunchucks"))
 // Maybe(Maybe("nunchucks"))
 
-mmo.join();
+mmo.join()
 // Maybe("nunchucks")
 
-var ioio = IO.of(IO.of("pizza"));
+var ioio = IO.of(IO.of("pizza"))
 // IO(IO("pizza"))
 
 ioio.join()
 // IO("pizza")
 
-var ttt = Task.of(Task.of(Task.of("sewers")));
-// Task(Task(Task("sewers")));
+var ttt = Task.of(Task.of(Task.of("sewers")))
+// Task(Task(Task("sewers")))
 
 ttt.join()
 // Task(Task("sewers"))
@@ -95,7 +95,7 @@ Any functor which defines a `join` method, has an `of` method, and obeys a few l
 
 ```js
 Maybe.prototype.join = function() {
-  return this.__value;
+  return this.__value
 }
 ```
 
@@ -108,9 +108,9 @@ Now that we have a `join` method, let's sprinkle some magic monad dust over the 
 var join = function(mma){ return mma.join(); }
 
 //  firstAddressStreet :: User -> Maybe Street
-var firstAddressStreet = compose(join, map(safeProp('street')), join, map(safeHead), safeProp('addresses'));
+var firstAddressStreet = compose(join, map(safeProp('street')), join, map(safeHead), safeProp('addresses'))
 
-firstAddressStreet({addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]});
+firstAddressStreet({addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]})
 // Maybe({name: 'Mulburry', number: 8402})
 ```
 
@@ -118,7 +118,7 @@ We added `join` wherever we encountered the nested `Maybe`'s to keep them from g
 
 ```js
 IO.prototype.join = function() {
-  return this.unsafePerformIO();
+  return this.unsafePerformIO()
 }
 ```
 
@@ -127,24 +127,24 @@ Again, we simply remove one layer. Mind you, we have not thrown out purity, but 
 ```js
 //  log :: a -> IO a
 var log = function(x) {
-  return new IO(function() { console.log(x); return x; });
+  return new IO(function() { console.log(x); return x; })
 }
 
 //  setStyle :: Selector -> CSSProps -> IO DOM
 var setStyle = curry(function(sel, props) {
-  return new IO(function() { return jQuery(sel).css(props); });
-});
+  return new IO(function() { return jQuery(sel).css(props); })
+})
 
 //  getItem :: String -> IO String
 var getItem = function(key) {
-  return new IO(function() { return localStorage.getItem(key); });
-};
+  return new IO(function() { return localStorage.getItem(key); })
+}
 
 //  applyPreferences :: String -> IO DOM
-var applyPreferences = compose(join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem);
+var applyPreferences = compose(join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem)
 
 
-applyPreferences('preferences').unsafePerformIO();
+applyPreferences('preferences').unsafePerformIO()
 // Object {backgroundColor: "green"}
 // <div style="background-color: 'green'"/>
 ```
@@ -161,25 +161,25 @@ You might have noticed a pattern. We often end up calling `join` right after a `
 //  chain :: Monad m => (a -> m b) -> m a -> m b
 var chain = curry(function(f, m){
   return m.map(f).join(); // or compose(join, map(f))(m)
-});
+})
 ```
 
 We'll just bundle up this map/join combo into a single function. If you've read about monads previously, you might have seen `chain` called `>>=` (pronounced bind) or `flatMap` which are all aliases for same concept. I personally think `flatMap` is the most accurate name, but we'll stick with `chain` as it's the widely accepted name in JS. Let's refactor the two examples above with `chain`:
 
 ```js
 // map/join
-var firstAddressStreet = compose(join, map(safeProp('street')), join, map(safeHead), safeProp('addresses'));
+var firstAddressStreet = compose(join, map(safeProp('street')), join, map(safeHead), safeProp('addresses'))
 
 // chain
-var firstAddressStreet = compose(chain(safeProp('street')), chain(safeHead), safeProp('addresses'));
+var firstAddressStreet = compose(chain(safeProp('street')), chain(safeHead), safeProp('addresses'))
 
 
 
 // map/join
-var applyPreferences = compose(join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem);
+var applyPreferences = compose(join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem)
 
 // chain
-var applyPreferences = compose(chain(setStyle), chain(log), map(JSON.parse), getItem);
+var applyPreferences = compose(chain(setStyle), chain(log), map(JSON.parse), getItem)
 ```
 
 I swapped out any `map/join` with our new `chain` function to tidy things up a bit. Cleanliness is nice and all, but there's more to `chain` than meets the eye - it's more of tornado than a vacuum. Because `chain` effortlessly nests effects, we can capture both *sequence* and *variable assignment* in a purely functional way.
@@ -190,27 +190,27 @@ I swapped out any `map/join` with our new `chain` function to tidy things up a b
 
 
 getJSON('/authenticate', {username: 'stale', password: 'crackers'}).chain(function(user) {
-  return getJSON('/friends', {user_id: user.id});
-});
-// Task([{name: 'Seimith', id: 14}, {name: 'Ric', id: 39}]);
+  return getJSON('/friends', {user_id: user.id})
+})
+// Task([{name: 'Seimith', id: 14}, {name: 'Ric', id: 39}])
 
 
 querySelector("input.username").chain(function(uname) {
   return querySelector("input.email").chain(function(email) {
-    return IO.of("Welcome " + uname.value + " " + "prepare for spam at " + email.value);
-  });
-});
-// IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net");
+    return IO.of("Welcome " + uname.value + " " + "prepare for spam at " + email.value)
+  })
+})
+// IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net")
 
 
 Maybe.of(3).chain(function(three) {
-  return Maybe.of(2).map(add(three));
-});
-// Maybe(5);
+  return Maybe.of(2).map(add(three))
+})
+// Maybe(5)
 
 
-Maybe.of(null).chain(safeProp('address')).chain(safeProp('street'));
-// Maybe(null);
+Maybe.of(null).chain(safeProp('address')).chain(safeProp('street'))
+// Maybe(null)
 ```
 
 We could have written these examples with `compose`, but we'd need a few helper functions and this style lends itself to explicit variable assignment via closure anyhow. Instead we're using the infix version of `chain` which, incidentally, can be derived from `map` and `join` for any type automatically: `t.prototype.chain = function(f) { return this.map(f).join(); }`. We can also define `chain` manually if we'd like a false sense of performance, though we must take care to maintain the correct functionality - that is, it must equal `map` followed by `join`. An interesting fact is that we can derive `map` for free if we've created `chain` simply by bottling the value back up when we're finished with `of`. With `chain`, we can also define `join` as `chain(id)`. It may feel like playing Texas Hold em' with a rhinestone magician in that I'm just pulling things out of my behind, but, as with most mathematics, all of these principled constructs are interrelated. Lots of these derivations are mentioned in the [fantasyland](https://github.com/fantasyland/fantasy-land) repo, which is the official specification for algebraic data types in JavaScript.
@@ -222,10 +222,10 @@ Next, we use `querySelector` to find a few different inputs and create a welcomi
 ```js
 querySelector("input.username").chain(function(uname) {
   return querySelector("input.email").map(function(email) {
-    return "Welcome " + uname.value + " " + "prepare for spam at " + email.value;
-  });
-});
-// IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net");
+    return "Welcome " + uname.value + " " + "prepare for spam at " + email.value
+  })
+})
+// IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net")
 ```
 
 Finally, we have two examples using `Maybe`. Since `chain` is mapping under the hood, if any value is `null`, we stop the computation dead in its tracks.
@@ -247,7 +247,7 @@ Let's read a file, then upload it directly afterward:
 // httpPost :: String -> Future Error JSON
 
 //  upload :: String -> Either String (Future Error JSON)
-var upload = compose(map(chain(httpPost('/uploads'))), readFile);
+var upload = compose(map(chain(httpPost('/uploads'))), readFile)
 ```
 
 Here, we are branching our code several times. Looking at the type signatures I can see that we protect against 3 errors - `readFile` uses `Either` to validate the input (perhaps ensuring the filename is present), `readFile` may error when accessing the file as expressed in the first type parameter of `Future`, and the upload may fail for whatever reason which is expressed by the `Future` in `httpPost`. We casually pull off two nested, sequential asynchronous actions with `chain`.
@@ -260,15 +260,15 @@ For contrast, let's look at the standard imperative way to pull this off:
 //  upload :: String -> (String -> a) -> Void
 var upload = function(filename, callback) {
   if(!filename) {
-    throw "You need a filename!";
+    throw "You need a filename!"
   } else {
     readFile(filename, function(err, contents) {
-      if(err) throw err;
+      if(err) throw err
       httpPost(contents, function(err, json) {
-        if(err) throw err;
-        callback(json);
-      });
-    });
+        if(err) throw err
+        callback(json)
+      })
+    })
   }
 }
 ```
@@ -309,7 +309,7 @@ Now, I've seen these laws, identity and associativity, somewhere before... Hold 
 
 ```js
   var mcompose = function(f, g) {
-    return compose(chain(f), chain(g));
+    return compose(chain(f), chain(g))
   }
 
   // left identity
@@ -343,7 +343,7 @@ In the next chapter, we'll see how applicative functors fit into the container w
 // ==========
 // Use safeProp and map/join or chain to safetly get the street name when given a user
 
-var safeProp = _.curry(function (x, o) { return Maybe.of(o[x]); });
+var safeProp = _.curry(function (x, o) { return Maybe.of(o[x]); })
 var user = {
   id: 2,
   name: "albert",
@@ -353,9 +353,9 @@ var user = {
       name: 'Walnut St'
     }
   }
-};
+}
 
-var ex1 = undefined;
+var ex1 = undefined
 
 
 // Exercise 2
@@ -363,17 +363,17 @@ var ex1 = undefined;
 // Use getFile to get the filename, remove the directory so it's just the file, then purely log it.
 
 var getFile = function() {
-  return new IO(function(){ return __filename; });
+  return new IO(function(){ return __filename; })
 }
 
 var pureLog = function(x) {
   return new IO(function(){
-    console.log(x);
-    return 'logged ' + x;
-  });
+    console.log(x)
+    return 'logged ' + x
+  })
 }
 
-var ex2 = undefined;
+var ex2 = undefined
 
 
 
@@ -384,21 +384,21 @@ var ex2 = undefined;
 var getPost = function(i) {
   return new Task(function (rej, res) {
     setTimeout(function () {
-      res({ id: i, title: 'Love them tasks' });
-    }, 300);
-  });
+      res({ id: i, title: 'Love them tasks' })
+    }, 300)
+  })
 }
 
 var getComments = function(i) {
   return new Task(function (rej, res) {
     setTimeout(function () {
-      res([{post_id: i, body: "This book should be illegal"}, {post_id: i, body:"Monads are like smelly shallots"}]);
-    }, 300);
-  });
+      res([{post_id: i, body: "This book should be illegal"}, {post_id: i, body:"Monads are like smelly shallots"}])
+    }, 300)
+  })
 }
 
 
-var ex3 = undefined;
+var ex3 = undefined
 
 
 // Exercise 4
@@ -409,22 +409,22 @@ var ex3 = undefined;
 var addToMailingList = (function(list){
   return function(email) {
     return new IO(function(){
-      list.push(email);
-      return list;
-    });
+      list.push(email)
+      return list
+    })
   }
-})([]);
+})([])
 
 function emailBlast(list) {
   return new IO(function(){
-    return 'emailed: ' + list.join(',');
-  });
+    return 'emailed: ' + list.join(',')
+  })
 }
 
 var validateEmail = function(x){
-  return x.match(/\S+@\S+\.\S+/) ? (new Right(x)) : (new Left('invalid email'));
+  return x.match(/\S+@\S+\.\S+/) ? (new Right(x)) : (new Left('invalid email'))
 }
 
 //  ex4 :: Email -> Either String (IO String)
-var ex4 = undefined;
+var ex4 = undefined
 ```
