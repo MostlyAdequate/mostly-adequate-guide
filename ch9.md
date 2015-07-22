@@ -336,7 +336,7 @@ In the next chapter, we'll see how applicative functors fit into the container w
 [Chapter 10: Applicative Functors](ch10.md)
 
 
-## Examples
+## Exercises
 
 ```js
 // Exercise 1
