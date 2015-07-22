@@ -100,7 +100,7 @@ From mathisfun.com:
 > A function is a special relationship between values:
 > Each of its input values gives back exactly one output value.
 
-In other words, it's just a relation between two values: the input and the output. Though each input has exactly one output, that output doesn't necessary have to be unique per input. Below shows a diagram of a perfectly valid function from `x` to `y`;
+In other words, it's just a relation between two values: the input and the output. Though each input has exactly one output, that output doesn't necessarily have to be unique per input. Below shows a diagram of a perfectly valid function from `x` to `y`;
 
 <img src="images/function-sets.gif" />[^http://www.mathsisfun.com/sets/function.html]
 
