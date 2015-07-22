@@ -1,4 +1,4 @@
-require('../../support')
+require('../../support');
 var _ = require('ramda');
 var accounting = require('accounting');
   
@@ -16,9 +16,9 @@ var CARS = [
 // ============
 // use _.compose() to rewrite the function below. Hint: _.prop() is curried.
 var isLastInStock = function(cars) {
-  var reversed_cars = _.last(cars)
+  var reversed_cars = _.last(cars);
   return _.prop('in_stock', reversed_cars)
-}
+};
 
 // Exercise 2:
 // ============
@@ -34,7 +34,7 @@ var _average = function(xs) { return reduce(add, 0, xs) / xs.length; }; // <- le
 var averageDollarValue = function(cars) {
   var dollar_values = map(function(c) { return c.dollar_value; }, cars);
   return _average(dollar_values);
-}
+};
 
 
 // Exercise 4:
@@ -43,7 +43,7 @@ var averageDollarValue = function(cars) {
 
 var _underscore = replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
 
-var sanitizeNames = undefined
+var sanitizeNames = undefined;
 
 
 // Bonus 1:
@@ -55,7 +55,7 @@ var availablePrices = function(cars) {
   return available_cars.map(function(x){
     return accounting.formatMoney(x.dollar_value)
   }).join(', ');
-}
+};
 
 
 // Bonus 2:
@@ -66,7 +66,7 @@ var fastestCar = function(cars) {
   var sorted = _.sortBy(function(car){ return car.horsepower }, cars);
   var fastest = _.last(sorted);
   return fastest.name + ' is the fastest';
-}
+};
 
 
 module.exports = { CARS: CARS,
@@ -76,4 +76,4 @@ module.exports = { CARS: CARS,
                    averageDollarValue: averageDollarValue,
                    availablePrices: availablePrices,
                    sanitizeNames: sanitizeNames
-                 } 
+                 };

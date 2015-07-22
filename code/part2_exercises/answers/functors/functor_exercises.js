@@ -51,10 +51,10 @@ var getPost = function (i) {
       res({id: i, title: 'Love them futures'})  
     }, 300)
   });
-}
+};
 
-var upperTitle = _.compose(toUpperCase, _.prop('title'))
-var ex5 = _.compose(_.map(upperTitle), getPost)
+var upperTitle = _.compose(toUpperCase, _.prop('title'));
+var ex5 = _.compose(_.map(upperTitle), getPost);
 
 
 
