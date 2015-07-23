@@ -531,27 +531,27 @@ Take a moment to consider how linear the control flow is here. We just read bott
 
 Goodness, would you look at that, `Task` has also swallowed up `Either`! It must do so in order to handle futuristic failures since our normal control flow does not apply in the async world. This is all well and good as it provides sufficient and pure error handling out of the box.
 
-Even with `Task`, our `IO` and `Either` functors are not out of a job. Bear with me on a quick example that leans toward the more complex and hypothetical side, but is useful for illustrative purposes.
+Even with `Task`, our `IO` and `Either` functors are not out of a job. Bare with me on a quick example that leans toward the more complex and hypothetical side, but is useful for illustrative purposes.
 
 ```js
-// Postgres.connect :: Url -> DbConnection
+// Postgres.connect :: Url -> IO DbConnection
 // runQuery :: DbConnection -> ResultSet
-
+// readFile :: String -> Task Error String
 
 // Pure application
 //=====================
 
-//  dbUrl :: Config -> Either(Error, Url)
+//  dbUrl :: Config -> Either Error Url
 var dbUrl = function(c) {
   return (c.uname && c.pass && c.host && c.db)
     ? Right.of("db:pg://"+c.uname+":"+c.pass+"@"+c.host+"5432/"+c.db)
     : Left.of(Error("Invalid config!"));
 }
 
-//  connectDb :: Config -> Either(Error, IO(DbConnection))
+//  connectDb :: Config -> Either Error (IO DbConnection)
 var connectDb = compose(map(Postgres.connect), dbUrl);
 
-//  getConfig :: Filename -> Task(Error, Either(Error, IO(DbConnection)))
+//  getConfig :: Filename -> Task Error (Either Error (IO DbConnection))
 var getConfig = compose(map(compose(connectDB, JSON.parse)), readFile);
 
 
