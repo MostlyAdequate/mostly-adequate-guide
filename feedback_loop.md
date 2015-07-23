@@ -11,7 +11,7 @@ change directory to the code folder in repository root
     cd /path/to/local_folder/mostly-adequate-guide/code/part1_exercises/
 ```
 
-install mocha and any dependencies you see in exercie file
+install dependencies
 ```shell
     npm install
     # this picks up the dependencies from package.json and installs them
