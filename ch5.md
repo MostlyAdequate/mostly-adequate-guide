@@ -231,10 +231,11 @@ var f = function(x){ return x === 4; };
 var isFourLetterWord = compose(f, g);
 ```
 
-**A distinguished morphism called identithpintroduce a useful function called `id`. This function simply takes some input and spits ihpke a look:
+**A distinguished morphism called identity**
+Let's introduce a useful function called `id`. This function simply takes some input and spits it back at you. Take a look:
 
 ```js
-var ihp return x; };
+var id = function(x){ return x; };
 ```
 
 You might ask yourself "What in the bloody hell is that useful for?". We'll make extensive use of this function in the following chapters, but for now think of it as a function that can stand in for our value - a function masquerading as every day data.
