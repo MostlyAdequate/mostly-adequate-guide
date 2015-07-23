@@ -18,7 +18,9 @@ Maybe.of(1336).map(add(1));
 Task.of([{id: 2}, {id: 3}]).map(_.prop('id'));
 // Task([2,3])
 
-Either.of("The past, present and future walk into a bar...").map(concat("it was tense."));
+Either.of("The past, present and future walk into a bar...").map(
+  concat("it was tense.")
+);
 // Right("The past, present and future walk into a bar...it was tense.")
 ```
 
@@ -57,9 +59,13 @@ var safeProp = curry(function(x, obj) {
 var safeHead = safeProp(0);
 
 //  firstAddressStreet :: User -> Maybe (Maybe (Maybe Street) )
-var firstAddressStreet = compose(map(map(safeProp('street'))), map(safeHead), safeProp('addresses'));
+var firstAddressStreet = compose(
+  map(map(safeProp('street'))), map(safeHead), safeProp('addresses')
+);
 
-firstAddressStreet({addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]});
+firstAddressStreet(
+  {addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]}
+);
 // Maybe(Maybe(Maybe({name: 'Mulburry', number: 8402})))
 ```
 
@@ -108,9 +114,13 @@ Now that we have a `join` method, let's sprinkle some magic monad dust over the 
 var join = function(mma){ return mma.join(); }
 
 //  firstAddressStreet :: User -> Maybe Street
-var firstAddressStreet = compose(join, map(safeProp('street')), join, map(safeHead), safeProp('addresses'));
+var firstAddressStreet = compose(
+  join, map(safeProp('street')), join, map(safeHead), safeProp('addresses')
+);
 
-firstAddressStreet({addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]});
+firstAddressStreet(
+  {addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]}
+);
 // Maybe({name: 'Mulburry', number: 8402})
 ```
 
@@ -141,7 +151,9 @@ var getItem = function(key) {
 };
 
 //  applyPreferences :: String -> IO DOM
-var applyPreferences = compose(join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem);
+var applyPreferences = compose(
+  join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem
+);
 
 
 applyPreferences('preferences').unsafePerformIO();
@@ -168,18 +180,26 @@ We'll just bundle up this map/join combo into a single function. If you've read 
 
 ```js
 // map/join
-var firstAddressStreet = compose(join, map(safeProp('street')), join, map(safeHead), safeProp('addresses'));
+var firstAddressStreet = compose(
+  join, map(safeProp('street')), join, map(safeHead), safeProp('addresses')
+);
 
 // chain
-var firstAddressStreet = compose(chain(safeProp('street')), chain(safeHead), safeProp('addresses'));
+var firstAddressStreet = compose(
+  chain(safeProp('street')), chain(safeHead), safeProp('addresses')
+);
 
 
 
 // map/join
-var applyPreferences = compose(join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem);
+var applyPreferences = compose(
+  join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem
+);
 
 // chain
-var applyPreferences = compose(chain(setStyle), chain(log), map(JSON.parse), getItem);
+var applyPreferences = compose(
+  chain(setStyle), chain(log), map(JSON.parse), getItem
+);
 ```
 
 I swapped out any `map/join` with our new `chain` function to tidy things up a bit. Cleanliness is nice and all, but there's more to `chain` than meets the eye - it's more of tornado than a vacuum. Because `chain` effortlessly nests effects, we can capture both *sequence* and *variable assignment* in a purely functional way.
@@ -189,15 +209,18 @@ I swapped out any `map/join` with our new `chain` function to tidy things up a b
 // querySelector :: Selector -> IO DOM
 
 
-getJSON('/authenticate', {username: 'stale', password: 'crackers'}).chain(function(user) {
-  return getJSON('/friends', {user_id: user.id});
+getJSON('/authenticate', {username: 'stale', password: 'crackers'})
+  .chain(function(user) {
+    return getJSON('/friends', {user_id: user.id});
 });
 // Task([{name: 'Seimith', id: 14}, {name: 'Ric', id: 39}]);
 
 
 querySelector("input.username").chain(function(uname) {
   return querySelector("input.email").chain(function(email) {
-    return IO.of("Welcome " + uname.value + " " + "prepare for spam at " + email.value);
+    return IO.of(
+      "Welcome " + uname.value + " " + "prepare for spam at " + email.value
+    );
   });
 });
 // IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net");
@@ -222,7 +245,7 @@ Next, we use `querySelector` to find a few different inputs and create a welcomi
 ```js
 querySelector("input.username").chain(function(uname) {
   return querySelector("input.email").map(function(email) {
-    return "Welcome " + uname.value + " " + "prepare for spam at " + email.value;
+    return "Welcome " + uname.value + " prepare for spam at " + email.value;
   });
 });
 // IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net");
@@ -341,7 +364,8 @@ In the next chapter, we'll see how applicative functors fit into the container w
 ```js
 // Exercise 1
 // ==========
-// Use safeProp and map/join or chain to safely get the street name when given a user
+// Use safeProp and map/join or chain to safely get the street name when given 
+// a user
 
 var safeProp = _.curry(function (x, o) { return Maybe.of(o[x]); });
 var user = {
@@ -360,7 +384,8 @@ var ex1 = undefined;
 
 // Exercise 2
 // ==========
-// Use getFile to get the filename, remove the directory so it's just the file, then purely log it.
+// Use getFile to get the filename, remove the directory so it's just the file,
+// then purely log it.
 
 var getFile = function() {
   return new IO(function(){ return __filename; });
@@ -392,7 +417,10 @@ var getPost = function(i) {
 var getComments = function(i) {
   return new Task(function (rej, res) {
     setTimeout(function () {
-      res([{post_id: i, body: "This book should be illegal"}, {post_id: i, body:"Monads are like smelly shallots"}]);
+      res([
+        {post_id: i, body: "This book should be illegal"},
+        {post_id: i, body: "Monads are like smelly shallots"}
+      ]);
     }, 300);
   });
 }
@@ -403,7 +431,8 @@ var ex3 = undefined;
 
 // Exercise 4
 // ==========
-// Use validateEmail, addToMailingList, and emailBlast to implmeent ex4's type signature.
+// Use validateEmail, addToMailingList, and emailBlast to implmeent ex4's type
+// signature.
 
 //  addToMailingList :: Email -> IO([Email])
 var addToMailingList = (function(list){

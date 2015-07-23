@@ -16,7 +16,9 @@ From the dusty pages of math books, across the vast sea of white papers, amongst
 
 ```js
 //  capitalize :: String -> String
-var capitalize = function(s){ return toUpperCase(head(s)) + toLowerCase(tail(s)); }
+var capitalize = function(s){
+  return toUpperCase(head(s)) + toLowerCase(tail(s));
+}
 
 capitalize("smurf");
 //=> "Smurf"

@@ -13,7 +13,7 @@ For some folks, myself included, it's hard to grasp the concept of declarative c
 ```js
 // imperative
 var makes = [];
-for (i = 0; i < cars.length; i++) { 
+for (i = 0; i < cars.length; i++) {
   makes.push(cars[i].make);
 }
 
@@ -115,7 +115,8 @@ Next we must construct a url to pass to our `Impure.getJSON` function.
 
 ```js
 var url = function (term) {
-  return 'http://api.flickr.com/services/feeds/photos_public.gne?tags=' + term + '&format=json&jsoncallback=?';
+  return 'http://api.flickr.com/services/feeds/photos_public.gne?tags=' +
+    term + '&format=json&jsoncallback=?';
 };
 ```
 
@@ -219,7 +220,8 @@ require([
     ////////////////////////////////////////////
 
     var url = function (t) {
-      return 'http://api.flickr.com/services/feeds/photos_public.gne?tags=' + t + '&format=json&jsoncallback=?';
+      return 'http://api.flickr.com/services/feeds/photos_public.gne?tags=' +
+        t + '&format=json&jsoncallback=?';
     };
 
     var mediaUrl = _.compose(_.prop('m'), _.prop('media'));

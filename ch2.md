@@ -100,14 +100,22 @@ var BlogController = (function() {
     return Db.destroy(post);
   };
 
-  return {index: index, show: show, create: create, update: update, destroy: destroy};
+  return {
+    index: index, show: show, create: create, update: update, destroy: destroy
+  };
 })();
 ```
 
 This ridiculous controller is 99% fluff. We could either rewrite it as:
 
 ```js
-var BlogController = {index: Views.index, show: Views.show, create: Db.create, update: Db.update, destroy: Db.destroy};
+var BlogController = {
+  index: Views.index,
+  show: Views.show,
+  create: Db.create,
+  update: Db.update,
+  destroy: Db.destroy
+};
 ```
 
 ...or scrap it altogether as it does nothing other than bundle our Views and Db together.
@@ -127,7 +135,8 @@ httpGet('/post/2', function(json){
 If `httpGet` were to change to send a possible `err`, we would need to go back and change the "glue".
 
 ```js
-// go back to every httpGet call in the application and explicitly pass err along.
+// go back to every httpGet call in the application and explicitly pass err
+// along.
 httpGet('/post/2', function(json, err){
   return renderPost(json, err);
 });
@@ -136,7 +145,8 @@ httpGet('/post/2', function(json, err){
 Had we written it as a first class function, much less would need to change:
 
 ```js
-httpGet('/post/2', renderPost);  // renderPost is called from within httpGet with however many arguments it wants
+// renderPost is called from within httpGet with however many arguments it wants
+httpGet('/post/2', renderPost);  
 ```
 
 Besides the removal of unnecessary functions, we must name and reference arguments. Names are a bit of an issue, you see. We have potential misnomers - especially as the codebase ages and requirements change.
