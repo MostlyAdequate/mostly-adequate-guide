@@ -130,6 +130,8 @@ A quick word before we start. We'll use a library called *ramda* which curries e
 [ramda](http://ramdajs.com)
 [lodash-fp](https://github.com/lodash/lodash-fp)
 
+There are [unit tests](https://github.com/DrBoolean/mostly-adequate-guide/tree/master/code/part1_exercises) to run against your exercises as you code them, or you can just copy-paste into a javascript REPL for the early exercises if you wish.
+
 Answers are provided with the code in the [repository for this book](https://github.com/DrBoolean/mostly-adequate-guide/tree/master/code/part1_exercises/answers)
 
 ```js
