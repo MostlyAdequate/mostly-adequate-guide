@@ -43,7 +43,7 @@ Let's make a few things clear before we move on:
 
 * Once data goes into the `Container` it stays there. We *could* get it out by using `.__value`, but that would defeat the purpose.
 
-The reasons we're doing this will become clear as a mason jar, but for now, bare with me.
+The reasons we're doing this will become clear as a mason jar, but for now, bear with me.
 
 ## My First Functor
 
