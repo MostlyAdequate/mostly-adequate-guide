@@ -364,7 +364,7 @@ In the next chapter, we'll see how applicative functors fit into the container w
 ```js
 // Exercise 1
 // ==========
-// Use safeProp and map/join or chain to safely get the street name when given 
+// Use safeProp and map/join or chain to safely get the street name when given
 // a user
 
 var safeProp = _.curry(function (x, o) { return Maybe.of(o[x]); });
