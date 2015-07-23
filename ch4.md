@@ -164,7 +164,8 @@ var filterQs = function(xs) {
 
 // Exercise 3
 //==============
-// Use the helper function _keepHighest to refactor max to not reference any arguments
+// Use the helper function _keepHighest to refactor max to not reference any
+// arguments
 
 // LEAVE BE:
 var _keepHighest = function(x,y){ return x >= y ? x : y; };
@@ -176,7 +177,7 @@ var max = function(xs) {
   }, 0, xs);
 };
 
-  
+
 // Bonus 1:
 // ============
 // wrap array's slice to be functional and curried.
