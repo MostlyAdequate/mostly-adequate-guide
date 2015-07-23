@@ -8,20 +8,20 @@ Clone the repo to a `local_folder`
 
 change directory to the code folder in repository root 
 ```shell
-    cd /path/to/local_folder/mostly-adequate-guide/code/
+    cd /path/to/local_folder/mostly-adequate-guide/code/part1_exercises/
 ```
 
 install mocha and any dependencies you see in exercie file
 ```shell
-    npm install -g mocha
-    npm install -g ramda
+    npm install
+    # this picks up the dependencies from package.json and installs them
 ```
 
 run the test runner with the spec file for that exercise
 
 ```shell
     # for example
-    mocha part1_exercises/exercises/curry/curry_exercises_spec.js -w
+    mocha exercises/curry/curry_exercises_spec.js -w
 ```
 
 this brings up the mocha test runner which shows the error immediately when you save the file with changed code. Achieve the requested refactor while keeping all the arrows green.
