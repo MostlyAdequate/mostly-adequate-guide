@@ -118,7 +118,7 @@ IO.prototype.join = function() {
 }
 
 IO.prototype.inspect = function() {
-  return 'IO('+inspect(this.__value)+')';
+  return 'IO('+inspect(this.unsafePerformIO)+')';
 }
 
 unsafePerformIO = function(x) { return x.unsafePerformIO(); }
