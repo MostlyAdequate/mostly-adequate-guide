@@ -40,11 +40,11 @@ Maybe.prototype.isNothing = function(f) {
 };
 
 Maybe.prototype.map = function(f) {
-  return this.isNothing() ? this : Maybe.of(f(this.__value));
+  return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value));
 };
 
 Maybe.prototype.join = function() {
-  return this.__value;
+  return this.isNothing() ? Maybe.of(null) : this.__value;
 }
 
 Maybe.prototype.inspect = function() {

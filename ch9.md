@@ -101,11 +101,11 @@ Any functor which defines a `join` method, has an `of` method, and obeys a few l
 
 ```js
 Maybe.prototype.join = function() {
-  return this.__value;
+  return this.isNothing() ? Maybe.of(null) : this.__value;
 }
 ```
 
-There, simple as consuming one's twin in the womb. If we have a `Maybe(Maybe(x))` then `.__value` will just remove the unnecessary extra layer and we can safely `map` from there.
+There, simple as consuming one's twin in the womb. If we have a `Maybe(Maybe(x))` then `.__value` will just remove the unnecessary extra layer and we can safely `map` from there. Otherwise, we'll just have the one `Maybe` as nothing would have been mapped in the first place.
 
 Now that we have a `join` method, let's sprinkle some magic monad dust over the `firstAddressStreet` example and see it in action:
 
