@@ -115,7 +115,7 @@ Next we must construct a url to pass to our `Impure.getJSON` function.
 
 ```js
 var url = function (term) {
-  return 'http://api.flickr.com/services/feeds/photos_public.gne?tags=' +
+  return 'https://api.flickr.com/services/feeds/photos_public.gne?tags=' +
     term + '&format=json&jsoncallback=?';
 };
 ```

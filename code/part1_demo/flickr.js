@@ -37,7 +37,7 @@ require([
 
     //  url :: String -> URL
     var url = function (t) {
-      return 'http://api.flickr.com/services/feeds/photos_public.gne?tags=' + t + '&format=json&jsoncallback=?';
+      return 'https://api.flickr.com/services/feeds/photos_public.gne?tags=' + t + '&format=json&jsoncallback=?';
     };
 
     var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
