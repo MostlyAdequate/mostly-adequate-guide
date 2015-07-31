@@ -148,7 +148,7 @@ latin(["frog", "eyes"]);
 var latin = compose(map(angry), reverse);
 
 latin(["frog", "eyes"]);
-// ["SEYE!", "GORF!"])
+// ["EYES!", "FROG!"])
 ```
 
 If you are having trouble debugging a composition, we can use this helpful, but impure trace function to see what's going on.
