@@ -159,25 +159,25 @@ var trace = curry(function(tag, x){
   return x;
 });
 
-var dasherize = compose(join('-'), replace(/\s{2,}/ig, ' '), split(' '));
+var dasherize = compose(join('-'), toLower, split(' '), replace(/\s{2,}/ig, ' '));
 
-dasherize('the world is a vampire');
-// TypeError: Object the,world,is,a,vampire has no method 'replace'
+dasherize('The world is a vampire');
+// TypeError: Cannot read property 'apply' of undefined
 ```
 
 Something is wrong here, let's `trace`
 
 ```js
-var dasherize = compose(join('-'), replace(/\s{2,}/ig, ' '), trace("after split"), split(' '));
-// after split [ 'the', 'world', 'is', 'a', 'vampire' ]
+var dasherize = compose(join('-'), toLower, trace("after split"), split(' '), replace(/\s{2,}/ig, ' '));
+// after split [ 'The', 'world', 'is', 'a', 'vampire' ]
 ```
 
-Ah! We need to `map` this `replace` since it's working on an array.
+Ah! We need to `map` this `toLower` since it's working on an array.
 
 ```js
-var dasherize = compose(join('-'), map(replace(/\s{2,}/ig, ' ')), split(' '));
+var dasherize = compose(join('-'), map(toLower), split(' '), replace(/\s{2,}/ig, ' '));
 
-dasherize('the world is a vampire');
+dasherize('The world is a vampire');
 
 // 'the-world-is-a-vampire'
 ```
