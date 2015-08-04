@@ -240,7 +240,7 @@ You might ask yourself "What in the bloody hell is that useful for?". We'll make
 
 ```js
 // identity
-var identity = compose(id, f) == compose(f, id) == f;
+compose(id, f) == compose(f, id) == f;
 // true
 ```
 
