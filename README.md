@@ -48,6 +48,10 @@ brew cask install calibre
 gitbook mobi . ./functional.mobi
 ```
 
+# Other Languages
+
+* [中文版](https://github.com/llh911001/mostly-adequate-guide-chinese)
+
 
 # Table of Contents
 
