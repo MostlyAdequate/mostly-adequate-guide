@@ -105,7 +105,7 @@ Maybe.prototype.map = function(f) {
 }
 ```
 
-Now, `Maybe` looks a lot like `Container` with one minor change: it will first check to see if it has a value before calling the supplied function. This has the effect of side stepping those pesky nulls as we `map`.
+Now, `Maybe` looks a lot like `Container` with one minor change: it will first check to see if it has a value before calling the supplied function. This has the effect of side stepping those pesky nulls as we `map`[^Note that this implementation is simplied for teaching].
 
 ```js
 Maybe.of("Malkovich Malkovich").map(match(/a/ig));
@@ -217,6 +217,7 @@ The introduction of `Maybe` can cause some initial discomfort. Users of Swift an
 
 Writing unsafe software is like taking care to paint each egg with pastels before hurling it into traffic; like building a retirement home with materials warned against by three little pigs. It will do us well to put some safety into our functions and `Maybe` helps us do just that.
 
+I'd be remiss if I didn't mention that the "real" implementation will split `Maybe` into two types: one for something and the other for nothing. This allows us to obey parametricity in `map` so values like `null` and `undefined` can still be mapped over and the universal qualification of the value in a functor will be respected. You'll often see types like `Some(x) / None` or `Just(x) / Nothing` instead of a `Maybe` that does a `null` check on its value.
 
 ## Pure Error Handling
 
