@@ -62,7 +62,7 @@ var result = conjoin(
 //=>16
 ```
 
-Well, we got the right answer this time. There's much less code. The function nesting is a tad confusing...[^we'll remedy this sitation in ch5]. It's better, but let's dig deeper. There are benefits to calling a spade a spade. Had we done so, we might have seen we're just working with simple addition (`conjoin`) and multiplication (`breed`).
+Well, we got the right answer this time. There's much less code. The function nesting is a tad confusing...[^we'll remedy this situation in ch5]. It's better, but let's dig deeper. There are benefits to calling a spade a spade. Had we done so, we might have seen we're just working with simple addition (`conjoin`) and multiplication (`breed`).
 
 There's really nothing special at all about these two functions other than their names. Let's rename our custom functions to reveal their true identity.
 
