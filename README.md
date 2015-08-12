@@ -89,7 +89,7 @@ gitbook mobi . ./functional.mobi
 
 * [Chapter 7: Hindley-Milner and Me](ch7.md)
   * [What's your type?](ch7.md#whats-your-type)
-  * [Tales from the cryptic](ch7.md#tales-from-cryptic)
+  * [Tales from the cryptic](ch7.md#tales-from-the-cryptic)
   * [Narrowing the possibility](ch7.md#narrowing-the-possibility)
   * [Free as in theorem](ch7.md#free-as-in-theorem)
   * [In Summary](ch7.md#in-summary)
