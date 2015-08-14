@@ -162,9 +162,8 @@ Sometimes a function might return a `Maybe(null)` explicitly to signal failure. 
 //  withdraw :: Number -> Account -> Maybe(Account)
 var withdraw = curry(function(amount, account) {
   return account.balance >= amount ?
-    Maybe.of({balance: account.balance - amount})
-    :
-    Maybe.of(null);
+    Maybe.of({balance: account.balance - amount}) :  
+     Maybe.of(null);
 });
 
 //  finishTransaction :: Account -> String
