@@ -174,7 +174,7 @@ var _keepHighest = function(x,y){ return x >= y ? x : y; };
 var max = function(xs) {
   return _.reduce(function(acc, x){
     return _keepHighest(acc, x);
-  }, 0, xs);
+  }, -Infinity, xs);
 };
 
 
