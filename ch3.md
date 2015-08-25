@@ -294,7 +294,7 @@ And if we inline `decrementHP`, we see that, in this case, punch becomes a call 
 
 ```js
 var punch = function(player, target) {
-  return target.set("hp", target.hp-1);
+  return player.set("hp", target.hp-1);
 };
 ```
 
