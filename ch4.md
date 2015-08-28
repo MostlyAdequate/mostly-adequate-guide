@@ -1,9 +1,9 @@
 # Chapter 4: Currying
 
 ## Can't live if livin' is without you
-My Dad once explained how there are certain things one can live without until one acquires them. A microwave is one such thing. Smart phones, another. The older folks among us will remember a fulfilling life sans internet. For me, currying is among this list.
+My Dad once explained how there are certain things one can live without until one acquires them. A microwave is one such thing. Smart phones, another. The older folks among us will remember a fulfilling life sans internet. For me, currying is on this list.
 
-The concept is simple: You can call a function with fewer arguments than it expects. What is returned is a function that takes the remaining arguments.
+The concept is simple: You can call a function with fewer arguments than it expects. It returns a function that takes the remaining arguments.
 
 You can choose to call it all at once or simply feed in each argument piecemeal.
 
@@ -24,27 +24,27 @@ addTen(2);
 // 12
 ```
 
-Here we've made a function `add` that will take one argument and return a function. By calling it, the returned function remembers the first argument from then on via the closure. Calling it all at once is a bit of a pain, however, so we can use a special helper function called `curry` to make defining and calling functions like this easier.
+Here we've made a function `add` that takes one argument and return a function. By calling it, the returned function remembers the first argument from then on via the closure. Calling it with both arguments all at once is a bit of a pain, however, so we can use a special helper function called `curry` to make defining and calling functions like this easier.
 
 Let's setup a few curried functions for our enjoyment.
 
 ```js
 var curry = require('lodash.curry');
 
-var match = curry(function(what, x) {
-  return x.match(what);
+var match = curry(function(what, str) {
+  return str.match(what);
 });
 
-var replace = curry(function(what, replacement, x) {
-  return x.replace(what, replacement);
+var replace = curry(function(what, replacement, str) {
+  return str.replace(what, replacement);
 });
 
-var filter = curry(function(f, xs) {
-  return xs.filter(f);
+var filter = curry(function(f, ary) {
+  return ary.filter(f);
 });
 
-var map = curry(function(f, xs) {
-  return xs.map(f);
+var map = curry(function(f, ary) {
+  return ary.map(f);
 });
 ```
 
@@ -85,12 +85,13 @@ censored("Chocolate Rain");
 // 'Ch*c*l*t* R**n'
 ```
 
-What's being demonstrated here is the ability to "pre-load" a function with an argument or two in order to receive a new function that remembers those arguments.
+What's demonstrated here is the ability to "pre-load" a function with an argument or two in order to receive a new function that remembers those arguments.
 
 I encourage you to `npm install lodash`, copy the code above and have a go at it in the repl. You can also do this in a browser where lodash or ramda is available.
 
 ## More than a pun / special sauce
-Currying is useful for many things. We can make new functions just by giving them some arguments as seen in `hasSpaces`, `findSpaces`, and `censored`.
+
+Currying is useful for many things. We can make new functions just by giving our base functions some arguments as seen in `hasSpaces`, `findSpaces`, and `censored`.
 
 We also have the ability to transform any function that works on single elements into a function that works on arrays simply by wrapping it with `map`:
 
@@ -112,12 +113,16 @@ var allTheChildren = function(elements) {
 
 We typically don't define functions that work on arrays, because we can just call `map(getChildren)` inline. Same with `sort`, `filter`, and other higher order functions[^Higher order function: A function that takes or returns a function].
 
-When we spoke about *pure functions*, we said they take 1 input to 1 output. Currying does exactly this: each single argument returns a new function expecting the remaining arguments. That, old sport, is 1 input to 1 output. No matter if the output is another function - it qualifies as pure. We do allow more than one argument at a time, but this is seen as merely removing the extra `()`'s for convenience.
+When we spoke about *pure functions*, we said they take 1 input to 1 output. Currying does exactly this: each single argument returns a new function expecting the remaining arguments. That, old sport, is 1 input to 1 output.
+
+No matter if the output is another function - it qualifies as pure. We do allow more than one argument at a time, but this is seen as merely removing the extra `()`'s for convenience.
 
 
 ## In summary
 
-Currying is handy and I very much enjoy working with curried functions on a daily basis. It is one tool for the belt that makes functional programming less verbose and tedious. We can make new, useful functions on the fly simply by passing in a few arguments and as a bonus, we've retained the mathematical function definition despite multiple arguments.
+Currying is handy and I very much enjoy working with curried functions on a daily basis. It is a tool for the belt that makes functional programming less verbose and tedious.
+
+We can make new, useful functions on the fly simply by passing in a few arguments and as a bonus, we've retained the mathematical function definition despite multiple arguments.
 
 Let's acquire another essential tool called `compose`.
 
