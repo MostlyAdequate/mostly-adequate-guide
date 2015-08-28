@@ -167,7 +167,7 @@ var withdraw = curry(function(amount, account) {
 });
 
 //  finishTransaction :: Account -> String
-var finishTransaction = compose(remainingBalance, updateLedger);
+var finishTransaction = compose(remainingBalance, updateLedger);  // <- these composed functions are hypothetical, not implemented here... 
 
 //  getTwenty :: Account -> Maybe(String)
 var getTwenty = compose(map(finishTransaction), withdraw(20));
