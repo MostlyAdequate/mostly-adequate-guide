@@ -67,7 +67,7 @@ Container.of("flamethrowers").map(function(s){ return s.toUpperCase() })
 //=> Container("FLAMETHROWERS")
 
 
-Container.of("bombs").map(concat(' away')).map(_.prop('length'))
+Container.of("bombs").map(_.concat(' away')).map(_.prop('length'))
 //=> Container(10)
 ```
 
@@ -162,13 +162,12 @@ Sometimes a function might return a `Maybe(null)` explicitly to signal failure. 
 //  withdraw :: Number -> Account -> Maybe(Account)
 var withdraw = curry(function(amount, account) {
   return account.balance >= amount ?
-    Maybe.of({balance: account.balance - amount})
-    :
-    Maybe.of(null);
+    Maybe.of({balance: account.balance - amount}) :  
+     Maybe.of(null);
 });
 
 //  finishTransaction :: Account -> String
-var finishTransaction = compose(remainingBalance, updateLedger);
+var finishTransaction = compose(remainingBalance, updateLedger);  // <- these composed functions are hypothetical, not implemented here... 
 
 //  getTwenty :: Account -> Maybe(String)
 var getTwenty = compose(map(finishTransaction), withdraw(20));
@@ -532,7 +531,7 @@ Take a moment to consider how linear the control flow is here. We just read bott
 
 Goodness, would you look at that, `Task` has also swallowed up `Either`! It must do so in order to handle futuristic failures since our normal control flow does not apply in the async world. This is all well and good as it provides sufficient and pure error handling out of the box.
 
-Even with `Task`, our `IO` and `Either` functors are not out of a job. Bare with me on a quick example that leans toward the more complex and hypothetical side, but is useful for illustrative purposes.
+Even with `Task`, our `IO` and `Either` functors are not out of a job. Bear with me on a quick example that leans toward the more complex and hypothetical side, but is useful for illustrative purposes.
 
 ```js
 // Postgres.connect :: Url -> IO DbConnection

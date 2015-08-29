@@ -248,7 +248,7 @@ Hey, it's just like the identity property on numbers! If that's not immediately 
 
 So there you have it, a category of types and functions. If this is your first introduction, I imagine you're still a little fuzzy on what a category is and why it's useful. We will build upon this knowledge throughout the book. As of right now, in this chapter, on this line, you can at least see it as providing us with some wisdom regarding composition - namely, the associativity and identity properties.
 
-What are some other categories, you ask? Well, we can define one for directed graphs with nodes being objects, edges being morphisms, and composition just being path concatenation. We can define one for Numbers with `>` as morphisms and 0 as identity[^actually any partial or total order can be a category]. There are heaps of categories, but for the purposes of this book, we'll only concern ourselves with the one defined above. We have sufficiently skimmed the surface and must move on.
+What are some other categories, you ask? Well, we can define one for directed graphs with nodes being objects, edges being morphisms, and composition just being path concatenation. We can define with Numbers as objects and `>=` as morphisms[^actually any partial or total order can be a category]. There are heaps of categories, but for the purposes of this book, we'll only concern ourselves with the one defined above. We have sufficiently skimmed the surface and must move on.
 
 
 ## In Summary
@@ -263,7 +263,6 @@ We are now at a point where it would serve us well to see some of this in practi
 ## Exercises
 
 ```js
-require('../../support');
 var _ = require('ramda');
 var accounting = require('accounting');
   
@@ -294,10 +293,10 @@ var nameOfFirstCar = undefined;
 // Exercise 3:
 // ============
 // Use the helper function _average to refactor averageDollarValue as a composition
-var _average = function(xs) { return reduce(add, 0, xs) / xs.length; }; // <- leave be
+var _average = function(xs) { return _.reduce(_.add, 0, xs) / xs.length; }; // <- leave be
 
 var averageDollarValue = function(cars) {
-  var dollar_values = map(function(c) { return c.dollar_value; }, cars);
+  var dollar_values = _.map(function(c) { return c.dollar_value; }, cars);
   return _average(dollar_values);
 };
 
@@ -306,7 +305,7 @@ var averageDollarValue = function(cars) {
 // ============
 // Write a function: sanitizeNames() using compose that returns a list of lowercase and underscored names: e.g: sanitizeNames(["Hello World"]) //=> ["hello_world"].
 
-var _underscore = replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
+var _underscore = _.replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
 
 var sanitizeNames = undefined;
 
