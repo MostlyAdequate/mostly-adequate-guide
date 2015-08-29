@@ -5,46 +5,46 @@ var curry = _.curry;
 
 inspect = function(x) {
   return (x && x.inspect) ? x.inspect() : x;
-}
+};
 
 toUpperCase = function(x) {
-  return x.toUpperCase()
-}
+  return x.toUpperCase();
+};
 
 // Identity
 Identity = function(x) {
   this.__value = x;
-}
+};
 
 Identity.of = function(x) { return new Identity(x); };
 
 Identity.prototype.map = function(f) {
-  return Identity.of(f(this.__value))
-}
+  return Identity.of(f(this.__value));
+};
 
 Identity.prototype.inspect = function() {
   return 'Identity('+inspect(this.__value)+')';
-}
+};
 
 // Maybe
 Maybe = function(x) {
   this.__value = x;
-}
+};
 
 Maybe.of = function(x) {
   return new Maybe(x);
-}
+};
 
 Maybe.prototype.isNothing = function(f) {
   return (this.__value === null || this.__value === undefined);
-}
+};
 
 Maybe.prototype.map = function(f) {
-  return this.isNothing() ? this : Maybe.of(f(this.__value));
-}
+  return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value));
+};
 
 Maybe.prototype.join = function() {
-  return this.__value;
+  return this.isNothing() ? Maybe.of(null) : this.__value;
 }
 
 Maybe.prototype.inspect = function() {
@@ -118,7 +118,7 @@ IO.prototype.join = function() {
 }
 
 IO.prototype.inspect = function() {
-  return 'IO('+inspect(this.__value)+')';
+  return 'IO('+inspect(this.unsafePerformIO)+')';
 }
 
 unsafePerformIO = function(x) { return x.unsafePerformIO(); }

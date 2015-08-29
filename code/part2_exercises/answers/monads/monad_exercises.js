@@ -27,14 +27,14 @@ var ex1 = _.compose(chain(safeProp('name')), chain(safeProp('street')), safeProp
 
 var getFile = function() {
   return new IO(function(){ return __filename; });
-}
+};
 
 var pureLog = function(x) {
   return new IO(function(){
     console.log(x);
     return 'logged ' + x; // for testing w/o mocks
   });
-}
+};
 
 var ex2 = _.compose(chain(_.compose(pureLog, _.last, split('/'))), getFile);
 
@@ -50,7 +50,7 @@ var getPost = function(i) {
       res({ id: i, title: 'Love them tasks' }); // THE POST
     }, 300);
   });
-}
+};
 
 var getComments = function(i) {
   return new Task(function (rej, res) {
@@ -58,7 +58,7 @@ var getComments = function(i) {
       res([{post_id: i, body: "This book should be illegal"}, {post_id: i, body:"Monads are like smelly shallots"}]);
     }, 300);
   });
-}
+};
 
 var ex3 = _.compose(chain(_.compose(getComments, _.prop('id'))), getPost);
 
@@ -85,7 +85,7 @@ function emailBlast(list) {
 
 var validateEmail = function(x){
   return x.match(/\S+@\S+\.\S+/) ? (new Right(x)) : (new Left('invalid email'));
-}
+};
 
 //  ex4 :: Email -> Either String (IO String)
 var ex4 = _.compose(_.map(_.compose(chain(emailBlast), addToMailingList)), validateEmail);

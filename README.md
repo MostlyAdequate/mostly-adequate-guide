@@ -20,6 +20,39 @@ This is a book on the functional paradigm in general. We'll use the world's most
 
 That said, typed functional languages will, without a doubt, be the best place to code in the style presented by this book. JavaScript will be our means of learning a paradigm, where you apply it is up to you. Luckily, the interfaces are mathematical and, as such, ubiquitous. You'll find yourself at home with swiftz, scalaz, haskell, purescript, and other mathematically inclined environments.
 
+
+# Gitbook (for a better reading experience)
+
+http://drboolean.gitbooks.io/mostly-adequate-guide/
+
+### EPUB
+
+https://www.gitbook.com/download/epub/book/drboolean/mostly-adequate-guide
+
+### Mobi (Kindle)
+
+https://www.gitbook.com/download/mobi/book/drboolean/mostly-adequate-guide
+
+### Do it yourself
+
+```
+git clone https://github.com/DrBoolean/mostly-adequate-guide.git
+
+cd mostly-adequate-guide/
+npm install gitbook-cli -g
+gitbook init
+
+brew update
+brew cask install calibre
+
+gitbook mobi . ./functional.mobi
+```
+
+# Other Languages
+
+* [中文版](https://github.com/llh911001/mostly-adequate-guide-chinese)
+
+
 # Table of Contents
 
 ## Part 1
@@ -56,7 +89,7 @@ That said, typed functional languages will, without a doubt, be the best place t
 
 * [Chapter 7: Hindley-Milner and Me](ch7.md)
   * [What's your type?](ch7.md#whats-your-type)
-  * [Tales from the cryptic](ch7.md#tales-from-cryptic)
+  * [Tales from the cryptic](ch7.md#tales-from-the-cryptic)
   * [Narrowing the possibility](ch7.md#narrowing-the-possibility)
   * [Free as in theorem](ch7.md#free-as-in-theorem)
   * [In Summary](ch7.md#in-summary)

@@ -16,7 +16,9 @@ From the dusty pages of math books, across the vast sea of white papers, amongst
 
 ```js
 //  capitalize :: String -> String
-var capitalize = function(s){ return toUpperCase(head(s)) + toLowerCase(tail(s)); }
+var capitalize = function(s){
+  return toUpperCase(head(s)) + toLowerCase(tail(s));
+}
 
 capitalize("smurf");
 //=> "Smurf"
@@ -63,7 +65,7 @@ var match = curry(function(reg, s){
 });
 ```
 
-Ah yes, grouping the last part in parenthesis reveals more information. Now it is seen a function that takes a `Regex` and returns us a function from `String` to `[String]`. Because of currying, this is indeed the case: give it a `Regex` and we get a function back waiting for its `String` argument. Of course, we don't have to think of it this way, but it is good to understand why the last type is the one returned.
+Ah yes, grouping the last part in parenthesis reveals more information. Now it is seen as a function that takes a `Regex` and returns us a function from `String` to `[String]`. Because of currying, this is indeed the case: give it a `Regex` and we get a function back waiting for its `String` argument. Of course, we don't have to think of it this way, but it is good to understand why the last type is the one returned.
 
 ```js
 //  match :: Regex -> (String -> [String])
@@ -121,7 +123,10 @@ var reduce = curry(function(f, x, xs){
 });
 ```
 
-`reduce` is perhaps, the most expressive of all. It's a tricky one, however, so don't feel inadequate should you struggle with it.
+`reduce` is perhaps, the most expressive of all. It's a tricky one, however, so don't feel inadequate should you struggle with it. For the curious, I'll try to explain in English though working through the signature on your own is much more instructive.
+
+Ahem, here goes nothing....looking at the signature, we see the first argument is a function that expects a `b`, an `a`, and produces a `b`. Where might it get these `a`s and `b`s? Well, the following arguments in the signature are a `b` and an array of `a`s so we can only assume that the `b` and each of those `a`s will be fed in. We also see that the result of the function is a `b` so the thinking here is our final incantation of the passed in function will be our output value. Knowing what reduce does, we can state that the above investigation is accurate.
+
 
 ## Narrowing the possibility
 
@@ -163,6 +168,25 @@ You might think, well that's just common sense. But last I checked, computers do
 The `filter` theorem is similar. It says that if we compose `f` and `p` to check which should be filtered, then actually apply the `f` via `map` (remember filter, will not transform the elements - its signature enforces that `a` will not be touched), it will always be equivalent to mapping our `f` then filtering the result with the `p` predicate.
 
 These are just two examples, but you can apply this reasoning to any polymorphic type signature and it will always hold. In JavaScript, there are some tools available to declare rewrite rules. One might also do this via the `compose` function itself. The fruit is low hanging and the possibilities are endless.
+
+## Constraints
+
+One last thing to note is that we can constrain types to an interface.
+
+```js
+// sort :: Ord a => [a] -> [a]
+```
+
+What we see on the left side of our fat arrow here is the statement of a fact: `a` must be an `Ord`. Or in other words, `a` must implement the `Ord` interface. What is `Ord` and where did it come from? In a typed language it would be a defined interface that says we can order the values. This not only tells us more about the `a` and what our `sort` function is up to, but also restricts the domain. We call these interface declarations *type constraints*.
+
+```js
+// assertEqual :: (Eq a, Show a) => a -> a -> Assertion
+```
+
+Here, we have two constraints: `Eq` and `Show`. Those will ensure that we can check equality of our `a`s and print the difference if they are not equal.
+
+We'll see more examples of constraints and the idea should take more shape in later chapters.
+
 
 ## In Summary
 

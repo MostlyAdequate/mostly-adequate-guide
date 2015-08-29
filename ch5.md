@@ -63,7 +63,7 @@ compose(toUpperCase, compose(head, reverse));
 compose(compose(toUpperCase, head), reverse);
 ```
 
-Since it doesn't matter how we group our calls to `compose`, the result will be the same. That allows use to write a variadic compose and use it as follows:
+Since it doesn't matter how we group our calls to `compose`, the result will be the same. That allows us to write a variadic compose and use it as follows:
 
 ```js
 // previously we'd have to write two composes, but since it's associative, we can give compose as many fn's as we like and let it decide how to group them.
@@ -98,7 +98,7 @@ var loudLastUpper = compose(angry, last);
 // more variations...
 ```
 
-There's no right or wrong answers - we're just plugging our legos together in whatever way we please. Usually it's best to group things in an reusable way like `last` and `angry`. If familiar with Fowler's "[Refactoring][refactoring-book]", one might recognize this process as "[extract method][extract-method-refactor]"...except without all the object state to worry about.
+There's no right or wrong answers - we're just plugging our legos together in whatever way we please. Usually it's best to group things in a reusable way like `last` and `angry`. If familiar with Fowler's "[Refactoring][refactoring-book]", one might recognize this process as "[extract method][extract-method-refactor]"...except without all the object state to worry about.
 
 ## Pointfree
 
@@ -148,7 +148,7 @@ latin(["frog", "eyes"]);
 var latin = compose(map(angry), reverse);
 
 latin(["frog", "eyes"]);
-// ["SEYE!", "GORF!"])
+// ["EYES!", "FROG!"])
 ```
 
 If you are having trouble debugging a composition, we can use this helpful, but impure trace function to see what's going on.
@@ -159,25 +159,25 @@ var trace = curry(function(tag, x){
   return x;
 });
 
-var dasherize = compose(join('-'), replace(/\s{2,}/ig, ' '), split(' '));
+var dasherize = compose(join('-'), toLower, split(' '), replace(/\s{2,}/ig, ' '));
 
-dasherize('the world is a vampire');
-// TypeError: Object the,world,is,a,vampire has no method 'replace'
+dasherize('The world is a vampire');
+// TypeError: Cannot read property 'apply' of undefined
 ```
 
 Something is wrong here, let's `trace`
 
 ```js
-var dasherize = compose(join('-'), replace(/\s{2,}/ig, ' '), trace("after split"), split(' '));
-// after split [ 'the', 'world', 'is', 'a', 'vampire' ]
+var dasherize = compose(join('-'), toLower, trace("after split"), split(' '), replace(/\s{2,}/ig, ' '));
+// after split [ 'The', 'world', 'is', 'a', 'vampire' ]
 ```
 
-Ah! We need to `map` this `replace` since it's working on an array.
+Ah! We need to `map` this `toLower` since it's working on an array.
 
 ```js
-var dasherize = compose(join('-'), map(replace(/\s{2,}/ig, ' ')), split(' '));
+var dasherize = compose(join('-'), map(toLower), split(' '), replace(/\s{2,}/ig, ' '));
 
-dasherize('the world is a vampire');
+dasherize('The world is a vampire');
 
 // 'the-world-is-a-vampire'
 ```
@@ -240,7 +240,7 @@ You might ask yourself "What in the bloody hell is that useful for?". We'll make
 
 ```js
 // identity
-var identity = compose(id, f) == compose(f, id) == f;
+compose(id, f) == compose(f, id) == f;
 // true
 ```
 
@@ -248,7 +248,7 @@ Hey, it's just like the identity property on numbers! If that's not immediately 
 
 So there you have it, a category of types and functions. If this is your first introduction, I imagine you're still a little fuzzy on what a category is and why it's useful. We will build upon this knowledge throughout the book. As of right now, in this chapter, on this line, you can at least see it as providing us with some wisdom regarding composition - namely, the associativity and identity properties.
 
-What are some other categories, you ask? Well, we can define one for directed graphs with nodes being objects, edges being morphisms, and composition just being path concatenation. We can define one for Numbers with `>` as morphisms and 0 as identity[^actually any partial or total order can be a category]. There are heaps of categories, but for the purposes of this book, we'll only concern ourselves with the one defined above. We have sufficiently skimmed the surface and must move on.
+What are some other categories, you ask? Well, we can define one for directed graphs with nodes being objects, edges being morphisms, and composition just being path concatenation. We can define with Numbers as objects and `>=` as morphisms[^actually any partial or total order can be a category]. There are heaps of categories, but for the purposes of this book, we'll only concern ourselves with the one defined above. We have sufficiently skimmed the surface and must move on.
 
 
 ## In Summary
@@ -263,7 +263,6 @@ We are now at a point where it would serve us well to see some of this in practi
 ## Exercises
 
 ```js
-require('../../support');
 var _ = require('ramda');
 var accounting = require('accounting');
   
@@ -294,10 +293,10 @@ var nameOfFirstCar = undefined;
 // Exercise 3:
 // ============
 // Use the helper function _average to refactor averageDollarValue as a composition
-var _average = function(xs) { return reduce(add, 0, xs) / xs.length; }; // <- leave be
+var _average = function(xs) { return _.reduce(_.add, 0, xs) / xs.length; }; // <- leave be
 
 var averageDollarValue = function(cars) {
-  var dollar_values = map(function(c) { return c.dollar_value; }, cars);
+  var dollar_values = _.map(function(c) { return c.dollar_value; }, cars);
   return _average(dollar_values);
 };
 
@@ -306,7 +305,7 @@ var averageDollarValue = function(cars) {
 // ============
 // Write a function: sanitizeNames() using compose that returns a list of lowercase and underscored names: e.g: sanitizeNames(["Hello World"]) //=> ["hello_world"].
 
-var _underscore = replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
+var _underscore = _.replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
 
 var sanitizeNames = undefined;
 

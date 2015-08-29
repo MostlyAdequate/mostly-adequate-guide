@@ -1,4 +1,4 @@
-require('../../support')
+require('../../support');
 var _ = require('ramda');
 var accounting = require('accounting');
   
@@ -14,11 +14,11 @@ var CARS = [
 
 // Exercise 1:
 // ============
-var isLastInStock = _.compose(_.prop('in_stock'), _.last)
+var isLastInStock = _.compose(_.prop('in_stock'), _.last);
 
 // Exercise 2:
 // ============
-var nameOfFirstCar = _.compose(_.prop('name'), _.head)
+var nameOfFirstCar = _.compose(_.prop('name'), _.head);
 
 
 // Exercise 3:
@@ -27,7 +27,7 @@ var nameOfFirstCar = _.compose(_.prop('name'), _.head)
 
 var _average = function(xs) { return reduce(add, 0, xs) / xs.length; }; // <- leave be
 
-var averageDollarValue = _.compose(_average, _.map(_.prop('dollar_value')))
+var averageDollarValue = _.compose(_average, _.map(_.prop('dollar_value')));
 
 
 // Exercise 4:
@@ -36,15 +36,15 @@ var averageDollarValue = _.compose(_average, _.map(_.prop('dollar_value')))
 
 var _underscore = replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
 
-var sanitizeNames = _.map(_.compose(_underscore, toLowerCase, _.prop('name')))
+var sanitizeNames = _.map(_.compose(_underscore, toLowerCase, _.prop('name')));
 
 
 // Bonus 1:
 // ============
 // Refactor availablePrices with compose.
 
-var formatPrice = _.compose(accounting.formatMoney, _.prop('dollar_value'))
-var availablePrices = _.compose(join(', '), map(formatPrice), _.filter(_.prop('in_stock')))
+var formatPrice = _.compose(accounting.formatMoney, _.prop('dollar_value'));
+var availablePrices = _.compose(join(', '), map(formatPrice), _.filter(_.prop('in_stock')));
 
 // Bonus 2:
 // ============
@@ -55,7 +55,7 @@ var append = _.flip(_.concat);
 var fastestCar = _.compose(append(' is the fastest'),
                            _.prop('name'),
                            _.last,
-                           _.sortBy(_.prop('horsepower')))
+                           _.sortBy(_.prop('horsepower')));
 
 module.exports = { CARS: CARS,
                    isLastInStock: isLastInStock,
@@ -64,4 +64,4 @@ module.exports = { CARS: CARS,
                    averageDollarValue: averageDollarValue,
                    availablePrices: availablePrices,
                    sanitizeNames: sanitizeNames
-                 } 
+                 };

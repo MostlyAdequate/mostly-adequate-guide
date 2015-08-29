@@ -13,7 +13,7 @@ For some folks, myself included, it's hard to grasp the concept of declarative c
 ```js
 // imperative
 var makes = [];
-for (i = 0; i < cars.length; i++) { 
+for (i = 0; i < cars.length; i++) {
   makes.push(cars[i].make);
 }
 
@@ -115,7 +115,8 @@ Next we must construct a url to pass to our `Impure.getJSON` function.
 
 ```js
 var url = function (term) {
-  return 'http://api.flickr.com/services/feeds/photos_public.gne?tags=' + term + '&format=json&jsoncallback=?';
+  return 'https://api.flickr.com/services/feeds/photos_public.gne?tags=' +
+    term + '&format=json&jsoncallback=?';
 };
 ```
 
@@ -133,7 +134,7 @@ This calls our `url` function, then passes the string to our `getJSON` function,
 
 <img src="images/console_ss.png"/>
 
-We'd like to construct images out of this json. It looks like the srcs are buried in `items` then each `media`'s `m` property. Bang up job, flickr api crew, `m` plays perfectly to my intuition.
+We'd like to construct images out of this json. It looks like the srcs are buried in `items` then each `media`'s `m` property.
 
 Anyhow, to get at these nested properties we can use a nice universal getter function from ramda called `_.prop()`. Here's a homegrown version so you can see what's happening:
 
@@ -219,7 +220,8 @@ require([
     ////////////////////////////////////////////
 
     var url = function (t) {
-      return 'http://api.flickr.com/services/feeds/photos_public.gne?tags=' + t + '&format=json&jsoncallback=?';
+      return 'http://api.flickr.com/services/feeds/photos_public.gne?tags=' +
+        t + '&format=json&jsoncallback=?';
     };
 
     var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
