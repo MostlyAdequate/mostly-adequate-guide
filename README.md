@@ -108,7 +108,7 @@ gitbook mobi . ./functional.mobi
   * [My chain hits my chest](ch9.md#my-chain-hits-my-chest)
   * [Theory](ch9.md#theory)
   * [In Summary](ch9.md#in-summary)
-[Chapter 10: Applicative Functors](ch10.md)
+* [Chapter 10: Applicative Functors](ch10.md)
   * [Applying Applicatives](ch10.md#applying-applicatives)
   * [Ships in bottles](ch10.md#ships-in-bottles)
   * [Coordination Motivation](ch10.md#coordination-motivation)
