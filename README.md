@@ -108,6 +108,14 @@ gitbook mobi . ./functional.mobi
   * [My chain hits my chest](ch9.md#my-chain-hits-my-chest)
   * [Theory](ch9.md#theory)
   * [In Summary](ch9.md#in-summary)
+[Chapter 10: Applicative Functors](ch10.md)
+  * [Applying Applicatives](ch10.md#applying-applicatives)
+  * [Ships in bottles](ch10.md#ships-in-bottles)
+  * [Coordination Motivation](ch10.md#coordination-motivation)
+  * [Bro, do you even lift?](ch10.md#bro-do-you-even-lift)
+  * [Free can openers](ch10.md#free-can-openers)
+  * [Laws](ch10.md#laws)
+  * [In Summary](ch10.md#in-summary)
 
 
 # Plans for the future

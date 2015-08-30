@@ -1,4 +1,4 @@
-require('../../support_');
+require('../../support');
 var E = require('./applicative_exercises');
 var _ = require('ramda');
 var assert = require("chai").assert

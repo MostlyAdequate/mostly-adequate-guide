@@ -35,7 +35,7 @@ Maybe.of = function(x) {
   return new Maybe(x);
 };
 
-Maybe.prototype.isNothing = function(f) {
+Maybe.prototype.isNothing = function() {
   return (this.__value === null || this.__value === undefined);
 };
 
@@ -77,7 +77,7 @@ Left.of = function(x) {
 
 Left.prototype.map = function(f) { return this; }
 Left.prototype.ap = function(other) { return this; }
-Left.prototype.join = function() { return this; }
+Left.prototype.join = function() { return this; } 
 Left.prototype.chain = function() { return this; }
 Left.prototype.inspect = function() {
   return 'Left('+inspect(this.__value)+')';
@@ -97,19 +97,15 @@ Right.prototype.map = function(f) {
   return Right.of(f(this.__value));
 }
 
-Right.prototype.join = function() {
-  return this.__value;
-}
-
 Right.prototype.chain = function(f) {
-  return f(this.__value);
-}
+  return this.map(f).join();
+};
 
 Right.prototype.ap = function(other) {
   return this.chain(function(f) {
     return other.map(f);
   });
-}
+};
 
 Right.prototype.join = function() {
   return this.__value;
@@ -138,25 +134,28 @@ IO.prototype.map = function(f) {
   return new IO(_.compose(f, this.unsafePerformIO));
 }
 
-IO.prototype.join = function() {
-  return this.unsafePerformIO();
-}
-
 IO.prototype.chain = function(f) {
   return this.map(f).join();
-}
+};
 
 IO.prototype.ap = function(a) {
   return this.chain(function(f) {
     return a.map(f);
   });
+};
+
+IO.prototype.join = function() {
+  return this.unsafePerformIO();
 }
 
 IO.prototype.inspect = function() {
-  return 'IO('+inspect(this.unsafePerformIO)+')';
+  return 'IO('+inspect(this.__value)+')';
 }
 
 unsafePerformIO = function(x) { return x.unsafePerformIO(); }
+
+Task.prototype.join = function(){ return this.chain(_.identity); }
+
 
 either = curry(function(f, g, e) {
   switch(e.constructor) {
@@ -180,5 +179,93 @@ liftA3 = curry(function(f, a1, a2, a3){
   return a1.map(f).ap(a2).ap(a3);
 });
 
+concat = curry(function(x, y) {
+  return x.concat(y);
+});
 
-Task.prototype.join = function(){ return this.chain(_.identity); }
+mconcat = function(xs) {
+  if(!xs[0]) return xs;
+  return xs.reduce(concat, xs[0].empty());
+};
+
+
+// Enhance, enhance.
+(function() {
+  var _K = function(x) { return function(y) { return x; } };
+
+  var _fmap = function(g) {
+    var f = this;
+    return function(x) { return g(f(x)) };
+  };
+
+  Object.defineProperty(Function.prototype, 'map',{
+      value: _fmap,
+      writable: true,
+      configurable: true,
+      enumerable: false
+  });
+
+  var _concat = function(g) {
+    var f = this;
+    return function() {
+      return f.apply(this, arguments).concat(g.apply(this, arguments))
+    }
+  };
+
+  Object.defineProperty(Function.prototype, 'concat',{
+      value: _concat,
+      writable: true,
+      configurable: true,
+      enumerable: false
+  });
+
+  var _empty = function() {
+    return _K({ concat: function(g) { return g.empty().concat(g); } });
+  };
+
+  Object.defineProperty(Function.prototype, 'empty',{
+      value: _empty,
+      writable: true,
+      configurable: true,
+      enumerable: false
+  });
+
+  Object.defineProperty(Function.prototype, 'of',{
+      value: _K,
+      writable: true,
+      configurable: true,
+      enumerable: false
+  });
+
+  var _ap = function(g) {
+    var f = this;
+    return function(x) {
+      return f(x)(g(x));
+    }
+  };
+
+  Object.defineProperty(Function.prototype, 'ap',{
+      value: _ap,
+      writable: true,
+      configurable: true,
+      enumerable: false
+  });
+
+
+  //empty String
+  Object.defineProperty(String.prototype, 'empty',{
+      value: function(){ return '' },
+      writable: true,
+      configurable: true,
+      enumerable: false
+  });
+
+  //empty Array
+  Object.defineProperty(Array.prototype, 'empty',{
+      value: function(){ return [] },
+      writable: true,
+      configurable: true,
+      enumerable: false
+  });
+})();
+

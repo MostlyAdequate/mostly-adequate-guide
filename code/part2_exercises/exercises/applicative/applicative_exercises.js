@@ -37,7 +37,7 @@ var ex3 = undefined;
 
 // Exercise 4
 // ==========
-// Write a function that gets both player1 and player2 from the cache and starts the game
+// Write an IO that gets both player1 and player2 from the cache and starts the game
 localStorage.player1 = "toby";
 localStorage.player2 = "sally";
 

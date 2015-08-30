@@ -1,4 +1,4 @@
-require('../../support_');
+require('../../support');
 var Task = require('data.task');
 var _ = require('ramda');
 
@@ -40,7 +40,7 @@ var ex3 = Task.of(render).ap(getPost(2)).ap(getComments(2));
 
 // Exercise 4
 // ==========
-// Write a function that gets both player1 and player2 from the cache and starts the game
+// Write an IO that gets both player1 and player2 from the cache and starts the game
 localStorage.player1 = "toby";
 localStorage.player2 = "sally";
 
