@@ -50,7 +50,10 @@ gitbook mobi . ./functional.mobi
 
 # Other Languages
 
-* [中文版](https://github.com/llh911001/mostly-adequate-guide-chinese)
+* [中文版](https://github.com/llh911001/mostly-adequate-guide-chinese) by Linghao Li @llh911001
+* [Portuguese](https://github.com/MostlyAdequate/mostly-adequate-guide-pt-BR) by Palmer Oliveira @expalmer
+* [Russian](https://github.com/MostlyAdequate/mostly-adequate-guide-ru) by Maksim Filippov @maksimf
+* [French](https://github.com/MostlyAdequate/mostly-adequate-guide-fr) by Benkort Matthias @KtorZ
 
 
 # Table of Contents
