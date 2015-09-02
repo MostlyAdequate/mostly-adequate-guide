@@ -51,6 +51,7 @@ gitbook mobi . ./functional.mobi
 # Other Languages
 
 * [中文版](https://github.com/llh911001/mostly-adequate-guide-chinese)
+* [Русский](https://github.com/MostlyAdequate/mostly-adequate-guide-ru)
 
 
 # Table of Contents
