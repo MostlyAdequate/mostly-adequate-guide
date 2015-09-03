@@ -1,5 +1,7 @@
 <img src="images/cover.png"/>
 
+[![ProjectTalk](http://www.projecttalk.io/images/gh_badge-3e578a9f437f841de7446bab9a49d103.svg?vsn=d)] (http://www.projecttalk.io/boards/DrBoolean%2Fmostly-adequate-guide?utm_campaign=gh-badge&utm_medium=badge&utm_source=github) 
+
 # About this book
 
 This is a book on the functional paradigm in general. We'll use the world's most popular functional programming language: JavaScript. Some may feel this is a poor choice as it's against the grain of the current culture which, at the moment, feels predominately imperative. However, I believe it is the best way to learn FP for several reasons:
