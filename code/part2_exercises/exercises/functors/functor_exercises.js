@@ -85,7 +85,7 @@ var ex7 = function(x) {
 
 // Exercise 8
 // ==========
-// Use ex7 above and Either as a functor to save the user if they are valid or return the error message string. Remember either's two arguments must return the same type.
+// Use ex7 above and either as a functor to save the user if they are valid or return the error message string. Remember either's two arguments must return the same type.
 
 var save = function(x) {
   return new IO(function() {
