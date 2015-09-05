@@ -232,12 +232,14 @@ Since pure functions always return the same output given the same input, we can 
 
 ```js
 
+var Immutable = require("immutable");
+
 var decrementHP = function(player) {
-  return player.set("hp", player.hp-1);
+  return player.set("hp", player.get("hp")-1);
 };
 
 var isSameTeam = function(player1, player2) {
-  return player1.team === player2.team;
+  return player1.get("team") === player2.get("team");
 };
 
 var punch = function(player, target) {
@@ -261,7 +263,7 @@ First we'll inline the function `isSameTeam`.
 
 ```js
 var punch = function(player, target) {
-  if(player.team === target.team) {
+  if(player.get("team") === target.get("team")) {
     return target;
   } else {
     return decrementHP(target);
@@ -294,7 +296,7 @@ And if we inline `decrementHP`, we see that, in this case, punch becomes a call 
 
 ```js
 var punch = function(player, target) {
-  return target.set("hp", target.hp-1);
+  return target.set("hp", target.get("hp")-1);
 };
 ```
 
