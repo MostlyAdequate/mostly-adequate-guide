@@ -552,7 +552,7 @@ var dbUrl = function(c) {
 var connectDb = compose(map(Postgres.connect), dbUrl);
 
 //  getConfig :: Filename -> Task Error (Either Error (IO DbConnection))
-var getConfig = compose(map(compose(connectDB, JSON.parse)), readFile);
+var getConfig = compose(map(compose(connectDb, JSON.parse)), readFile);
 
 
 // Impure calling code
