@@ -460,7 +460,7 @@ The internals are a bit too complicated to spill out all over the page here so w
 
 var fs = require('fs');
 
-//  readFile :: String -> Task(Error, JSON)
+//  readFile :: String -> Task Error String
 var readFile = function(filename) {
   return new Task(function(reject, result) {
     fs.readFile(filename, 'utf-8', function(err, data) {
@@ -477,7 +477,7 @@ readFile("metamorphosis").map(split('\n')).map(head);
 // jQuery getJSON example:
 //========================
 
-//  getJSON :: String -> {} -> Task(Error, JSON)
+//  getJSON :: String -> {} -> Task Error JSON
 var getJSON = curry(function(url, params) {
   return new Task(function(reject, result) {
     $.getJSON(url, params, result).fail(reject);
@@ -511,7 +511,7 @@ var blogPage = Handlebars.compile(blogTemplate);
 //  renderPage :: Posts -> HTML
 var renderPage = compose(blogPage, sortBy('date'));
 
-//  blog :: Params -> Task(Error, HTML)
+//  blog :: Params -> Task Error HTML
 var blog = compose(map(renderPage), getJSON('/posts'));
 
 
@@ -622,10 +622,10 @@ We can also visualize the mapping of a morphism and its corresponding objects wi
 In addition to visualizing the mapped morphism from one category to another under the functor `F`, we see that the diagram commutes, which is to say, if you follow the arrows each route produces the same result. The different routes means different behavior, but we always end at the same type. This formalism gives us principled ways to reason about our code - we can boldly apply formulas without having to parse and examine each individual scenario. Let's take a concrete example.
 
 ```js
-//  topRoute :: String -> Maybe(String)
+//  topRoute :: String -> Maybe String
 var topRoute = compose(Maybe.of, reverse);
 
-//  bottomRoute :: String -> Maybe(String)
+//  bottomRoute :: String -> Maybe String
 var bottomRoute = compose(map(reverse), Maybe.of);
 
 
