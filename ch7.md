@@ -28,7 +28,7 @@ Here, `capitalize` takes a `String` and returns a `String`. Never mind the imple
 
 In HM, functions are written as `a -> b` where `a` and `b` are variables for any type. So the signatures for `capitalize` can be read as "a function from `String` to `String`". In other words, it takes a `String` as its input and returns a `String` as its output.
 
-Let's look some more function signatures:
+Let's look at some more function signatures:
 
 ```js
 //  strLength :: String -> Number
