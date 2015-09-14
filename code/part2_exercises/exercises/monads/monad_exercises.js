@@ -78,7 +78,7 @@ var addToMailingList = (function(list){
   }
 })([]);
 
-//       emailBlast :: [Email] -> IO String
+//  emailBlast :: [Email] -> IO String
 function emailBlast(list) {
   return new IO(function(){
     return 'emailed: ' + list.join(','); // for testing w/o mocks
