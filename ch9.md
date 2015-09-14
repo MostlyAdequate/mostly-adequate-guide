@@ -40,14 +40,48 @@ To avoid the `new` keyword, there are several standard JavaScript tricks or libr
 You see, in addition to space burritos (if you've heard the rumors), monads are like onions. Allow me to demonstrate with a common situation:
 
 ```js
-//  cat :: IO (IO String)
+// Support
+// ===========================
+var fs = require('fs');
+
+//  readFile :: String -> IO String
+var readFile = function(filename) {
+  return new IO(function() {
+    return fs.readFileSync(filename, 'utf-8');
+  });
+};
+
+//  print :: String -> IO String
+var print = function(x) {
+  return new IO(function() {
+    console.log(x);
+    return x;
+  });
+}
+
+// Example
+// ===========================
+//  cat :: String -> IO (IO String)
 var cat = compose(map(print), readFile);
 
 cat(".git/config")
 // IO(IO("[core]\nrepositoryformatversion = 0\n"))
 ```
 
-What we've got here is an `IO` trapped inside another `IO`. To work with it, we must `map(map(f))` and to observe the effect, we must `unsafePerformIO().unsafePerformIO()`. While it is nice to see that we have two effects packaged up and ready to go in our application, it feels a bit like working in two hazmat suits and we end up with an uncomfortably awkward API. Let's look at another situation:
+What we've got here is an `IO` trapped inside another `IO` because `print` introduced a second `IO` during our `map`. To continue working with our string, we must `map(map(f))` and to observe the effect, we must `unsafePerformIO().unsafePerformIO()`.
+
+```js
+//  cat :: String -> IO (IO String)
+var cat = compose(map(print), readFile);
+
+//  catFirstChar :: String -> IO (IO String)
+var catFirstChar = compose(map(map(head)), cat);
+
+catFirstChar(".git/config")
+// IO(IO("["))
+```
+
+While it is nice to see that we have two effects packaged up and ready to go in our application, it feels a bit like working in two hazmat suits and we end up with an uncomfortably awkward API. Let's look at another situation:
 
 ```js
 //  safeProp :: Key -> {Key: a} -> Maybe a
