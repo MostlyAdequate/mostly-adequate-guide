@@ -465,7 +465,7 @@ var ex3 = undefined;
 
 // Exercise 4
 // ==========
-// Use validateEmail, addToMailingList, and emailBlast to implmeent ex4's type
+// Use validateEmail, addToMailingList, and emailBlast to implement ex4's type
 // signature.
 
 //  addToMailingList :: Email -> IO([Email])
