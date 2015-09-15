@@ -4,7 +4,7 @@ var _ = require('ramda');
 
 // Exercise 1
 // ==========
-// Use safeProp and map/join or chain to safetly get the street name when given a user
+// Use safeProp and map/join or chain to safely get the street name when given a user
 
 var safeProp = _.curry(function (x, o) { return Maybe.of(o[x]); });
 var user = {
@@ -65,7 +65,7 @@ var ex3 = undefined;
 
 // Exercise 4
 // ==========
-// Use validateEmail, addToMailingList and emailBlast to implmeent ex4's type signature.
+// Use validateEmail, addToMailingList and emailBlast to implement ex4's type signature.
 // It should safely add a new subscriber to the list, then email everyone with this happy news.
 
 //  addToMailingList :: Email -> IO [Email]
@@ -78,7 +78,7 @@ var addToMailingList = (function(list){
   }
 })([]);
 
-//       emailBlast :: [Email] -> IO String
+//  emailBlast :: [Email] -> IO String
 function emailBlast(list) {
   return new IO(function(){
     return 'emailed: ' + list.join(','); // for testing w/o mocks
