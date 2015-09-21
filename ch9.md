@@ -341,7 +341,7 @@ The first law we'll look at is associativity, but perhaps not in the way you're 
   compose(join, map(join)) == compose(join, join)
 ```
 
-These laws get at the nested nature of monads so associativity focuses on joining the inner or outer types first to acheive the same result. A picture might be more instructive:
+These laws get at the nested nature of monads so associativity focuses on joining the inner or outer types first to achieve the same result. A picture might be more instructive:
 
 <img src="images/monad_associativity.png" alt="monad associativity law" />
 
