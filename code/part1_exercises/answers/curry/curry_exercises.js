@@ -27,7 +27,7 @@ var filterQs = filter(match(/q/i));
 
 var _keepHighest = function(x,y){ return x >= y ? x : y; }; // <- leave be
 
-var max = reduce(_keepHighest, 0);
+var max = reduce(_keepHighest, -Infinity);
 
 
 // Bonus 1:
