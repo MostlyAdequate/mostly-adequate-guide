@@ -316,13 +316,13 @@ For contrast, let's look at the standard imperative way to pull this off:
 ```js
 //  upload :: String -> (String -> a) -> Void
 var upload = function(filename, callback) {
-  if(!filename) {
+  if (!filename) {
     throw "You need a filename!";
   } else {
     readFile(filename, function(err, contents) {
-      if(err) throw err;
+      if (err) throw err;
       httpPost(contents, function(err, json) {
-        if(err) throw err;
+        if (err) throw err;
         callback(json);
       });
     });

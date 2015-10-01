@@ -243,7 +243,7 @@ var isSameTeam = function(player1, player2) {
 };
 
 var punch = function(player, target) {
-  if(isSameTeam(player, target)) {
+  if (isSameTeam(player, target)) {
     return target;
   } else {
     return decrementHP(target);
@@ -263,7 +263,7 @@ First we'll inline the function `isSameTeam`.
 
 ```js
 var punch = function(player, target) {
-  if(player.get("team") === target.get("team")) {
+  if (player.get("team") === target.get("team")) {
     return target;
   } else {
     return decrementHP(target);
@@ -275,7 +275,7 @@ Since our data is immutable, we can simply replace the teams with their actual v
 
 ```js
 var punch = function(player, target) {
-  if("red" === "green") {
+  if ("red" === "green") {
     return target;
   } else {
     return decrementHP(target);

@@ -167,7 +167,7 @@ var withdraw = curry(function(amount, account) {
 });
 
 //  finishTransaction :: Account -> String
-var finishTransaction = compose(remainingBalance, updateLedger);  // <- these composed functions are hypothetical, not implemented here... 
+var finishTransaction = compose(remainingBalance, updateLedger);  // <- these composed functions are hypothetical, not implemented here...
 
 //  getTwenty :: Account -> Maybe(String)
 var getTwenty = compose(map(finishTransaction), withdraw(20));
@@ -210,7 +210,7 @@ getTwenty({ balance: 10.00});
 // "You're broke!"
 ```
 
-We will now either return a static value (of the same type that `finishTransaction` returns) or continue on merrily finishing up the transaction sans `Maybe`. With `maybe`, we are witnessing the equivalent of an `if/else` statement whereas with `map`, the imperative analog would be: `if(x !== null) { return f(x) }`.
+We will now either return a static value (of the same type that `finishTransaction` returns) or continue on merrily finishing up the transaction sans `Maybe`. With `maybe`, we are witnessing the equivalent of an `if/else` statement whereas with `map`, the imperative analog would be: `if (x !== null) { return f(x) }`.
 
 The introduction of `Maybe` can cause some initial discomfort. Users of Swift and Scala will know what I mean as it's baked right into the core libraries under the guise of `Option(al)`. When pushed to deal with `null` checks all the time (and there are times we know with absolute certainty the value exists), most people can't help, but feel it's a tad laborious. However, with time, it will become second nature and you'll likely appreciate the safety. After all, most of the time it will prevent cut corners and save our hides.
 
@@ -276,7 +276,7 @@ var moment = require('moment');
 //  getAge :: Date -> User -> Either(String, Number)
 var getAge = curry(function(now, user) {
   var birthdate = moment(user.birthdate, 'YYYY-MM-DD');
-  if(!birthdate.isValid()) return Left.of("Birth date could not be parsed");
+  if (!birthdate.isValid()) return Left.of("Birth date could not be parsed");
   return Right.of(now.diff(birthdate, 'years'));
 });
 
