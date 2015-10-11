@@ -601,10 +601,10 @@ var compLaw1 = compose(map(concat(" world")), map(concat(" cruel")));
 var compLaw2 = map(compose(concat(" world"), concat(" cruel")));
 
 compLaw1(Container.of("Goodbye"));
-//=> Container('Goodbye cruel world')
+//=> Container(' world cruelGoodbye')
 
 compLaw2(Container.of("Goodbye"));
-//=> Container('Goodbye cruel world')
+//=> Container(' world cruelGoodbye')
 ```
 
 In category theory, functors take the objects and morphisms of a category and map them to a different category. By definition, this new category must have an identity and the ability to compose morphisms, but we needn't check because the aforementioned laws ensure these are preserved.
