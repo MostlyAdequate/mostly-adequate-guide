@@ -426,7 +426,7 @@ var findParam = function(key) {
 
 // run it by calling __value()!
 findParam("searchTerm").__value();
-// Maybe(['searchTerm', 'wafflehouse'])
+// Maybe([['searchTerm', 'wafflehouse']])
 ```
 
 Our library keeps its hands clean by wrapping `url` in an `IO` and passing the buck to the caller. You might have also noticed that we have stacked our containers; it's perfectly reasonable to have a `IO(Maybe([x]))`, which is three functors deep[^`Array` is most definitely a mappable container type] and exceptionally expressive.
