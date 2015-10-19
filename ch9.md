@@ -300,14 +300,14 @@ I'd like to swing the fiery monadic sword for a moment to exhibit the power of p
 Let's read a file, then upload it directly afterward:
 
 ```js
-// readFile :: Filename -> Either String (Future Error String)
-// httpPost :: String -> Future Error JSON
+// readFile :: Filename -> Either String (Task Error String)
+// httpPost :: String -> Task Error JSON
 
-//  upload :: String -> Either String (Future Error JSON)
+//  upload :: String -> Either String (Task Error JSON)
 var upload = compose(map(chain(httpPost('/uploads'))), readFile);
 ```
 
-Here, we are branching our code several times. Looking at the type signatures I can see that we protect against 3 errors - `readFile` uses `Either` to validate the input (perhaps ensuring the filename is present), `readFile` may error when accessing the file as expressed in the first type parameter of `Future`, and the upload may fail for whatever reason which is expressed by the `Future` in `httpPost`. We casually pull off two nested, sequential asynchronous actions with `chain`.
+Here, we are branching our code several times. Looking at the type signatures I can see that we protect against 3 errors - `readFile` uses `Either` to validate the input (perhaps ensuring the filename is present), `readFile` may error when accessing the file as expressed in the first type parameter of `Task`, and the upload may fail for whatever reason which is expressed by the `Error` in `httpPost`. We casually pull off two nested, sequential asynchronous actions with `chain`.
 
 All of this is achieved in one linear left to right flow. This is all pure and declarative. It holds equational reasoning and reliable properties. We aren't forced to add needless and confusing variable names. Our `upload` function is written against generic interfaces and not specific one-off apis. It's one bloody line for goodness sake.
 
