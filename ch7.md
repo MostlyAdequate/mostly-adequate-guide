@@ -130,7 +130,7 @@ Ahem, here goes nothing....looking at the signature, we see the first argument i
 
 ## Narrowing the possibility
 
-Once a type variable is introduced, there emerges a curious property called *parametricity*[^http://en.wikipedia.org/wiki/Parametricity]. This property states that a function will *act on all types in a uniform manner*. Let's investigate:
+Once a type variable is introduced, there emerges a curious property called *parametricity*(http://en.wikipedia.org/wiki/Parametricity). This property states that a function will *act on all types in a uniform manner*. Let's investigate:
 
 ```js
 // head :: [a] -> a

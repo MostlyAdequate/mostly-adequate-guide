@@ -1,7 +1,7 @@
 # Chapter 2: First Class Functions
 
 ## A quick review
-When we say functions are "first class", we mean they are just like everyone else... so normal class[^coach?]. We can treat functions like any other data type and there is nothing particularly special about them - store them in arrays, pass them around, assign them to variables, what have you.
+When we say functions are "first class", we mean they are just like everyone else... so normal class(coach?). We can treat functions like any other data type and there is nothing particularly special about them - store them in arrays, pass them around, assign them to variables, what have you.
 
 That is JavaScript 101, but worth a mention as a quick code search on github will show the collective evasion, or perhaps widespread ignorance of the concept. Shall we go for a feigned example? We shall.
 

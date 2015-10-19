@@ -103,7 +103,7 @@ var getChildren = function(x) {
 var allTheChildren = map(getChildren);
 ```
 
-Giving a function fewer arguments than it expects is typically called *partial application*. Partially applying a function can remove a lot of boiler plate code. Consider what the above `allTheChildren` function would be with the uncurried `map` from lodash[^note the arguments are in a different order]:
+Giving a function fewer arguments than it expects is typically called *partial application*. Partially applying a function can remove a lot of boiler plate code. Consider what the above `allTheChildren` function would be with the uncurried `map` from lodash(note the arguments are in a different order):
 
 ```js
 var allTheChildren = function(elements) {
@@ -111,7 +111,7 @@ var allTheChildren = function(elements) {
 };
 ```
 
-We typically don't define functions that work on arrays, because we can just call `map(getChildren)` inline. Same with `sort`, `filter`, and other higher order functions[^Higher order function: A function that takes or returns a function].
+We typically don't define functions that work on arrays, because we can just call `map(getChildren)` inline. Same with `sort`, `filter`, and other higher order functions(Higher order function: A function that takes or returns a function).
 
 When we spoke about *pure functions*, we said they take 1 input to 1 output. Currying does exactly this: each single argument returns a new function expecting the remaining arguments. That, old sport, is 1 input to 1 output.
 

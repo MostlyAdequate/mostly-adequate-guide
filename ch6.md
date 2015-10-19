@@ -120,7 +120,7 @@ var url = function (term) {
 };
 ```
 
-There are fancy and overly complex ways of writing `url` pointfree using monoids[^we'll learn about these later] or combinators. We've chosen to stick with a readable version and assemble this string in the normal pointful fashion.
+There are fancy and overly complex ways of writing `url` pointfree using monoids(we'll learn about these later) or combinators. We've chosen to stick with a readable version and assemble this string in the normal pointful fashion.
 
 Let's write an app function that makes the call and places the contents on the screen.
 
