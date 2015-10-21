@@ -60,7 +60,7 @@ var ex4 = undefined;
 
 function getPost(i) {
   return new Task(function (rej, res) {
-    setTimeout(function () { res({ id: i, title: 'Love them tasks' }); }, 300);
+    setTimeout(function () { res({ id: i, title: 'Love them futures' }); }, 300);
   });
 }
 
