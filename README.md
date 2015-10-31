@@ -37,7 +37,7 @@ npm install gitbook-cli -g
 gitbook init
 
 brew update
-brew cask install calibre
+brew install Caskroom/cask/calibre
 
 gitbook mobi . ./functional.mobi
 ```
