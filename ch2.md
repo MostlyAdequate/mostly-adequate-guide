@@ -1,9 +1,9 @@
 # Chapter 2: First Class Functions
 
 ## A quick review
-When we say functions are "first class", we mean they are just like everyone else... so normal class(coach?). We can treat functions like any other data type and there is nothing particularly special about them - store them in arrays, pass them around, assign them to variables, what have you.
+When we say functions are "first class", we mean they are just like everyone else... so normal class (coach?). We can treat functions like any other data type and there is nothing particularly special about them - they may be stored in arrays, passed around, assigned to variables, what have you.
 
-That is JavaScript 101, but worth a mention as a quick code search on github will show the collective evasion, or perhaps widespread ignorance of the concept. Shall we go for a feigned example? We shall.
+That is JavaScript 101, but worth mentioning as a quick code search on github will show the collective evasion, or perhaps widespread ignorance of the concept. Shall we go for a feigned example? We shall.
 
 ```js
 var hi = function(name){
@@ -42,7 +42,7 @@ In other words, `hi` is already a function that expects one argument, why place 
 
 It is obnoxiously verbose and, as it happens, bad practice to surround a function with another function merely to delay evaluation. (We'll see why in a moment, but it has to do with maintenance.)
 
-A solid understanding of this is critical before moving on, so let's see a few more fun examples excavated from npm modules.
+A solid understanding of this is critical before moving on, so let's examine a few more fun examples excavated from npm modules.
 
 ```js
 // ignorant
@@ -169,7 +169,7 @@ var compact = function(xs) {
 };
 ```
 
-By naming things, we've seemingly tied ourselves to specific data (in this case `articles`). This happens quite a bit and is a source of much reinvention.
+By using specific naming, we've seemingly tied ourselves to specific data (in this case `articles`). This happens quite a bit and is a source of much reinvention.
 
 I must mention that, just like with Object-Oriented code, you must be aware of `this` coming to bite you in the jugular. If an underlying function uses `this` and we call it first class, we are subject to this leaky abstraction's wrath.
 
