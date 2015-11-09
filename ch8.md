@@ -379,7 +379,7 @@ IO.prototype.map = function(f) {
 Let's see it in use:
 
 ```js
-//  io_window_ :: IO Window
+//  io_window :: IO Window
 var io_window = new IO(function(){ return window; });
 
 io_window.map(function(win){ return win.innerWidth });
