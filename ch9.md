@@ -40,14 +40,48 @@ To avoid the `new` keyword, there are several standard JavaScript tricks or libr
 You see, in addition to space burritos (if you've heard the rumors), monads are like onions. Allow me to demonstrate with a common situation:
 
 ```js
-//  cat :: IO (IO String)
+// Support
+// ===========================
+var fs = require('fs');
+
+//  readFile :: String -> IO String
+var readFile = function(filename) {
+  return new IO(function() {
+    return fs.readFileSync(filename, 'utf-8');
+  });
+};
+
+//  print :: String -> IO String
+var print = function(x) {
+  return new IO(function() {
+    console.log(x);
+    return x;
+  });
+}
+
+// Example
+// ===========================
+//  cat :: String -> IO (IO String)
 var cat = compose(map(print), readFile);
 
 cat(".git/config")
 // IO(IO("[core]\nrepositoryformatversion = 0\n"))
 ```
 
-What we've got here is an `IO` trapped inside another `IO`. To work with it, we must `map(map(f))` and to observe the effect, we must `unsafePerformIO().unsafePerformIO()`. While it is nice to see that we have two effects packaged up and ready to go in our application, it feels a bit like working in two hazmat suits and we end up with an uncomfortably awkward API. Let's look at another situation:
+What we've got here is an `IO` trapped inside another `IO` because `print` introduced a second `IO` during our `map`. To continue working with our string, we must `map(map(f))` and to observe the effect, we must `unsafePerformIO().unsafePerformIO()`.
+
+```js
+//  cat :: String -> IO (IO String)
+var cat = compose(map(print), readFile);
+
+//  catFirstChar :: String -> IO (IO String)
+var catFirstChar = compose(map(map(head)), cat);
+
+catFirstChar(".git/config")
+// IO(IO("["))
+```
+
+While it is nice to see that we have two effects packaged up and ready to go in our application, it feels a bit like working in two hazmat suits and we end up with an uncomfortably awkward API. Let's look at another situation:
 
 ```js
 //  safeProp :: Key -> {Key: a} -> Maybe a
@@ -266,14 +300,14 @@ I'd like to swing the fiery monadic sword for a moment to exhibit the power of p
 Let's read a file, then upload it directly afterward:
 
 ```js
-// readFile :: Filename -> Either String (Future Error String)
-// httpPost :: String -> Future Error JSON
+// readFile :: Filename -> Either String (Task Error String)
+// httpPost :: String -> Task Error JSON
 
-//  upload :: String -> Either String (Future Error JSON)
+//  upload :: String -> Either String (Task Error JSON)
 var upload = compose(map(chain(httpPost('/uploads'))), readFile);
 ```
 
-Here, we are branching our code several times. Looking at the type signatures I can see that we protect against 3 errors - `readFile` uses `Either` to validate the input (perhaps ensuring the filename is present), `readFile` may error when accessing the file as expressed in the first type parameter of `Future`, and the upload may fail for whatever reason which is expressed by the `Future` in `httpPost`. We casually pull off two nested, sequential asynchronous actions with `chain`.
+Here, we are branching our code several times. Looking at the type signatures I can see that we protect against 3 errors - `readFile` uses `Either` to validate the input (perhaps ensuring the filename is present), `readFile` may error when accessing the file as expressed in the first type parameter of `Task`, and the upload may fail for whatever reason which is expressed by the `Error` in `httpPost`. We casually pull off two nested, sequential asynchronous actions with `chain`.
 
 All of this is achieved in one linear left to right flow. This is all pure and declarative. It holds equational reasoning and reliable properties. We aren't forced to add needless and confusing variable names. Our `upload` function is written against generic interfaces and not specific one-off apis. It's one bloody line for goodness sake.
 
@@ -282,13 +316,13 @@ For contrast, let's look at the standard imperative way to pull this off:
 ```js
 //  upload :: String -> (String -> a) -> Void
 var upload = function(filename, callback) {
-  if(!filename) {
+  if (!filename) {
     throw "You need a filename!";
   } else {
     readFile(filename, function(err, contents) {
-      if(err) throw err;
+      if (err) throw err;
       httpPost(contents, function(err, json) {
-        if(err) throw err;
+        if (err) throw err;
         callback(json);
       });
     });
@@ -307,7 +341,7 @@ The first law we'll look at is associativity, but perhaps not in the way you're 
   compose(join, map(join)) == compose(join, join)
 ```
 
-These laws get at the nested nature of monads so associativity focuses on joining the inner or outer types first to acheive the same result. A picture might be more instructive:
+These laws get at the nested nature of monads so associativity focuses on joining the inner or outer types first to achieve the same result. A picture might be more instructive:
 
 <img src="images/monad_associativity.png" alt="monad associativity law" />
 

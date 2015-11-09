@@ -1,7 +1,5 @@
 # Summary
 
-## Part 1
-
 * [Chapter 1: What ever are we doing?](ch1.md)
   * [Introductions](ch1.md#introductions)
   * [A brief encounter](ch1.md#a-brief-encounter)
@@ -29,9 +27,6 @@
   * [A flickr of functional programming](ch6.md#a-flickr-of-functional-programming)
   * [A Principled Refactor](ch6.md#a-principled-refactor)
   * [In Summary](ch6.md#in-summary)
-
-## Part 2
-
 * [Chapter 7: Hindley-Milner and Me](ch7.md)
   * [What's your type?](ch7.md#whats-your-type)
   * [Tales from the cryptic](ch7.md#tales-from-the-cryptic)

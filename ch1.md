@@ -8,7 +8,7 @@ I won't assume any previous functional programming knowledge because we both kno
 
 The purpose of this chapter is to give you a feel for what we're after when we write functional programs. We must have some idea about what makes a program *functional* or we'll find ourselves scribbling aimlessly, avoiding objects at all costs - a clumsy endeavor indeed. We need a bullseye to hurl our code toward, some celestial compass for when the waters get rough.
 
-Now there are some general programming principles, various acronymic credos that guide us through the dark tunnels of any application: DRY (don't repeat yourself), loose coupling high cohesion, YAGNI (ya ain't gonna need it), principle of least surprise, single responsibility, and so on.
+Now there are some general programming principles, various acronymic credos that guide us through the dark tunnels of any application: DRY (don't repeat yourself), YAGNI (ya ain't gonna need it), loose coupling high cohesion, principle of least surprise, single responsibility, and so on.
 
 I won't belabor listing each and every guideline I've heard throughout the years... the point is that they hold up in a functional setting, though they're merely tangential to our goal. What I'd like you to get a feel for now, before we get any further, is our intention when we poke and prod at the keyboard; our functional Xanadu.
 
@@ -62,7 +62,7 @@ var result = conjoin(
 //=>16
 ```
 
-Well, we got the right answer this time. There's much less code. The function nesting is a tad confusing...[^we'll remedy this situation in ch5]. It's better, but let's dig deeper. There are benefits to calling a spade a spade. Had we done so, we might have seen we're just working with simple addition (`conjoin`) and multiplication (`breed`).
+Well, we got the right answer this time. There's much less code. The function nesting is a tad confusing...(we'll remedy this situation in ch5). It's better, but let's dig deeper. There are benefits to calling a spade a spade. Had we done so, we might have seen we're just working with simple addition (`conjoin`) and multiplication (`breed`).
 
 There's really nothing special at all about these two functions other than their names. Let's rename our custom functions to reveal their true identity.
 
@@ -117,7 +117,7 @@ Don't despair, throughout this book, we'll sprinkle in some category theory, set
 
 It may come as a surprise to hear that we can write full, everyday applications along the lines of the functional analog above. Programs that have sound properties. Programs that are terse, yet easy to reason about. Programs that don't reinvent the wheel at every turn. Lawlessness is good if you're a criminal, but in this book, we'll want to acknowledge and obey the laws of math.
 
-We'll want to use the theory where every piece tends to fit together so politely. We'll want to represent our specific problem in terms of generic, composable bits and then exploit their properties for our own selfish benefit. It will take a bit more discipline than the "anything goes" approach of imperative[^We'll go over the precise definition of imperative later in the book, but for now it's anything other than functional programming] programming, but the payoff of working within a principled, mathematical framework will astound you.
+We'll want to use the theory where every piece tends to fit together so politely. We'll want to represent our specific problem in terms of generic, composable bits and then exploit their properties for our own selfish benefit. It will take a bit more discipline than the "anything goes" approach of imperative (we'll go over the precise definition of imperative later in the book, but for now it's anything other than functional programming) programming, but the payoff of working within a principled, mathematical framework will astound you.
 
 We've seen a flicker of our functional north star, but there are a few concrete concepts to grasp before we can really begin our journey.
 
