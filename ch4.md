@@ -24,7 +24,7 @@ addTen(2);
 // 12
 ```
 
-Here we've made a function `add` that takes one argument and return a function. By calling it, the returned function remembers the first argument from then on via the closure. Calling it with both arguments all at once is a bit of a pain, however, so we can use a special helper function called `curry` to make defining and calling functions like this easier.
+Here we've made a function `add` that takes one argument and returns a function. By calling it, the returned function remembers the first argument from then on via the closure. Calling it with both arguments all at once is a bit of a pain, however, so we can use a special helper function called `curry` to make defining and calling functions like this easier.
 
 Let's setup a few curried functions for our enjoyment.
 
