@@ -243,11 +243,7 @@ var isSameTeam = function(player1, player2) {
 };
 
 var punch = function(player, target) {
-  if (isSameTeam(player, target)) {
-    return target;
-  } else {
-    return decrementHP(target);
-  }
+  return isSameTeam(player, target)? target : decrementHP(target)
 };
 
 var jobe = Immutable.Map({name:"Jobe", hp:20, team: "red"});
@@ -263,11 +259,7 @@ First we'll inline the function `isSameTeam`.
 
 ```js
 var punch = function(player, target) {
-  if (player.get("team") === target.get("team")) {
-    return target;
-  } else {
-    return decrementHP(target);
-  }
+  return player.get("team") === target.get("team")? target : decrementHP(target)
 };
 ```
 
@@ -275,11 +267,7 @@ Since our data is immutable, we can simply replace the teams with their actual v
 
 ```js
 var punch = function(player, target) {
-  if ("red" === "green") {
-    return target;
-  } else {
-    return decrementHP(target);
-  }
+  return "red" === "green"? target : decrementHP(target)
 };
 ```
 
