@@ -5,6 +5,7 @@
 * [Français (French)](https://github.com/MostlyAdequate/mostly-adequate-guide-fr) by Benkort Matthias @KtorZ
 * [Português (Portuguese)](https://github.com/MostlyAdequate/mostly-adequate-guide-pt-BR) by Palmer Oliveira @expalmer
 * [Español (Spanish)](https://github.com/MostlyAdequate/mostly-adequate-guide-es) by Gustavo Marin @guumaster
+* [Italiano (Italian)](https://github.com/MostlyAdequate/mostly-adequate-guide-it) by Elia Gentili @eliagentili
 
 ## Creating new Translations
 
