@@ -174,10 +174,10 @@ var getTwenty = compose(map(finishTransaction), withdraw(20));
 
 
 
-getTwenty({ balance: 200.00});
+getTwenty({balance: 200.00});
 // Maybe("Your balance is $180.00")
 
-getTwenty({ balance: 10.00});
+getTwenty({balance: 10.00});
 // Maybe(null)
 ```
 
@@ -203,10 +203,10 @@ var getTwenty = compose(
 );
 
 
-getTwenty({ balance: 200.00});
+getTwenty({balance: 200.00});
 // "Your balance is $180.00"
 
-getTwenty({ balance: 10.00});
+getTwenty({balance: 10.00});
 // "You're broke!"
 ```
 
@@ -253,10 +253,10 @@ Right.prototype.map = function(f) {
 `Left` and `Right` are two subclasses of an abstract type we call `Either`. I've skipped the ceremony of creating the `Either` superclass as we won't ever use it, but it's good to be aware. Now then, there's nothing new here besides the two types. Let's see how they act:
 
 ```js
-Right.of("rain").map(function(str){ return "b"+str; });
+Right.of("rain").map(function(str) { return "b" + str; });
 // Right("brain")
 
-Left.of("rain").map(function(str){ return "b"+str; });
+Left.of("rain").map(function(str) { return "b" + str; });
 // Left("rain")
 
 Right.of({host: 'localhost', port: 80}).map(_.prop('host'));
