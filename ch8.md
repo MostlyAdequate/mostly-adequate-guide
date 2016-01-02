@@ -694,7 +694,7 @@ var _ = require('ramda');
 // Exercise 1
 // ==========
 // Use _.add(x,y) and _.map(f,x) to make a function that increments a value
-// inside a functor
+// inside a functor.
 
 var ex1 = undefined
 
@@ -702,7 +702,7 @@ var ex1 = undefined
 
 //Exercise 2
 // ==========
-// Use _.head to get the first element of the list
+// Use _.head to get the first element of the list.
 var xs = Identity.of(['do', 'ray', 'me', 'fa', 'so', 'la', 'ti', 'do']);
 
 var ex2 = undefined
@@ -711,7 +711,7 @@ var ex2 = undefined
 
 // Exercise 3
 // ==========
-// Use safeProp and _.head to find the first initial of the user
+// Use safeProp and _.head to find the first initial of the user.
 var safeProp = _.curry(function (x, o) { return Maybe.of(o[x]); });
 
 var user = { id: 2, name: "Albert" };
@@ -721,7 +721,7 @@ var ex3 = undefined
 
 // Exercise 4
 // ==========
-// Use Maybe to rewrite ex4 without an if statement
+// Use Maybe to rewrite ex4 without an if statement.
 
 var ex4 = function (n) {
   if (n) { return parseInt(n); }
@@ -733,7 +733,7 @@ var ex4 = undefined
 
 // Exercise 5
 // ==========
-// Write a function that will getPost then toUpperCase the post's title
+// Write a function that will getPost then toUpperCase the post's title.
 
 // getPost :: Int -> Future({id: Int, title: String})
 var getPost = function (i) {
@@ -751,7 +751,7 @@ var ex5 = undefined
 // Exercise 6
 // ==========
 // Write a function that uses checkActive() and showWelcome() to grant access
-// or return the error
+// or return the error.
 
 var showWelcome = _.compose(_.add( "Welcome "), _.prop('name'))
 
@@ -766,7 +766,7 @@ var ex6 = undefined
 // Exercise 7
 // ==========
 // Write a validation function that checks for a length > 3. It should return
-// Right(x) if it is greater than 3 and Left("You need > 3") otherwise
+// Right(x) if it is greater than 3 and Left("You need > 3") otherwise.
 
 var ex7 = function(x) {
   return undefined // <--- write me. (don't be pointfree)

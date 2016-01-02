@@ -278,7 +278,7 @@ var CARS = [
 
 // Exercise 1:
 // ============
-// use _.compose() to rewrite the function below. Hint: _.prop() is curried.
+// Use _.compose() to rewrite the function below. Hint: _.prop() is curried.
 var isLastInStock = function(cars) {
   var last_car = _.last(cars);
   return _.prop('in_stock', last_car);
@@ -286,13 +286,13 @@ var isLastInStock = function(cars) {
 
 // Exercise 2:
 // ============
-// use _.compose(), _.prop() and _.head() to retrieve the name of the first car
+// Use _.compose(), _.prop() and _.head() to retrieve the name of the first car.
 var nameOfFirstCar = undefined;
 
 
 // Exercise 3:
 // ============
-// Use the helper function _average to refactor averageDollarValue as a composition
+// Use the helper function _average to refactor averageDollarValue as a composition.
 var _average = function(xs) { return _.reduce(_.add, 0, xs) / xs.length; }; // <- leave be
 
 var averageDollarValue = function(cars) {
@@ -324,7 +324,7 @@ var availablePrices = function(cars) {
 
 // Bonus 2:
 // ============
-// Refactor to pointfree. Hint: you can use _.flip()
+// Refactor to pointfree. Hint: you can use _.flip().
 
 var fastestCar = function(cars) {
   var sorted = _.sortBy(function(car){ return car.horsepower }, cars);
