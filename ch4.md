@@ -76,7 +76,7 @@ findSpaces(['tori_spelling', 'tori amos']);
 // ['tori amos']
 
 var noVowels = replace(/[aeiou]/ig);
-// function(replacement, x) { return x.replace(/[aeiou]/ig, replacement) }
+// function(replacement, x) { return x.replace(/[aeiouy]/ig, replacement) }
 
 var censored = noVowels('*');
 // function(x) { return x.replace(/[aeiou]/ig, '*') }
