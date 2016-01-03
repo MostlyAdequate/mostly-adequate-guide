@@ -145,7 +145,7 @@ var _ = require('ramda');
 
 // Exercise 1
 //==============
-// Refactor to remove all arguments by partially applying the function
+// Refactor to remove all arguments by partially applying the function.
 
 var words = function(str) {
   return _.split(' ', str);
@@ -160,7 +160,7 @@ var sentences = undefined;
 
 // Exercise 2
 //==============
-// Refactor to remove all arguments by partially applying the functions
+// Refactor to remove all arguments by partially applying the functions.
 
 var filterQs = function(xs) {
   return _.filter(function(x){ return match(/q/i, x);  }, xs);
@@ -170,7 +170,7 @@ var filterQs = function(xs) {
 // Exercise 3
 //==============
 // Use the helper function _keepHighest to refactor max to not reference any
-// arguments
+// arguments.
 
 // LEAVE BE:
 var _keepHighest = function(x,y){ return x >= y ? x : y; };
@@ -185,14 +185,14 @@ var max = function(xs) {
 
 // Bonus 1:
 // ============
-// wrap array's slice to be functional and curried.
+// Wrap array's slice to be functional and curried.
 // //[1,2,3].slice(0, 2)
 var slice = undefined;
 
 
 // Bonus 2:
 // ============
-// use slice to define a function "take" that takes n elements from the beginning of the string. Make it curried
+// Use slice to define a function "take" that takes n elements from the beginning of the string. Make it curried.
 // // Result for "Something" with n=4 should be "Some"
 var take = undefined;
 ```
