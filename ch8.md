@@ -385,7 +385,7 @@ var io_window = new IO(function(){ return window; });
 io_window.map(function(win){ return win.innerWidth });
 // IO(1430)
 
-io_window.map(_.prop('location')).map(_.prop('href')).map(split('/'));
+io_window.map(_.prop('location')).map(_.prop('href')).map(_.split('/'));
 // IO(["http:", "", "localhost:8000", "blog", "posts"])
 
 
