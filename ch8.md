@@ -700,7 +700,7 @@ var ex1 = undefined
 
 
 
-//Exercise 2
+// Exercise 2
 // ==========
 // Use _.head to get the first element of the list.
 var xs = Identity.of(['do', 'ray', 'me', 'fa', 'so', 'la', 'ti', 'do']);
