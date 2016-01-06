@@ -101,7 +101,7 @@ Maybe.prototype.isNothing = function() {
 }
 
 Maybe.prototype.map = function(f) {
-  return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value));
+  return Maybe.of(this.isNothing()? null : f(this.__value));
 }
 ```
 
@@ -161,9 +161,11 @@ Sometimes a function might return a `Maybe(null)` explicitly to signal failure. 
 ```js
 //  withdraw :: Number -> Account -> Maybe(Account)
 var withdraw = curry(function(amount, account) {
-  return account.balance >= amount ?
-    Maybe.of({balance: account.balance - amount}) :  
-     Maybe.of(null);
+  return Maybe.of(
+    account.balance >= amount
+      ? {balance: account.balance - amount}
+      : null
+  );
 });
 
 //  finishTransaction :: Account -> String
@@ -171,8 +173,6 @@ var finishTransaction = compose(remainingBalance, updateLedger);  // <- these co
 
 //  getTwenty :: Account -> Maybe(String)
 var getTwenty = compose(map(finishTransaction), withdraw(20));
-
-
 
 getTwenty({balance: 200.00});
 // Maybe("Your balance is $180.00")
@@ -201,7 +201,6 @@ var maybe = curry(function(x, f, m) {
 var getTwenty = compose(
   maybe("You're broke!", finishTransaction), withdraw(20)
 );
-
 
 getTwenty({balance: 200.00});
 // "Your balance is $180.00"
