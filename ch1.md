@@ -19,26 +19,33 @@ I won't belabor listing each and every guideline I've heard throughout the years
 Let's start with a touch of insanity. Here is a seagull application. When flocks conjoin they become a larger flock, and when they breed, they increase by the number of seagulls with whom they're breeding. Now, this is not intended to be good Object-Oriented code, mind you, it is here to highlight the perils of our modern, assignment based approach. Behold:
 
 ```js
-var Flock = function(n) {
-  this.seagulls = n;
-};
+// A Running Example: https://jsfiddle.net/2u8ewu2g/
+class Flock {
+  constructor(n) {
+    this.seagulls = n
+  }
+  
+  conjoin(other) {
+    this.seagulls += other.seagulls;
+    return this;
+  }
 
-Flock.prototype.conjoin = function(other) {
-  this.seagulls += other.seagulls;
-  return this;
-};
+  breed(other) {
+    this.seagulls = this.seagulls * other.seagulls;
+    return this;
+  }
+}
 
-Flock.prototype.breed = function(other) {
-  this.seagulls = this.seagulls * other.seagulls;
-  return this;
-};
-
-var flock_a = new Flock(4);
-var flock_b = new Flock(2);
-var flock_c = new Flock(0);
-
-var result = flock_a.conjoin(flock_c)
-    .breed(flock_b).conjoin(flock_a.breed(flock_b)).seagulls;
+var
+  flock_a = new Flock(4),
+  flock_b = new Flock(2),
+  flock_c = new Flock(0),
+  result =
+    flock_a
+      .conjoin(flock_c)
+      .breed(flock_b)
+      .conjoin(flock_a.breed(flock_b))
+      .seagulls;
 //=> 32
 ```
 
@@ -49,16 +56,17 @@ If you don't understand this program, it's okay, neither do I. The point is that
 Let's try again with a more functional approach:
 
 ```js
-var conjoin = function(flock_x, flock_y) { return flock_x + flock_y };
-var breed = function(flock_x, flock_y) { return flock_x * flock_y };
+// A Running Example: https://jsfiddle.net/m953kxah/
+var
+  conjoin = (flock_x, flock_y) => flock_x + flock_y,
+  breed   = (flock_x, flock_y) => flock_x * flock_y;
 
-var flock_a = 4;
-var flock_b = 2;
-var flock_c = 0;
-
-var result = conjoin(
-  breed(flock_b, conjoin(flock_a, flock_c)), breed(flock_a, flock_b)
-);
+var
+  flock_a = 4,
+  flock_b = 2,
+  flock_c = 0,
+  result =
+    conjoin(breed(flock_b, conjoin(flock_a, flock_c)), breed(flock_a, flock_b));
 //=>16
 ```
 
@@ -67,16 +75,17 @@ Well, we got the right answer this time. There's much less code. The function ne
 There's really nothing special at all about these two functions other than their names. Let's rename our custom functions to reveal their true identity.
 
 ```js
-var add = function(x, y) { return x + y };
-var multiply = function(x, y) { return x * y };
+// A Running Example: https://jsfiddle.net/7g2brqaf/
+var
+  add      = (x, y) => x + y,
+  multiply = (x, y) => x * y;
 
-var flock_a = 4;
-var flock_b = 2;
-var flock_c = 0;
-
-var result = add(
-  multiply(flock_b, add(flock_a, flock_c)), multiply(flock_a, flock_b)
-);
+var
+  flock_a = 4,
+  flock_b = 2,
+  flock_c = 0,
+  result =
+    add(multiply(flock_b, add(flock_a, flock_c)), multiply(flock_a, flock_b));
 //=>16
 ```
 And with that, we gain the knowledge of the ancients:
