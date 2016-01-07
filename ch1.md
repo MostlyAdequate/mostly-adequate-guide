@@ -19,10 +19,10 @@ I won't belabor listing each and every guideline I've heard throughout the years
 Let's start with a touch of insanity. Here is a seagull application. When flocks conjoin they become a larger flock, and when they breed, they increase by the number of seagulls with whom they're breeding. Now, this is not intended to be good Object-Oriented code, mind you, it is here to highlight the perils of our modern, assignment based approach. Behold:
 
 ```js
-// A Running Example: https://jsfiddle.net/2u8ewu2g/
+// A Running Example: https://jsfiddle.net/1zhy31av/
 class Flock {
   constructor(n) {
-    this.seagulls = n
+    this.seagulls = n;
   }
   
   conjoin(other) {
