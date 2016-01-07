@@ -15,8 +15,8 @@ IO.of("tetris").map(concat(" master"));
 Maybe.of(1336).map(add(1));
 // Maybe(1337)
 
-Task.of([{id: 2}, {id: 3}]).map(_.prop('id'));
-// Task([2,3])
+Task.of({id: 2}).map(_.prop('id'));
+// Task(2)
 
 Either.of("The past, present and future walk into a bar...").map(
   concat("it was tense.")
