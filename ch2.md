@@ -6,8 +6,8 @@ When we say functions are "first class", we mean they are just like everyone els
 That is JavaScript 101, but worth mentioning as a quick code search on github will show the collective evasion, or perhaps widespread ignorance of the concept. Shall we go for a feigned example? We shall.
 
 ```js
-var hi = function(name){
-  return "Hi " + name;
+var hi = function(name) {
+  return 'Hi ' + name;
 };
 
 var greeting = function(name) {
@@ -20,11 +20,11 @@ Here, the function wrapper around `hi` in `greeting` is completely redundant. Wh
 
 ```js
 hi;
-// function(name){
-//  return "Hi " + name
+// function(name) {
+//  return 'Hi ' + name
 // }
 
-hi("jonas");
+hi('jonas');
 // "Hi jonas"
 ```
 
@@ -34,7 +34,7 @@ Since `greeting` is merely turning around and calling `hi` with the very same ar
 var greeting = hi;
 
 
-greeting("times");
+greeting('times');
 // "Hi times"
 ```
 
@@ -46,8 +46,8 @@ A solid understanding of this is critical before moving on, so let's examine a f
 
 ```js
 // ignorant
-var getServerStuff = function(callback){
-  return ajaxCall(function(json){
+var getServerStuff = function(callback) {
+  return ajaxCall(function(json) {
     return callback(json);
   });
 };
@@ -60,7 +60,7 @@ The world is littered with ajax code exactly like this. Here is the reason both 
 
 ```js
 // this line
-return ajaxCall(function(json){
+return ajaxCall(function(json) {
   return callback(json);
 });
 
@@ -68,7 +68,7 @@ return ajaxCall(function(json){
 return ajaxCall(callback);
 
 // so refactor getServerStuff
-var getServerStuff = function(callback){
+var getServerStuff = function(callback) {
   return ajaxCall(callback);
 };
 
@@ -101,7 +101,11 @@ var BlogController = (function() {
   };
 
   return {
-    index: index, show: show, create: create, update: update, destroy: destroy
+    index: index,
+    show: show,
+    create: create,
+    update: update,
+    destroy: destroy,
   };
 })();
 ```
@@ -114,7 +118,7 @@ var BlogController = {
   show: Views.show,
   create: Db.create,
   update: Db.update,
-  destroy: Db.destroy
+  destroy: Db.destroy,
 };
 ```
 
@@ -127,7 +131,7 @@ Okay, let's get down to the reasons to favor first class functions. As we saw in
 In addition, if a function we are needlessly wrapping does change, we must also change our wrapper function.
 
 ```js
-httpGet('/post/2', function(json){
+httpGet('/post/2', function(json) {
   return renderPost(json);
 });
 ```
@@ -137,7 +141,7 @@ If `httpGet` were to change to send a possible `err`, we would need to go back a
 ```js
 // go back to every httpGet call in the application and explicitly pass err
 // along.
-httpGet('/post/2', function(json, err){
+httpGet('/post/2', function(json, err) {
   return renderPost(json, err);
 });
 ```
@@ -156,7 +160,7 @@ Having multiple names for the same concept is a common source of confusion in pr
 ```js
 // specific to our current blog
 var validArticles = function(articles) {
-  return articles.filter(function(article){
+  return articles.filter(function(article) {
     return article !== null && article !== undefined;
   });
 };

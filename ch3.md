@@ -9,27 +9,27 @@ One thing we need to get straight is the idea of a pure function.
 Take `slice` and `splice`. They are two functions that do the exact same thing - in a vastly different way, mind you, but the same thing nonetheless. We say `slice` is *pure* because it returns the same output per input every time, guaranteed. `splice`, however, will chew up its array and spit it back out forever changed which is an observable effect.
 
 ```js
-var xs = [1,2,3,4,5];
+var xs = [1, 2, 3, 4, 5];
 
 // pure
-xs.slice(0,3);
-//=> [1,2,3]
+xs.slice(0, 3);
+//=> [1, 2, 3]
 
-xs.slice(0,3);
-//=> [1,2,3]
+xs.slice(0, 3);
+//=> [1, 2, 3]
 
-xs.slice(0,3);
-//=> [1,2,3]
+xs.slice(0, 3);
+//=> [1, 2, 3]
 
 
 // impure
-xs.splice(0,3);
-//=> [1,2,3]
+xs.splice(0, 3);
+//=> [1, 2, 3]
 
-xs.splice(0,3);
-//=> [4,5]
+xs.splice(0, 3);
+//=> [4, 5]
 
-xs.splice(0,3);
+xs.splice(0, 3);
 //=> []
 ```
 
@@ -62,7 +62,7 @@ Its pure form, on the other hand, is completely self sufficient. We can  also ma
 
 ```js
 var immutableState = Object.freeze({
-  minimum: 21
+  minimum: 21,
 });
 ```
 
@@ -121,12 +121,26 @@ Or even as a graph with `x` as the input and `y` as the output:
 There's no need for implementation details if the input dictates the output. Since functions are simply mappings of input to output, one could simply jot down object literals and run them with `[]` instead of `()`.
 
 ```js
-var toLowerCase = {"A":"a", "B": "b", "C": "c", "D": "d", "E": "e", "D": "d"};
+var toLowerCase = {
+  'A': 'a',
+  'B': 'b',
+  'C': 'c',
+  'D': 'd',
+  'E': 'e',
+  'D': 'd',
+};
 
-toLowerCase["C"];
-//=> "c"
+toLowerCase['C'];
+//=> 'c'
 
-var isPrime = {1:false, 2: true, 3: true, 4: false, 5: true, 6:false};
+var isPrime = {
+  1: false,
+  2: true,
+  3: true,
+  4: false,
+  5: true,
+  6: false,
+};
 
 isPrime[3];
 //=> true
@@ -143,7 +157,9 @@ Here comes the dramatic reveal: Pure functions *are* mathematical functions and 
 For starters, pure functions can always be cached by input. This is typically done using a technique called memoization:
 
 ```js
-var squareNumber  = memoize(function(x){ return x*x; });
+var squareNumber = memoize(function(x) {
+  return x * x;
+});
 
 squareNumber(4);
 //=> 16
@@ -175,8 +191,10 @@ var memoize = function(f) {
 Something to note is that you can transform some impure functions into pure ones by delaying evaluation:
 
 ```js
-var pureHttpCall = memoize(function(url, params){
-  return function() { return $.getJSON(url, params); }
+var pureHttpCall = memoize(function(url, params) {
+  return function() {
+    return $.getJSON(url, params);
+  };
 });
 ```
 
@@ -232,25 +250,33 @@ Since pure functions always return the same output given the same input, we can 
 
 ```js
 
-var Immutable = require("immutable");
+var Immutable = require('immutable');
 
 var decrementHP = function(player) {
-  return player.set("hp", player.get("hp")-1);
+  return player.set('hp', player.get('hp') - 1);
 };
 
 var isSameTeam = function(player1, player2) {
-  return player1.get("team") === player2.get("team");
+  return player1.get('team') === player2.get('team');
 };
 
 var punch = function(player, target) {
-  return isSameTeam(player, target)? target : decrementHP(target)
+  return isSameTeam(player, target) ? target : decrementHP(target);
 };
 
-var jobe = Immutable.Map({name:"Jobe", hp:20, team: "red"});
-var michael = Immutable.Map({name:"Michael", hp:20, team: "green"});
+var jobe = Immutable.Map({
+  name: 'Jobe',
+  hp: 20,
+  team: 'red',
+});
+var michael = Immutable.Map({
+  name: 'Michael',
+  hp: 20,
+  team: 'green',
+});
 
 punch(jobe, michael);
-//=> Immutable.Map({name:"Michael", hp:19, team: "green"})
+//=> Immutable.Map({name:'Michael', hp:19, team: 'green'})
 ```
 
 `decrementHP`, `isSameTeam` and `punch` are all pure and therefore referentially transparent. We can use a technique called *equational reasoning* wherein one substitutes "equals for equals" to reason about code. It's a bit like manually evaluating the code without taking into account the quirks of programmatic evaluation. Using referential transparency, let's play with this code a bit.
@@ -259,7 +285,7 @@ First we'll inline the function `isSameTeam`.
 
 ```js
 var punch = function(player, target) {
-  return player.get("team") === target.get("team")? target : decrementHP(target)
+  return player.get('team') === target.get('team') ? target : decrementHP(target);
 };
 ```
 
@@ -267,7 +293,7 @@ Since our data is immutable, we can simply replace the teams with their actual v
 
 ```js
 var punch = function(player, target) {
-  return "red" === "green"? target : decrementHP(target)
+  return 'red' === 'green' ? target : decrementHP(target);
 };
 ```
 
@@ -284,7 +310,7 @@ And if we inline `decrementHP`, we see that, in this case, punch becomes a call 
 
 ```js
 var punch = function(player, target) {
-  return target.set("hp", target.get("hp")-1);
+  return target.set('hp', target.get('hp') - 1);
 };
 ```
 

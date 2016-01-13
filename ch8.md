@@ -21,15 +21,17 @@ Here is our first container. We've thoughtfully named it `Container`. We will us
 Let's examine our brand new box...
 
 ```js
-Container.of(3)
+Container.of(3);
 //=> Container(3)
 
 
-Container.of("hotdogs")
+Container.of('hotdogs');
 //=> Container("hotdogs")
 
 
-Container.of(Container.of({name: "yoda"}))
+Container.of(Container.of({
+  name: 'yoda',
+}));
 //=> Container(Container({name: "yoda" }))
 ```
 
@@ -51,23 +53,27 @@ Once our value, whatever it may be, is in the container, we'll need a way to run
 
 ```js
 // (a -> b) -> Container a -> Container b
-Container.prototype.map = function(f){
-  return Container.of(f(this.__value))
+Container.prototype.map = function(f) {
+  return Container.of(f(this.__value));
 }
 ```
 
 Why, it's just like Array's famous `map`, except we have `Container a` instead of `[a]`. And it works essentially the same way:
 
 ```js
-Container.of(2).map(function(two){ return two + 2 })
+Container.of(2).map(function(two) {
+  return two + 2;
+});
 //=> Container(4)
 
 
-Container.of("flamethrowers").map(function(s){ return s.toUpperCase() })
+Container.of("flamethrowers").map(function(s) {
+  return s.toUpperCase();
+});
 //=> Container("FLAMETHROWERS")
 
 
-Container.of("bombs").map(_.concat(' away')).map(_.prop('length'))
+Container.of("bombs").map(_.concat(' away')).map(_.prop('length'));
 //=> Container(10)
 ```
 
@@ -90,34 +96,39 @@ What reason could we possibly have for bottling up a value and using `map` to ge
 ```js
 var Maybe = function(x) {
   this.__value = x;
-}
+};
 
 Maybe.of = function(x) {
   return new Maybe(x);
-}
+};
 
 Maybe.prototype.isNothing = function() {
   return (this.__value === null || this.__value === undefined);
-}
+};
 
 Maybe.prototype.map = function(f) {
   return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value));
-}
+};
 ```
 
 Now, `Maybe` looks a lot like `Container` with one minor change: it will first check to see if it has a value before calling the supplied function. This has the effect of side stepping those pesky nulls as we `map`(Note that this implementation is simplied for teaching).
 
 ```js
-Maybe.of("Malkovich Malkovich").map(match(/a/ig));
+Maybe.of('Malkovich Malkovich').map(match(/a/ig));
 //=> Maybe(['a', 'a'])
 
 Maybe.of(null).map(match(/a/ig));
 //=> Maybe(null)
 
-Maybe.of({name: "Boris"}).map(_.prop("age")).map(add(10));
+Maybe.of({
+  name: 'Boris',
+}).map(_.prop('age')).map(add(10));
 //=> Maybe(null)
 
-Maybe.of({name: "Dinah", age: 14}).map(_.prop("age")).map(add(10));
+Maybe.of({
+  name: 'Dinah',
+  age: 14,
+}).map(_.prop('age')).map(add(10));
 //=> Maybe(24)
 ```
 
@@ -146,10 +157,17 @@ var safeHead = function(xs) {
 
 var streetName = compose(map(_.prop('street')), safeHead, _.prop('addresses'));
 
-streetName({addresses: []});
+streetName({
+  addresses: [],
+});
 // Maybe(null)
 
-streetName({addresses: [{street: "Shady Ln.", number: 4201}]});
+streetName({
+  addresses: [{
+    street: 'Shady Ln.',
+    number: 4201,
+  }],
+});
 // Maybe("Shady Ln.")
 ```
 
@@ -162,22 +180,27 @@ Sometimes a function might return a `Maybe(null)` explicitly to signal failure. 
 //  withdraw :: Number -> Account -> Maybe(Account)
 var withdraw = curry(function(amount, account) {
   return account.balance >= amount ?
-    Maybe.of({balance: account.balance - amount}) :  
-     Maybe.of(null);
+    Maybe.of({
+      balance: account.balance - amount,
+    }) :
+    Maybe.of(null);
 });
 
 //  finishTransaction :: Account -> String
-var finishTransaction = compose(remainingBalance, updateLedger);  // <- these composed functions are hypothetical, not implemented here...
+var finishTransaction = compose(remainingBalance, updateLedger); // <- these composed functions are hypothetical, not implemented here...
 
 //  getTwenty :: Account -> Maybe(String)
 var getTwenty = compose(map(finishTransaction), withdraw(20));
 
 
-
-getTwenty({balance: 200.00});
+getTwenty({
+  balance: 200.00,
+});
 // Maybe("Your balance is $180.00")
 
-getTwenty({balance: 10.00});
+getTwenty({
+  balance: 10.00,
+});
 // Maybe(null)
 ```
 
@@ -203,10 +226,14 @@ var getTwenty = compose(
 );
 
 
-getTwenty({balance: 200.00});
+getTwenty({
+  balance: 200.00,
+});
 // "Your balance is $180.00"
 
-getTwenty({balance: 10.00});
+getTwenty({
+  balance: 10.00,
+});
 // "You're broke!"
 ```
 
@@ -227,23 +254,23 @@ It may come as a shock, but `throw/catch` is not very pure. When an error is thr
 ```js
 var Left = function(x) {
   this.__value = x;
-}
+};
 
 Left.of = function(x) {
   return new Left(x);
-}
+};
 
 Left.prototype.map = function(f) {
   return this;
-}
+};
 
 var Right = function(x) {
   this.__value = x;
-}
+};
 
 Right.of = function(x) {
   return new Right(x);
-}
+};
 
 Right.prototype.map = function(f) {
   return Right.of(f(this.__value));
@@ -253,16 +280,23 @@ Right.prototype.map = function(f) {
 `Left` and `Right` are two subclasses of an abstract type we call `Either`. I've skipped the ceremony of creating the `Either` superclass as we won't ever use it, but it's good to be aware. Now then, there's nothing new here besides the two types. Let's see how they act:
 
 ```js
-Right.of("rain").map(function(str) { return "b" + str; });
-// Right("brain")
+Right.of('rain').map(function(str) {
+  return 'b' + str;
+});
+// Right('brain')
 
-Left.of("rain").map(function(str) { return "b" + str; });
-// Left("rain")
+Left.of('rain').map(function(str) {
+  return 'b' + str;
+});
+// Left('rain')
 
-Right.of({host: 'localhost', port: 80}).map(_.prop('host'));
+Right.of({
+  host: 'localhost',
+  port: 80,
+}).map(_.prop('host'));
 // Right('localhost')
 
-Left.of("rolls eyes...").map(_.prop("host"));
+Left.of('rolls eyes...').map(_.prop('host'));
 // Left('rolls eyes...')
 ```
 
@@ -276,32 +310,40 @@ var moment = require('moment');
 //  getAge :: Date -> User -> Either(String, Number)
 var getAge = curry(function(now, user) {
   var birthdate = moment(user.birthdate, 'YYYY-MM-DD');
-  if (!birthdate.isValid()) return Left.of("Birth date could not be parsed");
+  if (!birthdate.isValid()) return Left.of('Birth date could not be parsed');
   return Right.of(now.diff(birthdate, 'years'));
 });
 
-getAge(moment(), {birthdate: '2005-12-12'});
+getAge(moment(), {
+  birthdate: '2005-12-12',
+});
 // Right(9)
 
-getAge(moment(), {birthdate: '20010704'});
-// Left("Birth date could not be parsed")
+getAge(moment(), {
+  birthdate: '20010704',
+});
+// Left('Birth date could not be parsed')
 ```
 
 Now, just like `Maybe(null)`, we are short circuiting our app when we return a `Left`. The difference, is now we have a clue as to why our program has derailed. Something to notice is that we return `Either(String, Number)`, which holds a `String` as its left value and a `Number` as its `Right`. This type signature is a bit informal as we haven't taken the time to define an actual `Either` superclass, however, we learn a lot from the type. It informs us that we're either getting an error message or the age back.
 
 ```js
 //  fortune :: Number -> String
-var fortune  = compose(concat("If you survive, you will be "), add(1));
+var fortune = compose(concat('If you survive, you will be '), add(1));
 
 //  zoltar :: User -> Either(String, _)
 var zoltar = compose(map(console.log), map(fortune), getAge(moment()));
 
-zoltar({birthdate: '2005-12-12'});
-// "If you survive, you will be 10"
+zoltar({
+  birthdate: '2005-12-12',
+});
+// 'If you survive, you will be 10'
 // Right(undefined)
 
-zoltar({birthdate: 'balloons!'});
-// Left("Birth date could not be parsed")
+zoltar({
+  birthdate: 'balloons!',
+});
+// Left('Birth date could not be parsed')
 ```
 
 When the `birthdate` is valid, the program outputs its mystical fortune to the screen for us to behold. Otherwise, we are handed a `Left` with the error message plain as day though still tucked away in its container. That acts just as if we'd thrown an error, but in a calm, mild manner fashion as opposed to losing its temper and screaming like a child when something goes wrong.
@@ -319,20 +361,26 @@ Just like with `Maybe`, we have little `either`, which behaves similarly, but ta
 ```js
 //  either :: (a -> c) -> (b -> c) -> Either a b -> c
 var either = curry(function(f, g, e) {
-  switch(e.constructor) {
-    case Left: return f(e.__value);
-    case Right: return g(e.__value);
+  switch (e.constructor) {
+    case Left:
+      return f(e.__value);
+    case Right:
+      return g(e.__value);
   }
 });
 
 //  zoltar :: User -> _
 var zoltar = compose(console.log, either(id, fortune), getAge(moment()));
 
-zoltar({birthdate: '2005-12-12'});
+zoltar({
+  birthdate: '2005-12-12',
+});
 // "If you survive, you will be 10"
 // undefined
 
-zoltar({birthdate: 'balloons!'});
+zoltar({
+  birthdate: 'balloons!',
+});
 // "Birth date could not be parsed"
 // undefined
 ```
@@ -350,8 +398,8 @@ In our chapter about purity we saw a peculiar example of a pure function. This f
 var getFromStorage = function(key) {
   return function() {
     return localStorage[key];
-  }
-}
+  };
+};
 ```
 
 Had we not surrounded its guts in another function, `getFromStorage` would vary its output depending on external circumstance. With the sturdy wrapper in place, we will always get the same output per input: a function that, when called, will retrieve a particular item from `localStorage`. And just like that (maybe throw in a few Hail Mary's) we've cleared our conscience and all is forgiven.
@@ -361,17 +409,17 @@ Except, this isn't particularly useful now is it. Like a collectible action figu
 ```js
 var IO = function(f) {
   this.__value = f;
-}
+};
 
 IO.of = function(x) {
   return new IO(function() {
     return x;
   });
-}
+};
 
 IO.prototype.map = function(f) {
   return new IO(_.compose(f, this.__value));
-}
+};
 ```
 
 `IO` differs from the previous functors in that the `__value` is always a function. We don't think of its `__value` as a function, however - that is an implementation detail and we best ignore it. What is happening is exactly what we saw with the `getFromStorage` example: `IO` delays the impure action by capturing it in a function wrapper. As such, we think of `IO` as containing the return value of the wrapped action and not the wrapper itself. This is apparent in the `of` function: we have an `IO(x)`, the `IO(function(){ return x })` is just necessary to avoid evaluation.
@@ -380,9 +428,13 @@ Let's see it in use:
 
 ```js
 //  io_window :: IO Window
-var io_window = new IO(function(){ return window; });
+var io_window = new IO(function() {
+  return window;
+});
 
-io_window.map(function(win){ return win.innerWidth });
+io_window.map(function(win) {
+  return win.innerWidth;
+});
 // IO(1430)
 
 io_window.map(_.prop('location')).map(_.prop('href')).map(_.split('/'));
@@ -391,10 +443,14 @@ io_window.map(_.prop('location')).map(_.prop('href')).map(_.split('/'));
 
 //  $ :: String -> IO [DOM]
 var $ = function(selector) {
-  return new IO(function(){ return document.querySelectorAll(selector); });
-}
+  return new IO(function() {
+    return document.querySelectorAll(selector);
+  });
+};
 
-$('#myDiv').map(head).map(function(div){ return div.innerHTML; });
+$('#myDiv').map(head).map(function(div) {
+  return div.innerHTML;
+});
 // IO('I am some inner html')
 ```
 
@@ -409,7 +465,9 @@ Now, we've caged the beast, but we'll still have to set it free at some point. M
 ////// Our pure library: lib/params.js ///////
 
 //  url :: IO String
-var url = new IO(function() { return window.location.href; });
+var url = new IO(function() {
+  return window.location.href;
+});
 
 //  toPairs =  String -> [[String]]
 var toPairs = compose(map(split('=')), split('&'));
@@ -436,11 +494,11 @@ There's something that's been bothering me and we should rectify it immediately:
 ```js
 var IO = function(f) {
   this.unsafePerformIO = f;
-}
+};
 
 IO.prototype.map = function(f) {
   return new IO(_.compose(f, this.unsafePerformIO));
-}
+};
 ```
 
 There, much better. Now our calling code becomes `findParam("searchTerm").unsafePerformIO()`, which is clear as day to users (and readers) of the application.
@@ -469,7 +527,7 @@ var readFile = function(filename) {
   });
 };
 
-readFile("metamorphosis").map(split('\n')).map(head);
+readFile('metamorphosis').map(split('\n')).map(head);
 // Task("One morning, as Gregor Samsa was waking up from anxious dreams, he discovered that
 // in bed he had been changed into a monstrous verminous bug.")
 
@@ -484,11 +542,15 @@ var getJSON = curry(function(url, params) {
   });
 });
 
-getJSON('/video', {id: 10}).map(_.prop('title'));
+getJSON('/video', {
+  id: 10,
+}).map(_.prop('title'));
 // Task("Family Matters ep 15")
 
 // We can put normal, non futuristic values inside as well
-Task.of(3).map(function(three){ return three + 1 });
+Task.of(3).map(function(three) {
+  return three + 1,
+});
 // Task(4)
 ```
 
@@ -518,8 +580,12 @@ var blog = compose(map(renderPage), getJSON('/posts'));
 // Impure calling code
 //=====================
 blog({}).fork(
-  function(error){ $("#error").html(error.message); },
-  function(page){ $("#main").html(page); }
+  function(error) {
+    $("#error").html(error.message);
+  },
+  function(page) {
+    $("#main").html(page);
+  }
 );
 
 $('#spinner').show();
@@ -544,8 +610,8 @@ Even with `Task`, our `IO` and `Either` functors are not out of a job. Bear with
 //  dbUrl :: Config -> Either Error Url
 var dbUrl = function(c) {
   return (c.uname && c.pass && c.host && c.db)
-    ? Right.of("db:pg://"+c.uname+":"+c.pass+"@"+c.host+"5432/"+c.db)
-    : Left.of(Error("Invalid config!"));
+    ? Right.of('db:pg://'+c.uname+':'+c.pass+'@'+c.host+'5432/'+c.db)
+    : Left.of(Error('Invalid config!'));
 }
 
 //  connectDb :: Config -> Either Error (IO DbConnection)
@@ -557,8 +623,8 @@ var getConfig = compose(map(compose(connectDb, JSON.parse)), readFile);
 
 // Impure calling code
 //=====================
-getConfig("db.json").fork(
-  logErr("couldn't read file"), either(console.log, map(runQuery))
+getConfig('db.json').fork(
+  logErr('couldn\'t read file'), either(console.log, map(runQuery))
 );
 ```
 
@@ -597,13 +663,13 @@ idLaw2(Container.of(2));
 You see, they are equal. Next let's look at composition.
 
 ```js
-var compLaw1 = compose(map(concat(" world")), map(concat(" cruel")));
-var compLaw2 = map(compose(concat(" world"), concat(" cruel")));
+var compLaw1 = compose(map(concat(' world')), map(concat(' cruel')));
+var compLaw2 = map(compose(concat(' world'), concat(' cruel')));
 
-compLaw1(Container.of("Goodbye"));
+compLaw1(Container.of('Goodbye'));
 //=> Container(' world cruelGoodbye')
 
-compLaw2(Container.of("Goodbye"));
+compLaw2(Container.of('Goodbye'));
 //=> Container(' world cruelGoodbye')
 ```
 
@@ -629,11 +695,11 @@ var topRoute = compose(Maybe.of, reverse);
 var bottomRoute = compose(map(reverse), Maybe.of);
 
 
-topRoute("hi");
-// Maybe("ih")
+topRoute('hi');
+// Maybe('ih')
 
-bottomRoute("hi");
-// Maybe("ih")
+bottomRoute('hi');
+// Maybe('ih')
 ```
 
 Or visually:
@@ -645,32 +711,32 @@ We can instantly see and refactor code based on properties held by all functors.
 Functors can stack:
 
 ```js
-var nested = Task.of([Right.of("pillows"), Left.of("no sleep for you")]);
+var nested = Task.of([Right.of('pillows'), Left.of('no sleep for you')]);
 
 map(map(map(toUpperCase)), nested);
-// Task([Right("PILLOWS"), Left("no sleep for you")])
+// Task([Right('PILLOWS'), Left('no sleep for you')])
 ```
 
 What we have here with `nested` is a future array of elements that might be errors. We `map` to peel back each layer and run our function on the elements. We see no callbacks, if/else's, or for loops; just an explicit context. We do, however, have to `map(map(map(f)))`. We can instead compose functors. You heard me correctly:
 
 ```js
-var Compose = function(f_g_x){
+var Compose = function(f_g_x) {
   this.getCompose = f_g_x;
-}
+};
 
-Compose.prototype.map = function(f){
+Compose.prototype.map = function(f) {
   return new Compose(map(map(f), this.getCompose));
-}
+};
 
-var tmd = Task.of(Maybe.of("Rock over London"))
+var tmd = Task.of(Maybe.of('Rock over London'));
 
 var ctmd = new Compose(tmd);
 
-map(concat(", rock on, Chicago"), ctmd);
-// Compose(Task(Maybe("Rock over London, rock on, Chicago")))
+map(concat(', rock on, Chicago'), ctmd);
+// Compose(Task(Maybe('Rock over London, rock on, Chicago')))
 
 ctmd.getCompose;
-// Task(Maybe("Rock over London, rock on, Chicago"))
+// Task(Maybe('Rock over London, rock on, Chicago'))
 ```
 
 There, one `map`. Functor composition is associative and earlier, we defined `Container`, which is actually called the `Identity` functor. If we have identity and associative composition we have a category. This particular category has categories as objects and functors as morphisms, which is enough to make one's brain perspire. We won't delve too far into this, but it's nice to appreciate the architectural implications or even just the simple abstract beauty in the pattern.
@@ -696,7 +762,7 @@ var _ = require('ramda');
 // Use _.add(x,y) and _.map(f,x) to make a function that increments a value
 // inside a functor.
 
-var ex1 = undefined
+var ex1 = undefined;
 
 
 
@@ -705,29 +771,36 @@ var ex1 = undefined
 // Use _.head to get the first element of the list.
 var xs = Identity.of(['do', 'ray', 'me', 'fa', 'so', 'la', 'ti', 'do']);
 
-var ex2 = undefined
+var ex2 = undefined;
 
 
 
 // Exercise 3
 // ==========
 // Use safeProp and _.head to find the first initial of the user.
-var safeProp = _.curry(function (x, o) { return Maybe.of(o[x]); });
+var safeProp = _.curry(function(x, o) {
+  return Maybe.of(o[x]);
+});
 
-var user = { id: 2, name: "Albert" };
+var user = {
+  id: 2,
+  name: 'Albert',
+};
 
-var ex3 = undefined
+var ex3 = undefined;
 
 
 // Exercise 4
 // ==========
 // Use Maybe to rewrite ex4 without an if statement.
 
-var ex4 = function (n) {
-  if (n) { return parseInt(n); }
+var ex4 = function(n) {
+  if (n) {
+    return parseInt(n);
+  }
 };
 
-var ex4 = undefined
+var ex4 = undefined;
 
 
 
@@ -736,15 +809,18 @@ var ex4 = undefined
 // Write a function that will getPost then toUpperCase the post's title.
 
 // getPost :: Int -> Future({id: Int, title: String})
-var getPost = function (i) {
+var getPost = function(i) {
   return new Task(function(rej, res) {
-    setTimeout(function(){
-      res({id: i, title: 'Love them futures'})  
-    }, 300)
+    setTimeout(function() {
+      res({
+        id: i,
+        title: 'Love them futures',
+      });
+    }, 300);
   });
-}
+};
 
-var ex5 = undefined
+var ex5 = undefined;
 
 
 
@@ -753,13 +829,13 @@ var ex5 = undefined
 // Write a function that uses checkActive() and showWelcome() to grant access
 // or return the error.
 
-var showWelcome = _.compose(_.add( "Welcome "), _.prop('name'))
+var showWelcome = _.compose(_.add('Welcome '), _.prop('name'));
 
 var checkActive = function(user) {
- return user.active ? Right.of(user) : Left.of('Your account is not active')
-}
+  return user.active ? Right.of(user) : Left.of('Your account is not active');
+};
 
-var ex6 = undefined
+var ex6 = undefined;
 
 
 
@@ -769,8 +845,8 @@ var ex6 = undefined
 // Right(x) if it is greater than 3 and Left("You need > 3") otherwise.
 
 var ex7 = function(x) {
-  return undefined // <--- write me. (don't be pointfree)
-}
+  return undefined; // <--- write me. (don't be pointfree)
+};
 
 
 
@@ -780,12 +856,12 @@ var ex7 = function(x) {
 // return the error message string. Remember either's two arguments must return
 // the same type.
 
-var save = function(x){
-  return new IO(function(){
-    console.log("SAVED USER!");
+var save = function(x) {
+  return new IO(function() {
+    console.log('SAVED USER!');
     return x + '-saved';
   });
-}
+};
 
-var ex8 = undefined
+var ex8 = undefined;
 ```

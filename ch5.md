@@ -5,7 +5,7 @@
 Here's `compose`:
 
 ```js
-var compose = function(f,g) {
+var compose = function(f, g) {
   return function(x) {
     return f(g(x));
   };
@@ -17,8 +17,12 @@ var compose = function(f,g) {
 Composition feels like function husbandry. You, breeder of functions, select two with traits you'd like to combine and mash them together to spawn a brand new one. Usage is as follows:
 
 ```js
-var toUpperCase = function(x) { return x.toUpperCase(); };
-var exclaim = function(x) { return x + '!'; };
+var toUpperCase = function(x) {
+  return x.toUpperCase();
+};
+var exclaim = function(x) {
+  return x + '!';
+};
 var shout = compose(exclaim, toUpperCase);
 
 shout("send in the clowns");
@@ -30,7 +34,7 @@ The composition of two functions returns a new function. This makes perfect sens
 In our definition of `compose`, the `g` will run before the `f`, creating a right to left flow of data. This is much more readable than nesting a bunch of function calls. Without compose, the above would read:
 
 ```js
-var shout = function(x){
+var shout = function(x) {
   return exclaim(toUpperCase(x));
 };
 ```
@@ -38,8 +42,12 @@ var shout = function(x){
 Instead of inside to outside, we run right to left, which I suppose is a step in the left direction(boo). Let's look at an example where sequence matters:
 
 ```js
-var head = function(x) { return x[0]; };
-var reverse = reduce(function(acc, x){ return [x].concat(acc); }, []);
+var head = function(x) {
+  return x[0];
+};
+var reverse = reduce(function(acc, x) {
+  return [x].concat(acc);
+}, []);
 var last = compose(head, reverse);
 
 last(['jumpkick', 'roundhouse', 'uppercut']);
@@ -73,7 +81,7 @@ lastUpper(['jumpkick', 'roundhouse', 'uppercut']);
 //=> 'UPPERCUT'
 
 
-var loudLastUpper = compose(exclaim, toUpperCase, head, reverse)
+var loudLastUpper = compose(exclaim, toUpperCase, head, reverse);
 
 loudLastUpper(['jumpkick', 'roundhouse', 'uppercut']);
 //=> 'UPPERCUT!'
@@ -106,7 +114,7 @@ Pointfree style means never having to say your data. Excuse me. It means functio
 
 ```js
 //not pointfree because we mention the data: word
-var snakeCase = function (word) {
+var snakeCase = function(word) {
   return word.toLowerCase().replace(/\s+/ig, '_');
 };
 
@@ -120,7 +128,7 @@ Let's look at another example.
 
 ```js
 //not pointfree because we mention the data: name
-var initials = function (name) {
+var initials = function(name) {
   return name.split(' ').map(compose(toUpperCase, head)).join('. ');
 };
 
@@ -140,21 +148,21 @@ A common mistake is to compose something like `map`, a function of two arguments
 //wrong - we end up giving angry an array and we partially applied map with god knows what.
 var latin = compose(map, angry, reverse);
 
-latin(["frog", "eyes"]);
+latin(['frog', 'eyes']);
 // error
 
 
 // right - each function expects 1 argument.
 var latin = compose(map(angry), reverse);
 
-latin(["frog", "eyes"]);
-// ["EYES!", "FROG!"])
+latin(['frog', 'eyes']);
+// ['EYES!', 'FROG!'])
 ```
 
 If you are having trouble debugging a composition, we can use this helpful, but impure trace function to see what's going on.
 
 ```js
-var trace = curry(function(tag, x){
+var trace = curry(function(tag, x) {
   console.log(tag, x);
   return x;
 });
@@ -168,7 +176,7 @@ dasherize('The world is a vampire');
 Something is wrong here, let's `trace`
 
 ```js
-var dasherize = compose(join('-'), toLower, trace("after split"), split(' '), replace(/\s{2,}/ig, ' '));
+var dasherize = compose(join('-'), toLower, trace('after split'), split(' '), replace(/\s{2,}/ig, ' '));
 // after split [ 'The', 'world', 'is', 'a', 'vampire' ]
 ```
 
@@ -222,8 +230,12 @@ Here is an image demonstrating composition:
 Here is a concrete example in code:
 
 ```js
-var g = function(x){ return x.length; };
-var f = function(x){ return x === 4; };
+var g = function(x) {
+  return x.length;
+};
+var f = function(x) {
+  return x === 4;
+};
 var isFourLetterWord = compose(f, g);
 ```
 
@@ -231,7 +243,9 @@ var isFourLetterWord = compose(f, g);
 Let's introduce a useful function called `id`. This function simply takes some input and spits it back at you. Take a look:
 
 ```js
-var id = function(x){ return x; };
+var id = function(x) {
+  return x;
+};
 ```
 
 You might ask yourself "What in the bloody hell is that useful for?". We'll make extensive use of this function in the following chapters, but for now think of it as a function that can stand in for our value - a function masquerading as every day data.
@@ -265,16 +279,39 @@ We are now at a point where it would serve us well to see some of this in practi
 ```js
 var _ = require('ramda');
 var accounting = require('accounting');
-  
+
 // Example Data
-var CARS = [
-    {name: "Ferrari FF", horsepower: 660, dollar_value: 700000, in_stock: true},
-    {name: "Spyker C12 Zagato", horsepower: 650, dollar_value: 648000, in_stock: false},
-    {name: "Jaguar XKR-S", horsepower: 550, dollar_value: 132000, in_stock: false},
-    {name: "Audi R8", horsepower: 525, dollar_value: 114200, in_stock: false},
-    {name: "Aston Martin One-77", horsepower: 750, dollar_value: 1850000, in_stock: true},
-    {name: "Pagani Huayra", horsepower: 700, dollar_value: 1300000, in_stock: false}
-  ];
+var CARS = [{
+  name: 'Ferrari FF',
+  horsepower: 660,
+  dollar_value: 700000,
+  in_stock: true,
+}, {
+  name: 'Spyker C12 Zagato',
+  horsepower: 650,
+  dollar_value: 648000,
+  in_stock: false,
+}, {
+  name: 'Jaguar XKR-S',
+  horsepower: 550,
+  dollar_value: 132000,
+  in_stock: false,
+}, {
+  name: 'Audi R8',
+  horsepower: 525,
+  dollar_value: 114200,
+  in_stock: false,
+}, {
+  name: 'Aston Martin One-77',
+  horsepower: 750,
+  dollar_value: 1850000,
+  in_stock: true,
+}, {
+  name: 'Pagani Huayra',
+  horsepower: 700,
+  dollar_value: 1300000,
+  in_stock: false,
+}];
 
 // Exercise 1:
 // ============
@@ -293,17 +330,21 @@ var nameOfFirstCar = undefined;
 // Exercise 3:
 // ============
 // Use the helper function _average to refactor averageDollarValue as a composition.
-var _average = function(xs) { return _.reduce(_.add, 0, xs) / xs.length; }; // <- leave be
+var _average = function(xs) {
+  return _.reduce(_.add, 0, xs) / xs.length;
+}; // <- leave be
 
 var averageDollarValue = function(cars) {
-  var dollar_values = _.map(function(c) { return c.dollar_value; }, cars);
+  var dollar_values = _.map(function(c) {
+    return c.dollar_value;
+  }, cars);
   return _average(dollar_values);
 };
 
 
 // Exercise 4:
 // ============
-// Write a function: sanitizeNames() using compose that returns a list of lowercase and underscored car's names: e.g: sanitizeNames([{name: "Ferrari FF", horsepower: 660, dollar_value: 700000, in_stock: true}]) //=> ["ferrari_ff"].
+// Write a function: sanitizeNames() using compose that returns a list of lowercase and underscored car's names: e.g: sanitizeNames([{name: 'Ferrari FF', horsepower: 660, dollar_value: 700000, in_stock: true}]) //=> ['ferrari_ff'].
 
 var _underscore = _.replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
 
@@ -316,7 +357,7 @@ var sanitizeNames = undefined;
 
 var availablePrices = function(cars) {
   var available_cars = _.filter(_.prop('in_stock'), cars);
-  return available_cars.map(function(x){
+  return available_cars.map(function(x) {
     return accounting.formatMoney(x.dollar_value);
   }).join(', ');
 };
@@ -327,7 +368,9 @@ var availablePrices = function(cars) {
 // Refactor to pointfree. Hint: you can use _.flip().
 
 var fastestCar = function(cars) {
-  var sorted = _.sortBy(function(car){ return car.horsepower }, cars);
+  var sorted = _.sortBy(function(car) {
+    return car.horsepower;
+  }, cars);
   var fastest = _.last(sorted);
   return fastest.name + ' is the fastest';
 };

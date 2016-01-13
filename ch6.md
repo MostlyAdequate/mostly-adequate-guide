@@ -13,13 +13,13 @@ For some folks, myself included, it's hard to grasp the concept of declarative c
 ```js
 // imperative
 var makes = [];
-for (i = 0; i < cars.length; i++) {
+for (var i = 0; i < cars.length; i++) {
   makes.push(cars[i].make);
 }
 
 
 // declarative
-var makes = cars.map(function(car){ return car.make; });
+var makes = cars.map(function(car) { return car.make; });
 ```
 
 The imperative loop must first instantiate the array. The interpreter must evaluate this statement before moving on. Then it directly iterates through the list of cars, manually increasing a counter and showing its bits and pieces to us in a vulgar display of explicit iteration.
@@ -70,14 +70,14 @@ requirejs.config({
   paths: {
     ramda: 'https://cdnjs.cloudflare.com/ajax/libs/ramda/0.13.0/ramda.min',
     jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min'
-  }
+  },
 });
 
 require([
     'ramda',
-    'jquery'
+    'jquery',
   ],
-  function (_, $) {
+  function(_, $) {
     var trace = _.curry(function(tag, x) {
       console.log(tag, x);
       return x;
@@ -114,7 +114,7 @@ Here we've simply wrapped jQuery's methods to be curried and we've swapped the a
 Next we must construct a url to pass to our `Impure.getJSON` function.
 
 ```js
-var url = function (term) {
+var url = function(term) {
   return 'https://api.flickr.com/services/feeds/photos_public.gne?tags=' +
     term + '&format=json&jsoncallback=?';
 };
@@ -125,9 +125,9 @@ There are fancy and overly complex ways of writing `url` pointfree using monoids
 Let's write an app function that makes the call and places the contents on the screen.
 
 ```js
-var app = _.compose(Impure.getJSON(trace("response")), url);
+var app = _.compose(Impure.getJSON(trace('response')), url);
 
-app("cats");
+app('cats');
 ```
 
 This calls our `url` function, then passes the string to our `getJSON` function, which has been partially applied with `trace`. Loading the app will show the response from the api call in the console.
@@ -139,7 +139,7 @@ We'd like to construct images out of this json. It looks like the srcs are burie
 Anyhow, to get at these nested properties we can use a nice universal getter function from ramda called `_.prop()`. Here's a homegrown version so you can see what's happening:
 
 ```js
-var prop = _.curry(function(property, object){
+var prop = _.curry(function(property, object) {
   return object[property];
 });
 ```
@@ -155,7 +155,7 @@ var srcs = _.compose(_.map(mediaUrl), _.prop('items'));
 Once we gather the `items`, we must `map` over them to extract each media url. This results in a nice array of srcs. Let's hook this up to our app and print them on the screen.
 
 ```js
-var renderImages = _.compose(Impure.setHtml("body"), srcs);
+var renderImages = _.compose(Impure.setHtml('body'), srcs);
 var app = _.compose(Impure.getJSON(renderImages), url);
 ```
 
@@ -164,8 +164,10 @@ All we've done is make a new composition that will call our `srcs` and set the b
 Our final step is to turn these srcs into bonafide images. In a bigger application, we'd use a template/dom library like Handlebars or React. For this application though, we only need an img tag so let's stick with jQuery.
 
 ```js
-var img = function (url) {
-  return $('<img />', { src: url });
+var img = function(url) {
+  return $('<img />', {
+    src: url
+  });
 };
 ```
 
@@ -173,7 +175,7 @@ jQuery's `html()` method will accept an array of tags. We only have to transform
 
 ```js
 var images = _.compose(_.map(img), srcs);
-var renderImages = _.compose(Impure.setHtml("body"), images);
+var renderImages = _.compose(Impure.setHtml('body'), images);
 var app = _.compose(Impure.getJSON(renderImages), url);
 ```
 
@@ -186,15 +188,15 @@ Here is the finished script:
 requirejs.config({
   paths: {
     ramda: 'https://cdnjs.cloudflare.com/ajax/libs/ramda/0.13.0/ramda.min',
-    jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min'
-  }
+    jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
+  },
 });
 
 require([
     'ramda',
-    'jquery'
+    'jquery',
   ],
-  function (_, $) {
+  function(_, $) {
     ////////////////////////////////////////////
     // Utils
 
@@ -205,11 +207,13 @@ require([
 
       setHtml: _.curry(function(sel, html) {
         $(sel).html(html);
-      })
+      }),
     };
 
-    var img = function (url) {
-      return $('<img />', { src: url });
+    var img = function(url) {
+      return $('<img />', {
+        src: url,
+      });
     };
 
     var trace = _.curry(function(tag, x) {
@@ -219,7 +223,7 @@ require([
 
     ////////////////////////////////////////////
 
-    var url = function (t) {
+    var url = function(t) {
       return 'http://api.flickr.com/services/feeds/photos_public.gne?tags=' +
         t + '&format=json&jsoncallback=?';
     };
@@ -230,11 +234,11 @@ require([
 
     var images = _.compose(_.map(img), srcs);
 
-    var renderImages = _.compose(Impure.setHtml("body"), images);
+    var renderImages = _.compose(Impure.setHtml('body'), images);
 
     var app = _.compose(Impure.getJSON(renderImages), url);
 
-    app("cats");
+    app('cats');
   });
 ```
 
@@ -247,7 +251,7 @@ There is an optimization available - we map over each item to turn it into a med
 
 ```js
 // map's composition law
-var law = compose(map(f), map(g)) == map(compose(f, g));
+var law = compose(map(f), map(g)) === map(compose(f, g));
 ```
 
 We can use this property to optimize our code. Let's have a principled refactor.
