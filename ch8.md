@@ -105,7 +105,7 @@ Maybe.prototype.map = function(f) {
 }
 ```
 
-Now, `Maybe` looks a lot like `Container` with one minor change: it will first check to see if it has a value before calling the supplied function. This has the effect of side stepping those pesky nulls as we `map`(Note that this implementation is simplied for teaching).
+Now, `Maybe` looks a lot like `Container` with one minor change: it will first check to see if it has a value before calling the supplied function. This has the effect of side stepping those pesky nulls as we `map`(Note that this implementation is simplified for teaching).
 
 ```js
 Maybe.of("Malkovich Malkovich").map(match(/a/ig));
@@ -153,7 +153,7 @@ streetName({addresses: [{street: "Shady Ln.", number: 4201}]});
 // Maybe("Shady Ln.")
 ```
 
-`safeHead` is like our normal `_.head`, but with added type safety. A curious thing happens when `Maybe` is introduced into our code; we are forced to deal with those sneaky `null` values. The `safeHead` function is honest and up front about its possible failure - there's really nothing to be ashamed of - and so it returns a `Maybe` to inform us of this matter. We are more than merely *informed*, however, because we are forced to `map` to get at the value we want since it is tucked away inside the `Maybe` object. Essentially, this is a `null` check enforced by the `safeHead` function itself. We can now sleep better at night knowing a `null` value won't rear its ugly, decapitated head when we least expect it. Apis like this will upgrade a flimsy application from paper and tacks to wood and nails. They will guarantee safer software.
+`safeHead` is like our normal `_.head`, but with added type safety. A curious thing happens when `Maybe` is introduced into our code; we are forced to deal with those sneaky `null` values. The `safeHead` function is honest and up front about its possible failure - there's really nothing to be ashamed of - and so it returns a `Maybe` to inform us of this matter. We are more than merely *informed*, however, because we are forced to `map` to get at the value we want since it is tucked away inside the `Maybe` object. Essentially, this is a `null` check enforced by the `safeHead` function itself. We can now sleep better at night knowing a `null` value won't rear its ugly, decapitated head when we least expect it. APIs like this will upgrade a flimsy application from paper and tacks to wood and nails. They will guarantee safer software.
 
 
 Sometimes a function might return a `Maybe(null)` explicitly to signal failure. For instance:
@@ -566,7 +566,7 @@ In this example, we still make use of `Either` and `IO` from within the success 
 
 I could go on, but that's all there is to it. Simple as `map`.
 
-In practice, you'll likely have multiple asynchronous tasks in one workflow and we haven't yet acquired the full container apis to tackle this scenario. Not to worry, we'll look at monads and such soon, but first, we must examine the maths that make this all possible.
+In practice, you'll likely have multiple asynchronous tasks in one workflow and we haven't yet acquired the full container APIs to tackle this scenario. Not to worry, we'll look at monads and such soon, but first, we must examine the maths that make this all possible.
 
 
 ## A Spot of Theory
