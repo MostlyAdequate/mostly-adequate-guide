@@ -6,7 +6,7 @@ We are going to switch our mindset. From here on out, we'll stop telling the com
 
 Declarative, as opposed to imperative, means that we will write expressions, as opposed to step by step instructions.
 
-Think of SQL. There is no "first do this, then do that". There is one expression that specifies what'd like from the database. We don't decide how to do the work, it does. When the database is upgraded and the SQL engine optimized, we don't have to change our query. This is because there are many ways to interpret our specification and achieve the same result.
+Think of SQL. There is no "first do this, then do that". There is one expression that specifies what we'd like from the database. We don't decide how to do the work, it does. When the database is upgraded and the SQL engine optimized, we don't have to change our query. This is because there are many ways to interpret our specification and achieve the same result.
 
 For some folks, myself included, it's hard to grasp the concept of declarative coding at first so let's point out a few examples to get a feel for it.
 
