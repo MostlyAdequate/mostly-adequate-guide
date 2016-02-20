@@ -55,6 +55,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 See [TRANSLATIONS.md](TRANSLATIONS.md)
 
+### FAQ
+
+See [FAQ.md](FAQ.md)
+
+
 
 # Plans for the future
 
