@@ -1,4 +1,5 @@
 require('../../support');
+var path = require('path');
 var Task = require('data.task');
 var _ = require('ramda');
 
@@ -36,7 +37,7 @@ var pureLog = function(x) {
   });
 };
 
-var ex2 = _.compose(chain(_.compose(pureLog, _.last, split('/'))), getFile);
+var ex2 = _.compose(chain(_.compose(pureLog, _.last, split(path.sep))), getFile);
 
 
 
@@ -65,7 +66,7 @@ var ex3 = _.compose(chain(_.compose(getComments, _.prop('id'))), getPost);
 
 // Exercise 4
 // ==========
-// Use validateEmail and addToMailingList to implement ex4's type signature. It should 
+// Use validateEmail and addToMailingList to implement ex4's type signature. It should
 
 //  addToMailingList :: Email -> IO([Email])
 var addToMailingList = (function(list){
