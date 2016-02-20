@@ -16,7 +16,7 @@ From the dusty pages of math books, across the vast sea of white papers, amongst
 
 ```js
 //  capitalize :: String -> String
-var capitalize = function(s){
+var capitalize = function(s) {
   return toUpperCase(head(s)) + toLowerCase(tail(s));
 }
 
@@ -32,22 +32,22 @@ Let's look at some more function signatures:
 
 ```js
 //  strLength :: String -> Number
-var strLength = function(s){
+var strLength = function(s) {
   return s.length;
 }
 
 //  join :: String -> [String] -> String
-var join = curry(function(what, xs){
+var join = curry(function(what, xs) {
   return xs.join(what);
 });
 
 //  match :: Regex -> String -> [String]
-var match = curry(function(reg, s){
+var match = curry(function(reg, s) {
   return s.match(reg);
 });
 
 //  replace :: Regex -> String -> String -> String
-var replace = curry(function(reg, sub, s){
+var replace = curry(function(reg, sub, s) {
   return s.replace(reg, sub);
 });
 ```
@@ -60,7 +60,7 @@ For `match` we are free to group the signature like so:
 
 ```js
 //  match :: Regex -> (String -> [String])
-var match = curry(function(reg, s){
+var match = curry(function(reg, s) {
   return s.match(reg);
 });
 ```
@@ -78,7 +78,7 @@ Each argument pops one type off the front of the signature. `onHoliday` is `matc
 
 ```js
 //  replace :: Regex -> (String -> (String -> String))
-var replace = curry(function(reg, sub, s){
+var replace = curry(function(reg, sub, s) {
   return s.replace(reg, sub);
 });
 ```
@@ -90,10 +90,12 @@ A few last things here:
 
 ```js
 //  id :: a -> a
-var id = function(x){ return x; }
+var id = function(x) {
+  return x;
+}
 
 //  map :: (a -> b) -> [a] -> [b]
-var map = curry(function(f, xs){
+var map = curry(function(f, xs) {
   return xs.map(f);
 });
 ```
@@ -110,15 +112,17 @@ Here's a few more just to see if you can decipher them on your own.
 
 ```js
 //  head :: [a] -> a
-var head = function(xs){ return xs[0]; }
+var head = function(xs) {
+  return xs[0];
+};
 
 //  filter :: (a -> Bool) -> [a] -> [a]
-var filter = curry(function(f, xs){
+var filter = curry(function(f, xs) {
   return xs.filter(f);
 });
 
 //  reduce :: (b -> a -> b) -> b -> [a] -> b
-var reduce = curry(function(f, x, xs){
+var reduce = curry(function(f, x, xs) {
   return xs.reduce(f, x);
 });
 ```
@@ -157,7 +161,7 @@ Besides deducing implementation possibilities, this sort of reasoning gains us *
 compose(f, head) == compose(head, map(f));
 
 // filter :: (a -> Bool) -> [a] -> [a]
-compose(map(f), filter(compose(p, f))) == compose(filter(p), map(f));
+compose(map(f), filter(compose(p, f))) === compose(filter(p), map(f));
 ```
 
 

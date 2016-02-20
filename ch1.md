@@ -49,8 +49,8 @@ If you don't understand this program, it's okay, neither do I. The point is that
 Let's try again with a more functional approach:
 
 ```js
-var conjoin = function(flock_x, flock_y) { return flock_x + flock_y };
-var breed = function(flock_x, flock_y) { return flock_x * flock_y };
+var conjoin = function(flock_x, flock_y) { return flock_x + flock_y; };
+var breed = function(flock_x, flock_y) { return flock_x * flock_y; };
 
 var flock_a = 4;
 var flock_b = 2;
@@ -67,8 +67,8 @@ Well, we got the right answer this time. There's much less code. The function ne
 There's really nothing special at all about these two functions other than their names. Let's rename our custom functions to reveal their true identity.
 
 ```js
-var add = function(x, y) { return x + y };
-var multiply = function(x, y) { return x * y };
+var add = function(x, y) { return x + y; };
+var multiply = function(x, y) { return x * y; };
 
 var flock_a = 4;
 var flock_b = 2;
@@ -83,16 +83,16 @@ And with that, we gain the knowledge of the ancients:
 
 ```js
 // associative
-add(add(x, y), z) == add(x, add(y, z));
+add(add(x, y), z) === add(x, add(y, z));
 
 // commutative
-add(x, y) == add(y, x);
+add(x, y) === add(y, x);
 
 // identity
-add(x, 0) == x;
+add(x, 0) === x;
 
 // distributive
-multiply(x, add(y,z)) == add(multiply(x, y), multiply(x, z));
+multiply(x, add(y,z)) === add(multiply(x, y), multiply(x, z));
 ```
 
 Ah yes, those old faithful mathematical properties should come in handy. Don't worry if you didn't know them right off the top of your head. For a lot of us, it's been a while since we've reviewed this information. Let's see if we can use these properties to simplify our little seagull program.

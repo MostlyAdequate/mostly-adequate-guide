@@ -9,19 +9,21 @@ Before we go any further, I have a confession to make: I haven't been fully hone
 What's important here is the ability to drop any value in our type and start mapping away.
 
 ```js
-IO.of("tetris").map(concat(" master"));
-// IO("tetris master")
+IO.of('tetris').map(concat(' master'));
+// IO('tetris master')
 
 Maybe.of(1336).map(add(1));
 // Maybe(1337)
 
-Task.of({id: 2}).map(_.prop('id'));
+Task.of({
+  id: 2,
+}).map(_.prop('id'));
 // Task(2)
 
-Either.of("The past, present and future walk into a bar...").map(
-  concat("it was tense.")
+Either.of('The past, present and future walk into a bar...').map(
+  concat('it was tense.')
 );
-// Right("The past, present and future walk into a bar...it was tense.")
+// Right('The past, present and future walk into a bar...it was tense.')
 ```
 
 If you recall, `IO` and `Task`'s constructors expect a function as their argument, but `Maybe` and `Either` do not. The motivation for this interface is a common, consistent way to place a value into our functor without the complexities and specific demands of constructors. The term "default minimal context" lacks precision, yet captures the idea well: we'd like to lift any value in our type and `map` away per usual with the expected behaviour of whichever functor.
@@ -57,15 +59,15 @@ var print = function(x) {
     console.log(x);
     return x;
   });
-}
+};
 
 // Example
 // ===========================
 //  cat :: String -> IO (IO String)
 var cat = compose(map(print), readFile);
 
-cat(".git/config")
-// IO(IO("[core]\nrepositoryformatversion = 0\n"))
+cat('.git/config');
+// IO(IO('[core]\nrepositoryformatversion = 0\n'))
 ```
 
 What we've got here is an `IO` trapped inside another `IO` because `print` introduced a second `IO` during our `map`. To continue working with our string, we must `map(map(f))` and to observe the effect, we must `unsafePerformIO().unsafePerformIO()`.
@@ -77,7 +79,7 @@ var cat = compose(map(print), readFile);
 //  catFirstChar :: String -> IO (IO String)
 var catFirstChar = compose(map(map(head)), cat);
 
-catFirstChar(".git/config")
+catFirstChar(".git/config");
 // IO(IO("["))
 ```
 
@@ -97,9 +99,15 @@ var firstAddressStreet = compose(
   map(map(safeProp('street'))), map(safeHead), safeProp('addresses')
 );
 
-firstAddressStreet(
-  {addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]}
-);
+firstAddressStreet({
+  addresses: [{
+    street: {
+      name: 'Mulburry',
+      number: 8402,
+    },
+    postcode: 'WC2N',
+  }],
+});
 // Maybe(Maybe(Maybe({name: 'Mulburry', number: 8402})))
 ```
 
@@ -108,23 +116,23 @@ Again, we see this nested functor situation where it's neat to see there are thr
 I said monads are like onions because tears well up as we peel back layer of the nested functor with `map` to get at the inner value. We can dry our eyes, take a deep breath, and use a method called `join`.
 
 ```js
-var mmo = Maybe.of(Maybe.of("nunchucks"));
-// Maybe(Maybe("nunchucks"))
+var mmo = Maybe.of(Maybe.of('nunchucks'));
+// Maybe(Maybe('nunchucks'))
 
 mmo.join();
-// Maybe("nunchucks")
+// Maybe('nunchucks')
 
-var ioio = IO.of(IO.of("pizza"));
-// IO(IO("pizza"))
+var ioio = IO.of(IO.of('pizza'));
+// IO(IO('pizza'))
 
-ioio.join()
-// IO("pizza")
+ioio.join();
+// IO('pizza')
 
-var ttt = Task.of(Task.of(Task.of("sewers")));
-// Task(Task(Task("sewers")));
+var ttt = Task.of(Task.of(Task.of('sewers')));
+// Task(Task(Task('sewers')));
 
-ttt.join()
-// Task(Task("sewers"))
+ttt.join();
+// Task(Task('sewers'))
 ```
 
 If we have two layers of the same type, we can smash them together with `join`. This ability to join together, this functor matrimony, is what makes a monad a monad. Let's inch toward the full definition with something a little more accurate:
@@ -145,16 +153,24 @@ Now that we have a `join` method, let's sprinkle some magic monad dust over the 
 
 ```js
 //  join :: Monad m => m (m a) -> m a
-var join = function(mma){ return mma.join(); }
+var join = function(mma) {
+  return mma.join();
+};
 
 //  firstAddressStreet :: User -> Maybe Street
 var firstAddressStreet = compose(
   join, map(safeProp('street')), join, map(safeHead), safeProp('addresses')
 );
 
-firstAddressStreet(
-  {addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]}
-);
+firstAddressStreet({
+  addresses: [{
+    street: {
+      name: 'Mulburry',
+      number: 8402,
+    },
+    postcode: 'WC2N',
+  }],
+});
 // Maybe({name: 'Mulburry', number: 8402})
 ```
 
@@ -171,17 +187,24 @@ Again, we simply remove one layer. Mind you, we have not thrown out purity, but 
 ```js
 //  log :: a -> IO a
 var log = function(x) {
-  return new IO(function() { console.log(x); return x; });
-}
+  return new IO(function() {
+    console.log(x);
+    return x;
+  });
+};
 
 //  setStyle :: Selector -> CSSProps -> IO DOM
 var setStyle = curry(function(sel, props) {
-  return new IO(function() { return jQuery(sel).css(props); });
+  return new IO(function() {
+    return jQuery(sel).css(props);
+  });
 });
 
 //  getItem :: String -> IO String
 var getItem = function(key) {
-  return new IO(function() { return localStorage.getItem(key); });
+  return new IO(function() {
+    return localStorage.getItem(key);
+  });
 };
 
 //  applyPreferences :: String -> IO DOM
@@ -243,21 +266,26 @@ I swapped out any `map/join` with our new `chain` function to tidy things up a b
 // querySelector :: Selector -> IO DOM
 
 
-getJSON('/authenticate', {username: 'stale', password: 'crackers'})
+getJSON('/authenticate', {
+    username: 'stale',
+    password: 'crackers',
+  })
   .chain(function(user) {
-    return getJSON('/friends', {user_id: user.id});
-});
+    return getJSON('/friends', {
+      user_id: user.id,
+    });
+  });
 // Task([{name: 'Seimith', id: 14}, {name: 'Ric', id: 39}]);
 
 
-querySelector("input.username").chain(function(uname) {
-  return querySelector("input.email").chain(function(email) {
+querySelector('input.username').chain(function(uname) {
+  return querySelector('input.email').chain(function(email) {
     return IO.of(
-      "Welcome " + uname.value + " " + "prepare for spam at " + email.value
+      'Welcome ' + uname.value + ' ' + 'prepare for spam at ' + email.value
     );
   });
 });
-// IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net");
+// IO('Welcome Olivia prepare for spam at olivia@tremorcontrol.net');
 
 
 Maybe.of(3).chain(function(three) {
@@ -277,12 +305,12 @@ Anyways, let's get to the examples above. In the first example, we see two `Task
 Next, we use `querySelector` to find a few different inputs and create a welcoming message. Notice how we have access to both `uname` and `email` at the innermost function - this is functional variable assignment at its finest. Since `IO` is graciously lending us its value, we are in charge of putting it back how we found it - we wouldn't want to break its trust (and our program). `IO.of` is the perfect tool for the job and it's why Pointed is an important prerequisite to the Monad interface. However, we could choose to `map` as that would also return the correct type:
 
 ```js
-querySelector("input.username").chain(function(uname) {
-  return querySelector("input.email").map(function(email) {
-    return "Welcome " + uname.value + " prepare for spam at " + email.value;
+querySelector('input.username').chain(function(uname) {
+  return querySelector('input.email').map(function(email) {
+    return 'Welcome ' + uname.value + ' prepare for spam at ' + email.value;
   });
 });
-// IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net");
+// IO('Welcome Olivia prepare for spam at olivia@tremorcontrol.net');
 ```
 
 Finally, we have two examples using `Maybe`. Since `chain` is mapping under the hood, if any value is `null`, we stop the computation dead in its tracks.
@@ -327,7 +355,7 @@ var upload = function(filename, callback) {
       });
     });
   }
-}
+};
 ```
 
 Well isn't that the devil's arithmetic. We're pinballed through a volatile maze of madness. Imagine if it were a typical app that also mutated variables along the way! We'd be in the tar pit indeed.
@@ -337,8 +365,8 @@ Well isn't that the devil's arithmetic. We're pinballed through a volatile maze 
 The first law we'll look at is associativity, but perhaps not in the way you're used to it.
 
 ```js
-  // associativity
-  compose(join, map(join)) == compose(join, join)
+// associativity
+compose(join, map(join)) == compose(join, join);
 ```
 
 These laws get at the nested nature of monads so associativity focuses on joining the inner or outer types first to achieve the same result. A picture might be more instructive:
@@ -350,8 +378,8 @@ Starting with the top left moving downward, we can `join` the outer two `M`'s of
 The second law is similar:
 
 ```js
-  // identity for all (M a)
-  compose(join, of) == compose(join, map(of)) == id
+// identity for all (M a)
+compose(join, of) === compose(join, map(of)) === id
 ```
 
 It states that, for any monad `M`, `of` and `join` amounts to `id`. We can also `map(of)` and attack it from the inside out. We call this "triangle identity" because it makes such a shape when visualized:
@@ -365,18 +393,18 @@ I should mention that I've just written `of`, however, it must be the specific `
 Now, I've seen these laws, identity and associativity, somewhere before... Hold on, I'm thinking...Yes of course! They are the laws for a category. But that would mean we need a composition function to complete the definition. Behold:
 
 ```js
-  var mcompose = function(f, g) {
-    return compose(chain(f), chain(g));
-  }
+var mcompose = function(f, g) {
+  return compose(chain(f), chain(g));
+};
 
-  // left identity
-  mcompose(M, f) == f
+// left identity
+mcompose(M, f) == f;
 
-  // right identity
-  mcompose(f, M) == f
+// right identity
+mcompose(f, M) == f;
 
-  // associativity
-  mcompose(mcompose(f, g), h) == mcompose(f, mcompose(g, h))
+// associativity
+mcompose(mcompose(f, g), h) === mcompose(f, mcompose(g, h));
 ```
 
 They are the category laws after all. Monads form a category called the "Kleisli category" where all objects are monads and morphisms are chained functions. I don't mean to taunt you with bits and bobs of category theory without much explanation of how the jigsaw fits together. The intention is to scratch the surface enough to show the relevance and spark some interest while focusing on the practical properties we can use each day.
@@ -401,16 +429,18 @@ In the next chapter, we'll see how applicative functors fit into the container w
 // Use safeProp and map/join or chain to safely get the street name when given
 // a user.
 
-var safeProp = _.curry(function (x, o) { return Maybe.of(o[x]); });
+var safeProp = _.curry(function(x, o) {
+  return Maybe.of(o[x]);
+});
 var user = {
   id: 2,
-  name: "albert",
+  name: 'albert',
   address: {
     street: {
       number: 22,
-      name: 'Walnut St'
-    }
-  }
+      name: 'Walnut St',
+    },
+  },
 };
 
 var ex1 = undefined;
@@ -422,15 +452,17 @@ var ex1 = undefined;
 // then purely log it.
 
 var getFile = function() {
-  return new IO(function(){ return __filename; });
-}
+  return new IO(function() {
+    return __filename;
+  });
+};
 
 var pureLog = function(x) {
-  return new IO(function(){
+  return new IO(function() {
     console.log(x);
     return 'logged ' + x;
   });
-}
+};
 
 var ex2 = undefined;
 
@@ -441,23 +473,29 @@ var ex2 = undefined;
 // Use getPost() then pass the post's id to getComments().
 //
 var getPost = function(i) {
-  return new Task(function (rej, res) {
-    setTimeout(function () {
-      res({ id: i, title: 'Love them tasks' });
+  return new Task(function(rej, res) {
+    setTimeout(function() {
+      res({
+        id: i,
+        title: 'Love them tasks',
+      });
     }, 300);
   });
-}
+};
 
 var getComments = function(i) {
-  return new Task(function (rej, res) {
-    setTimeout(function () {
-      res([
-        {post_id: i, body: "This book should be illegal"},
-        {post_id: i, body: "Monads are like smelly shallots"}
-      ]);
+  return new Task(function(rej, res) {
+    setTimeout(function() {
+      res([{
+        post_id: i,
+        body: 'This book should be illegal',
+      }, {
+        post_id: i,
+        body: 'Monads are like smelly shallots',
+      }]);
     }, 300);
   });
-}
+};
 
 
 var ex3 = undefined;
@@ -469,24 +507,24 @@ var ex3 = undefined;
 // signature.
 
 //  addToMailingList :: Email -> IO([Email])
-var addToMailingList = (function(list){
+var addToMailingList = (function(list) {
   return function(email) {
-    return new IO(function(){
+    return new IO(function() {
       list.push(email);
       return list;
     });
-  }
+  };
 })([]);
 
 function emailBlast(list) {
-  return new IO(function(){
+  return new IO(function() {
     return 'emailed: ' + list.join(',');
   });
 }
 
-var validateEmail = function(x){
+var validateEmail = function(x) {
   return x.match(/\S+@\S+\.\S+/) ? (new Right(x)) : (new Left('invalid email'));
-}
+};
 
 //  ex4 :: Email -> Either String (IO String)
 var ex4 = undefined;
