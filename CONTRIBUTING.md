@@ -9,6 +9,12 @@ By opening a pull request to this repository, you agree to provide your work und
 
 Errata and basic clarifications will be accepted if we agree that they improve the content. You can also open an issue so we can figure out how or if it needs to be addressed. If you've never done this before, the [flow guide](https://guides.github.com/introduction/flow/) might be useful.
 
+## Questions or Clarifications
+
+Please, have a look at the [FAQ](FAQ.md) before you open an issue. Your question may already
+have been answered. Should you still need to ask something? Feel free to open an issue and to
+explain yourself.
+
 ## Translations
 
 Translations to other languages are highly encouraged. Each official translation will be held as a separate repository in the [MostlyAdequate organization](https://github.com/MostlyAdequate) and linked from the English version book.
