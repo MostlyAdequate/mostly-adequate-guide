@@ -2,14 +2,14 @@
 
 - [Why are snippets written sometimes with semicolons and sometimes
   without?](#why-are-snippets-written-sometimes-with-semicolons-and-sometimes-without)
-- [Aren't external libraries like _ (ramda) or $ (jquery) making calls impure?](#arent-external-libraries-like-ramda-or-jquery-making-calls-impure)
+- [Aren't external libraries like _ (ramda) or $ (jquery) making calls impure?](#arent-external-libraries-like-_-ramda-or--jquery-making-calls-impure)
 - [What is the meaning of `f a` in signature?](#what-is-the-meaning-of-f-a-in-signature)
 - [Is there any "real world" examples available?](#is-there-any-real-world-examples-available)
 - [Why does the book uses ES5? Is any ES6 version available?](#why-does-the-book-uses-es5-is-any-es6-version-available)
 - [What the heck is that reduce function about?](#what-the-heck-is-that-reduce-function-about)
 - [Wouldn't you use a simplified English rather than the current style?](#wouldnt-you-use-a-simplified-english-rather-than-the-current-style)
 - [What is Either? What is Future? What is Task?](#what-is-either-what-is-future-what-is-task)
-- [Where do map, filter, compose ... methods come from?](#where-do-map-filter-compose-methods-come-from)
+- [Where do map, filter, compose ... methods come from?](#where-do-map-filter-compose--methods-come-from)
 
 ### Why are snippets written sometimes with semicolons and sometimes without?
 
