@@ -87,7 +87,7 @@ censored('Chocolate Rain');
 
 What's demonstrated here is the ability to "pre-load" a function with an argument or two in order to receive a new function that remembers those arguments.
 
-I encourage you to `npm install lodash`, copy the code above and have a go at it in the repl. You can also do this in a browser where lodash or ramda is available.
+I encourage you to `npm install lodash.curry`, copy the code above and have a go at it in the repl. You can also do this in a browser where lodash or ramda is available.
 
 ## More than a pun / special sauce
 
