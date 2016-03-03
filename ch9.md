@@ -329,7 +329,7 @@ Let's read a file, then upload it directly afterward:
 
 ```js
 // readFile :: Filename -> Either String (Task Error String)
-// httpPost :: String -> Task Error JSON
+// httpPost :: String -> String -> Task Error JSON
 
 //  upload :: String -> Either String (Task Error JSON)
 var upload = compose(map(chain(httpPost('/uploads'))), readFile);
@@ -349,7 +349,7 @@ var upload = function(filename, callback) {
   } else {
     readFile(filename, function(err, contents) {
       if (err) throw err;
-      httpPost(contents, function(err, json) {
+      httpPost('/uploads', contents, function(err, json) {
         if (err) throw err;
         callback(json);
       });
