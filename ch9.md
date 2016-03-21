@@ -1,4 +1,4 @@
-# Monadic Onions
+# Chapter 9: Monadic Onions
 
 ## Pointy Functor Factory
 
