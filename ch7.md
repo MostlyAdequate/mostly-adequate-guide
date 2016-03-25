@@ -1,4 +1,4 @@
-# Hindley-Milner and Me
+# Chapter 7: Hindley-Milner and Me
 
 ## What's your type?
 If you're new to the functional world, it won't be long before you find yourself knee deep in type signatures. Types are the meta language that enables people from all different backgrounds to communicate succinctly and effectively. For the most part, they're written with a system called "Hindley-Milner", which we'll be examining together in this chapter.

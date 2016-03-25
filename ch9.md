@@ -1,4 +1,4 @@
-# Monadic Onions
+# Chapter 9: Monadic Onions
 
 ## Pointy Functor Factory
 
@@ -319,7 +319,7 @@ Don't worry if these examples are hard to grasp at first. Play with them. Poke t
 
 As a reminder, this does not work with two different nested types. Functor composition and later, monad transformers, can help us in that situation.
 
-#Power trip
+## Power trip
 
 Container style programming can be confusing at times. We sometimes find ourselves struggling to understand how many containers deep a value is or if we need `map` or `chain` (soon we'll see more container methods). We can greatly improve debugging with tricks like implementing `inspect` and we'll learn how to create a "stack" that can handle whatever effects we throw at it, but there are times when we question if it's worth the hassle.
 
