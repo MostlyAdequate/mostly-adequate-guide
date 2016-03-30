@@ -130,7 +130,7 @@ Let's acquire another essential tool called `compose`.
 
 ## Exercises
 
-A quick word before we start. We'll use a library called [Ramda](http://ramdajs.com) which curries every function by default. Alternatively you may choose to use [lodash-fp](https://github.com/lodash/lodash-fp) which does the same and is written/maintained by the creator of lodash. Both will work just fine and it is a matter of preference.
+A quick word before we start. We'll use a library called [Ramda](http://ramdajs.com) which curries every function by default. Alternatively you may choose to use [lodash/fp](https://github.com/lodash/lodash/wiki/FP-Guide) which does the same and is written/maintained by the creator of lodash. Both will work just fine and it is a matter of preference.
 
 There are [unit tests](https://github.com/DrBoolean/mostly-adequate-guide/tree/master/code/part1_exercises) to run against your exercises as you code them, or you can just copy-paste into a javascript REPL for the early exercises if you wish.
 
