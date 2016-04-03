@@ -178,11 +178,14 @@ We added `join` wherever we encountered the nested `Maybe`'s to keep them from g
 
 ```js
 IO.prototype.join = function() {
-  return this.unsafePerformIO();
-}
+  var thiz = this;
+  return new IO(function() {
+    return thiz.unsafePerformIO().unsafePerformIO();
+  });
+};
 ```
 
-Again, we simply remove one layer. Mind you, we have not thrown out purity, but merely removed one layer of excess shrink wrap.
+We simply bundle running the two layers of IO sequentially: outer then inner. Mind you, we have not thrown out purity, but merely repackaged the excessive two layers of shrink wrap into one easier-to-open package.
 
 ```js
 //  log :: a -> IO a
