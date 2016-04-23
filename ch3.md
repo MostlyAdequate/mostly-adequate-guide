@@ -127,7 +127,7 @@ var toLowerCase = {
   'C': 'c',
   'D': 'd',
   'E': 'e',
-  'D': 'd',
+  'F': 'f',
 };
 
 toLowerCase['C'];
