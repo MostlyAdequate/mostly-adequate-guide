@@ -1,4 +1,4 @@
-# Chapter 7: Hindley-Milner and Me
+# Hindley-Milner and Me
 
 ## What's your type?
 If you're new to the functional world, it won't be long before you find yourself knee deep in type signatures. Types are the meta language that enables people from all different backgrounds to communicate succinctly and effectively. For the most part, they're written with a system called "Hindley-Milner", which we'll be examining together in this chapter.
@@ -16,9 +16,7 @@ From the dusty pages of math books, across the vast sea of white papers, amongst
 
 ```js
 //  capitalize :: String -> String
-var capitalize = function(s) {
-  return toUpperCase(head(s)) + toLowerCase(tail(s));
-}
+const capitalize = s => toUpperCase(head(s)) + toLowerCase(tail(s))
 
 capitalize("smurf");
 //=> "Smurf"
@@ -32,24 +30,16 @@ Let's look at some more function signatures:
 
 ```js
 //  strLength :: String -> Number
-var strLength = function(s) {
-  return s.length;
-}
+const strLength = s => s.length
 
 //  join :: String -> [String] -> String
-var join = curry(function(what, xs) {
-  return xs.join(what);
-});
+const join = curry((what, xs) => xs.join(what))
 
 //  match :: Regex -> String -> [String]
-var match = curry(function(reg, s) {
-  return s.match(reg);
-});
+const match = curry((reg, s) => s.match(reg))
 
 //  replace :: Regex -> String -> String -> String
-var replace = curry(function(reg, sub, s) {
-  return s.replace(reg, sub);
-});
+const replace = curry((reg, sub, s) => s.replace(reg, sub))
 ```
 
 `strLength` is the same idea as before: we take a `String` and return you a `Number`.
@@ -60,9 +50,7 @@ For `match` we are free to group the signature like so:
 
 ```js
 //  match :: Regex -> (String -> [String])
-var match = curry(function(reg, s) {
-  return s.match(reg);
-});
+const match = curry((reg, s) => s.match(reg))
 ```
 
 Ah yes, grouping the last part in parenthesis reveals more information. Now it is seen as a function that takes a `Regex` and returns us a function from `String` to `[String]`. Because of currying, this is indeed the case: give it a `Regex` and we get a function back waiting for its `String` argument. Of course, we don't have to think of it this way, but it is good to understand why the last type is the one returned.
@@ -71,16 +59,14 @@ Ah yes, grouping the last part in parenthesis reveals more information. Now it i
 //  match :: Regex -> (String -> [String])
 
 //  onHoliday :: String -> [String]
-var onHoliday = match(/holiday/ig);
+const onHoliday = match(/holiday/ig)
 ```
 
 Each argument pops one type off the front of the signature. `onHoliday` is `match` that already has a `Regex`.
 
 ```js
 //  replace :: Regex -> (String -> (String -> String))
-var replace = curry(function(reg, sub, s) {
-  return s.replace(reg, sub);
-});
+const replace = curry((reg, sub, s) => s.replace(reg, sub))
 ```
 
 As you can see with the full parenthesis on `replace`, the extra notation can get a little noisy and redundant so we simply omit them. We can give all the arguments at once if we choose so it's easier to just think of it as: `replace` takes a `Regex`, a `String`, another `String` and returns you a `String`.
@@ -90,14 +76,10 @@ A few last things here:
 
 ```js
 //  id :: a -> a
-var id = function(x) {
-  return x;
-}
+const id = x => x
 
 //  map :: (a -> b) -> [a] -> [b]
-var map = curry(function(f, xs) {
-  return xs.map(f);
-});
+const map = curry((f, xs) => xs.map(f))
 ```
 
 The `id` function takes any old type `a` and returns something of the same type `a`. We're able to use variables in types just like in code. Variable names like `a` and `b` are convention, but they are arbitrary and can be replaced with whatever name you'd like. If they are the same variable, they have to be the same type. That's an important rule so let's reiterate: `a -> b` can be any type `a` to any type `b`, but `a -> a` means it has to be the same type. For example, `id` may be `String -> String` or `Number -> Number`, but not `String -> Bool`.
@@ -112,19 +94,13 @@ Here's a few more just to see if you can decipher them on your own.
 
 ```js
 //  head :: [a] -> a
-var head = function(xs) {
-  return xs[0];
-};
+const head = xs => xs[0]
 
 //  filter :: (a -> Bool) -> [a] -> [a]
-var filter = curry(function(f, xs) {
-  return xs.filter(f);
-});
+const filter = curry((f, xs) => xs.filter(f))
 
 //  reduce :: (b -> a -> b) -> b -> [a] -> b
-var reduce = curry(function(f, x, xs) {
-  return xs.reduce(f, x);
-});
+const reduce = curry((f, x, xs) => xs.reduce(f, x))
 ```
 
 `reduce` is perhaps, the most expressive of all. It's a tricky one, however, so don't feel inadequate should you struggle with it. For the curious, I'll try to explain in English though working through the signature on your own is much more instructive.
@@ -161,7 +137,7 @@ Besides deducing implementation possibilities, this sort of reasoning gains us *
 compose(f, head) == compose(head, map(f));
 
 // filter :: (a -> Bool) -> [a] -> [a]
-compose(map(f), filter(compose(p, f))) === compose(filter(p), map(f));
+compose(map(f), filter(compose(p, f))) == compose(filter(p), map(f));
 ```
 
 
