@@ -63,28 +63,23 @@ var getServerStuff = ajaxCall; // <-- look mum, no ()'s
 And that, folks, is how it is done. Once more so that we understand why I'm being so persistent.
 
 ```js
-var BlogController = (_ => {
-  var
-    index = posts => Views.index(posts),
-    show = post => Views.show(post),
-    create = attrs => Db.create(attrs),
-    update = post => Db.update(post, attrs),
-    destroy = post => Db.destroy(post);
-
-  return {
-    index: index, show: show, create: create, update: update, destroy: destroy
-  };
-})();
+var BlogController = {
+  index(posts)       { return Views.index(posts);     },
+  show(post)         { return Views.show(post);       },
+  create(attrs)      { return Db.create(attrs);       },
+  update(post,attrs) { return Db.update(post, attrs); },
+  destroy(post)      { return Db.destroy(post);       }
+;
 ```
 
 This ridiculous controller is 99% fluff. We could either rewrite it as:
 
 ```js
 var BlogController = {
-  index: Views.index,
-  show: Views.show,
-  create: Db.create,
-  update: Db.update,
+  index:   Views.index,
+  show:    Views.show,
+  create:  Db.create,
+  update:  Db.update,
   destroy: Db.destroy
 };
 ```
