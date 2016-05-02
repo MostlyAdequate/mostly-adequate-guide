@@ -9,28 +9,22 @@ One thing we need to get straight is the idea of a pure function.
 Take `slice` and `splice`. They are two functions that do the exact same thing - in a vastly different way, mind you, but the same thing nonetheless. We say `slice` is *pure* because it returns the same output per input every time, guaranteed. `splice`, however, will chew up its array and spit it back out forever changed which is an observable effect.
 
 ```js
-var xs = [1, 2, 3, 4, 5];
+const xs = [1,2,3,4,5]
 
 // pure
-xs.slice(0, 3);
-//=> [1, 2, 3]
+xs.slice(0,3); //=> [1,2,3]
 
-xs.slice(0, 3);
-//=> [1, 2, 3]
+xs.slice(0,3); //=> [1,2,3]
 
-xs.slice(0, 3);
-//=> [1, 2, 3]
+xs.slice(0,3); //=> [1,2,3]
 
 
 // impure
-xs.splice(0, 3);
-//=> [1, 2, 3]
+xs.splice(0,3); //=> [1,2,3]
 
-xs.splice(0, 3);
-//=> [4, 5]
+xs.splice(0,3); //=> [4,5]
 
-xs.splice(0, 3);
-//=> []
+xs.splice(0,3); //=> []
 ```
 
 In functional programming, we dislike unwieldy functions like `splice` that *mutate* data. This will never do as we're striving for reliable functions that return the same result every time, not functions that leave a mess in their wake like `splice`.
@@ -39,19 +33,16 @@ Let's look at another example.
 
 ```js
 // impure
-var minimum = 21;
+const minimum = 21
 
-var checkAge = function(age) {
-  return age >= minimum;
-};
-
+const checkAge = age => age >= minimum
 
 
 // pure
-var checkAge = function(age) {
-  var minimum = 21;
-  return age >= minimum;
-};
+const checkAge = age => {
+  const minimum = 21
+  return age >= minimum
+}
 ```
 
 In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the [cognitive load](http://en.wikipedia.org/wiki/Cognitive_load) by introducing an external environment.
@@ -61,9 +52,7 @@ It might not seem like a lot in this example, but this reliance upon state is on
 Its pure form, on the other hand, is completely self sufficient. We can  also make `minimum` immutable, which preserves the purity as the state will never change. To do this, we must create an object to freeze.
 
 ```js
-var immutableState = Object.freeze({
-  minimum: 21,
-});
+const immutableState = Object.freeze({ minimum: 21 })
 ```
 
 ## Side effects may include...
@@ -121,29 +110,13 @@ Or even as a graph with `x` as the input and `y` as the output:
 There's no need for implementation details if the input dictates the output. Since functions are simply mappings of input to output, one could simply jot down object literals and run them with `[]` instead of `()`.
 
 ```js
-var toLowerCase = {
-  'A': 'a',
-  'B': 'b',
-  'C': 'c',
-  'D': 'd',
-  'E': 'e',
-  'F': 'f',
-};
+const toLowerCase = {"A":"a", "B": "b", "C": "c", "D": "d", "E": "e", "D": "d"}
 
-toLowerCase['C'];
-//=> 'c'
+toLowerCase["C"]; //=> "c"
 
-var isPrime = {
-  1: false,
-  2: true,
-  3: true,
-  4: false,
-  5: true,
-  6: false,
-};
+const isPrime = {1:false, 2: true, 3: true, 4: false, 5: true, 6:false}
 
-isPrime[3];
-//=> true
+isPrime[3]; //=> true
 ```
 
 Of course, you might want to calculate instead of hand writing things out, but this illustrates a different way to think about functions. (You may be thinking "what about functions with multiple arguments?". Indeed, that presents a bit of an inconvenience when thinking in terms of mathematics. For now, we can bundle them up in an array or just think of the `arguments` object as the input. When we learn about *currying*, we'll see how we can directly model the mathematical definition of a function.)
@@ -157,45 +130,38 @@ Here comes the dramatic reveal: Pure functions *are* mathematical functions and 
 For starters, pure functions can always be cached by input. This is typically done using a technique called memoization:
 
 ```js
-var squareNumber = memoize(function(x) {
-  return x * x;
-});
+const squareNumber = memoize(x => x*x)
 
-squareNumber(4);
-//=> 16
+squareNumber(4); //=> 16
 
-squareNumber(4); // returns cache for input 4
-//=> 16
+squareNumber(4); //=> 16, returns cache for input 4
 
-squareNumber(5);
-//=> 25
+squareNumber(5); //=> 25
 
-squareNumber(5); // returns cache for input 5
-//=> 25
+squareNumber(5); //=> 25, returns cache for input 5
 ```
 
 Here is a simplified implementation, though there are plenty of more robust versions available.
 
 ```js
-var memoize = function(f) {
-  var cache = {};
+const memoize = f => {
+  const cache = {};
 
-  return function() {
-    var arg_str = JSON.stringify(arguments);
-    cache[arg_str] = cache[arg_str] || f.apply(f, arguments);
+  return (...args) => {
+    const arg_str = JSON.stringify(args)
+    cache[arg_str] = cache[arg_str] || f(...args);
     return cache[arg_str];
-  };
-};
+  }
+}
 ```
 
 Something to note is that you can transform some impure functions into pure ones by delaying evaluation:
 
 ```js
-var pureHttpCall = memoize(function(url, params) {
-  return function() {
-    return $.getJSON(url, params);
-  };
-});
+const pureHttpCall = memoize(
+  (url, params) => _ =>
+    $.getJSON(url, params)
+)
 ```
 
 The interesting thing here is that we don't actually make the http call - we instead return a function that will do so when called. This function is pure because it will always return the same output given the same input: the function that will make the particular http call given the `url` and `params`.
@@ -210,36 +176,16 @@ Pure functions are completely self contained. Everything the function needs is h
 
 ```js
 //impure
-var signUp = function(attrs) {
-  var user = saveUser(attrs);
+const signUp = attrs => {
+  const user = saveUser(attrs)
   welcomeUser(user);
-};
-
-var saveUser = function(attrs) {
-    var user = Db.save(attrs);
-    ...
-};
-
-var welcomeUser = function(user) {
-    Email(user, ...);
-    ...
-};
+}
 
 //pure
-var signUp = function(Db, Email, attrs) {
-  return function() {
-    var user = saveUser(Db, attrs);
-    welcomeUser(Email, user);
-  };
-};
-
-var saveUser = function(Db, attrs) {
-    ...
-};
-
-var welcomeUser = function(Email, user) {
-    ...
-};
+const signUp = (Db, Email, attrs) => _ => {
+  const user = saveUser(Db, attrs)
+  welcomeUser(Email, user);
+}
 ```
 
 The example here demonstrates that the pure function must be honest about its dependencies and, as such, tell us exactly what it's up to. Just from its signature, we know that it will use a `Db`, `Email`, and `attrs` which should be telling to say the least.
@@ -267,34 +213,22 @@ Many believe the biggest win when working with pure functions is *referential tr
 Since pure functions always return the same output given the same input, we can rely on them to always return the same results and thus preserve referential transparency. Let's see an example.
 
 ```js
+const Immutable = require("immutable")
 
-var Immutable = require('immutable');
+const decrementHP =
+  player => player.set("hp", player.get("hp")-1)
 
-var decrementHP = function(player) {
-  return player.set('hp', player.get('hp') - 1);
-};
+const isSameTeam =
+  (player1, player2) => player1.get("team") === player2.get("team")
 
-var isSameTeam = function(player1, player2) {
-  return player1.get('team') === player2.get('team');
-};
+const punch =
+  (player, target) => isSameTeam(player, target)? target : decrementHP(target)
 
-var punch = function(player, target) {
-  return isSameTeam(player, target) ? target : decrementHP(target);
-};
-
-var jobe = Immutable.Map({
-  name: 'Jobe',
-  hp: 20,
-  team: 'red',
-});
-var michael = Immutable.Map({
-  name: 'Michael',
-  hp: 20,
-  team: 'green',
-});
+const jobe = Immutable.Map({name:"Jobe", hp:20, team: "red"})
+const michael = Immutable.Map({name:"Michael", hp:20, team: "green"})
 
 punch(jobe, michael);
-//=> Immutable.Map({name:'Michael', hp:19, team: 'green'})
+//=> Immutable.Map({name:"Michael", hp:19, team: "green"})
 ```
 
 `decrementHP`, `isSameTeam` and `punch` are all pure and therefore referentially transparent. We can use a technique called *equational reasoning* wherein one substitutes "equals for equals" to reason about code. It's a bit like manually evaluating the code without taking into account the quirks of programmatic evaluation. Using referential transparency, let's play with this code a bit.
@@ -302,34 +236,30 @@ punch(jobe, michael);
 First we'll inline the function `isSameTeam`.
 
 ```js
-var punch = function(player, target) {
-  return player.get('team') === target.get('team') ? target : decrementHP(target);
-};
+const punch =
+  (player, target) => player.get("team") === target.get("team")? target : decrementHP(target)
 ```
 
 Since our data is immutable, we can simply replace the teams with their actual value
 
 ```js
-var punch = function(player, target) {
-  return 'red' === 'green' ? target : decrementHP(target);
-};
+const punch =
+  (player, target) => "red" === "green"? target : decrementHP(target)
 ```
 
 We see that it is false in this case so we can remove the entire if branch
 
 ```js
-var punch = function(player, target) {
-  return decrementHP(target);
-};
+const punch =
+  (player, target) => decrementHP(target)
 
 ```
 
 And if we inline `decrementHP`, we see that, in this case, punch becomes a call to decrement the `hp` by 1.
 
 ```js
-var punch = function(player, target) {
-  return target.set('hp', target.get('hp') - 1);
-};
+const punch =
+  (player, target) => target.set("hp", target.get("hp")-1)
 ```
 
 This ability to reason about code is terrific for refactoring and understanding code in general. In fact, we used this technique to refactor our flock of seagulls program. We used equational reasoning to harness the properties of addition and multiplication. Indeed, we'll be using these techniques throughout the book.
