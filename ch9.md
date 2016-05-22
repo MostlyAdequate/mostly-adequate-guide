@@ -397,7 +397,7 @@ Now, I've seen these laws, identity and associativity, somewhere before... Hold 
 
 ```js
 var mcompose = function(f, g) {
-  return compose(chain(f), chain(g));
+  return compose(chain(f), g);
 };
 
 // left identity
