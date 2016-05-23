@@ -33,10 +33,8 @@ Let's look at another example.
 
 ```js
 // impure
-const minimum = 21
-
+let minimum = 21
 const checkAge = age => age >= minimum
-
 
 // pure
 const checkAge = age => {
