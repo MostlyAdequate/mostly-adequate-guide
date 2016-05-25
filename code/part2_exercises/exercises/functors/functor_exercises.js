@@ -32,13 +32,10 @@ var ex3 = undefined;
 
 // Exercise 4
 // ==========
-// Use Maybe to rewrite ex4 without an if statement
+// Use Maybe to rewrite ex4 without a conditional operator
+let ex4 = n => (n === null || n === undefined) ? null : parseInt(n)
 
-var ex4 = function (n) {
-  if (n) { return parseInt(n); }
-};
-
-var ex4 = undefined;
+ex4 = undefined;
 
 
 
@@ -50,7 +47,7 @@ var ex4 = undefined;
 var getPost = function (i) {
   return new Task(function(rej, res) {
     setTimeout(function(){
-      res({id: i, title: 'Love them futures'})  
+      res({id: i, title: 'Love them futures'})
     }, 300)
   });
 };

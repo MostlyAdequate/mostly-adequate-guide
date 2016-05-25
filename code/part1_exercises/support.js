@@ -1,8 +1,5 @@
 //var curry = require('ramda').curry;
-//
-//
-//
-//
+
 function inspect(x) {
   return (typeof x === 'function') ? inspectFn(x) : inspectArgs(x);
 }
@@ -28,7 +25,7 @@ function curry(fx) {
     else {
       var f2 = function f2() {
         var args2 = Array.prototype.slice.call(arguments, 0);
-        return f1.apply(null, args.concat(args2)); 
+        return f1.apply(null, args.concat(args2));
       }
       f2.toString = function() {
         return inspectFn(fx) + inspectArgs(args);
@@ -39,18 +36,19 @@ function curry(fx) {
 }
 
 compose = function() {
-  var fns = toArray(arguments),
+  var _arguments = Array.prototype.slice.call(arguments)
+  var fns = toArray(_arguments),
       arglen = fns.length;
 
   return function(){
     for(var i=arglen;--i>=0;) {
       var fn = fns[i]
-        , args = fn.length ? Array.prototype.slice.call(arguments, 0, fn.length) : arguments
-        , next_args = Array.prototype.slice.call(arguments, (fn.length || 1)); //not right with *args
+        , args = fn.length ? Array.prototype.slice.call(_arguments, 0, fn.length) : _arguments
+        , next_args = Array.prototype.slice.call(_arguments, (fn.length || 1)); //not right with *args
       next_args.unshift(fn.apply(this,args));
-      arguments = next_args;
+      _arguments = next_args;
     }
-    return arguments[0];
+    return _arguments[0];
   }
 }
 

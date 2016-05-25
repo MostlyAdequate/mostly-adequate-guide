@@ -4,15 +4,19 @@
   "description": "Exercises for Part 2 of the Book",
   "main": "index.js",
   "dependencies": {
-    "chai": "^3.5.0",
+    "chai": "^1.9.1",
     "data.task": "^3.0.0",
-    "ramda": "^0.23.0"
+    "ramda": "^0.13.0"
   },
   "devDependencies": {
-    "mocha": "^3.2.0"
+    "babel-cli": "^6.9.0",
+    "babel-core": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "mocha": "^1.21.5"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha exercises/**/*_spec.js"
+    "exercises": "mocha --require babel-core/register ./exercises/**/*_spec.js",
+    "answers": "mocha --require babel-core/register ./answers/**/*_spec.js"
   },
   "repository": {
     "type": "git",

@@ -5,11 +5,11 @@ Part 2 Exercises
 `npm install`
 
 **Running tests**:
-Tests are located in their corresponding folders.  To run:
+There are two npm scripts for running tests:
 
 ```
-cd exercises/curry
-mocha *spec.js
+npm run exercises
+npm run answers
 ```
 
-Some will fail and some will pass. You'll need to edit the exercises until the tests pass.
+Your homework is to edit the exercise files until all the tests pass.
