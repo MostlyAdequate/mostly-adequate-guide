@@ -1,4 +1,4 @@
-var toArray = Function.call.bind(Array.prototype.slice);
+const toArray = Function.call.bind(Array.prototype.slice);
 
 function inspect(x) {
   return (typeof x === 'function') ? inspectFn(x) : inspectArgs(x);
@@ -36,18 +36,18 @@ function curry(fx) {
 }
 
 compose = function() {
-  var fns = toArray(arguments),
+  var fns = toArray(_arguments),
       arglen = fns.length;
 
   return function(){
     for(var i = arglen; --i >= 0;) {
       var fn = fns[i]
-        , args = fn.length ? toArray(arguments, 0, fn.length) : arguments
+        , args = fn.length ? toArray(arguments, 0, fn.length) : _arguments
         , next_args = toArray(arguments, (fn.length || 1)); //not right with *args
       next_args.unshift(fn.apply(this,args));
-      arguments = next_args;
+      _arguments = next_args;
     }
-    return arguments[0];
+    return _arguments[0];
   }
 }
 

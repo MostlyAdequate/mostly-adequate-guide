@@ -3,16 +3,16 @@ var _ = require('ramda');
 var Task = require('data.task');
 var curry = _.curry;
 
-inspect = function(x) {
+global.inspect = function(x) {
   return (x && x.inspect) ? x.inspect() : x;
 };
 
-toUpperCase = function(x) {
+global.toUpperCase = function(x) {
   return x.toUpperCase();
 };
 
 // Identity
-Identity = function(x) {
+global.Identity = function(x) {
   this.__value = x;
 };
 
@@ -27,7 +27,7 @@ Identity.prototype.inspect = function() {
 };
 
 // Maybe
-Maybe = function(x) {
+global.Maybe = function(x) {
   this.__value = x;
 };
 
@@ -61,12 +61,12 @@ Maybe.prototype.inspect = function() {
 
 
 // Either
-Either = function() {};
+global.Either = function() {};
 Either.of = function(x) {
   return new Right(x);
 }
 
-Left = function(x) {
+global.Left = function(x) {
   this.__value = x;
 }
 
@@ -84,7 +84,7 @@ Left.prototype.inspect = function() {
 }
 
 
-Right = function(x) {
+global.Right = function(x) {
   this.__value = x;
 }
 
@@ -124,7 +124,7 @@ Right.prototype.inspect = function() {
 }
 
 // IO
-IO = function(f) {
+global.IO = function(f) {
   this.unsafePerformIO = f;
 }
 
@@ -156,9 +156,9 @@ IO.prototype.inspect = function() {
   return 'IO('+inspect(this.unsafePerformIO)+')';
 }
 
-unsafePerformIO = function(x) { return x.unsafePerformIO(); }
+global.unsafePerformIO = function(x) { return x.unsafePerformIO(); }
 
-either = curry(function(f, g, e) {
+global.either = curry(function(f, g, e) {
   switch(e.constructor) {
     case Left: return f(e.__value);
     case Right: return g(e.__value);
@@ -166,17 +166,17 @@ either = curry(function(f, g, e) {
 });
 
 // overwriting join from pt 1
-join = function(m){ return m.join(); };
+global.join = function(m){ return m.join(); };
 
-chain = curry(function(f, m){
+global.chain = curry(function(f, m){
   return m.map(f).join(); // or compose(join, map(f))(m)
 });
 
-liftA2 = curry(function(f, a1, a2){
+global.liftA2 = curry(function(f, a1, a2){
   return a1.map(f).ap(a2);
 });
 
-liftA3 = curry(function(f, a1, a2, a3){
+global.liftA3 = curry(function(f, a1, a2, a3){
   return a1.map(f).ap(a2).ap(a3);
 });
 
