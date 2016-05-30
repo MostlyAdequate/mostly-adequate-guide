@@ -12,10 +12,11 @@
     "mocha": "^2.5.3"
   },
   "scripts": {
-    "part1_exercises": "mocha ./part1/exercises/**/*_spec.js",
-    "part1_answers":   "mocha ./part1/answers/**/*_spec.js",
-    "part2_exercises": "mocha ./part2/exercises/**/*_spec.js",
-    "part2_answers":   "mocha ./part2/answers/**/*_spec.js"
+    "compose":     "mocha -w ./compose/lib/eval_spec.js",
+    "curry":       "mocha -w ./curry/lib/eval_spec.js",
+    "functors":    "mocha -w ./functors/lib/eval_spec.js",
+    "applicative": "mocha -w ./applicative/lib/eval_spec.js",
+    "monads":      "mocha -w ./monads/lib/eval_spec.js"
   },
   "repository": {
     "type": "git",
