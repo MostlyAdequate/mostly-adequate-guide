@@ -6,7 +6,7 @@ When we say functions are "first class", we mean they are just like everyone els
 That is JavaScript 101, but worth mentioning since a quick code search on github will reveal the collective evasion, or perhaps widespread ignorance of this concept. Shall we go for a feigned example? We shall.
 
 ```js
-var
+const
   hi       = name => `Hi ${name}`,
   greeting = name => hi(name);
 ```
@@ -22,7 +22,7 @@ hi("jonas"); // "Hi jonas"
 Since `greeting` is merely in turn calling `hi` with the very same argument, we could simply write:
 
 ```js
-var greeting = hi;
+const greeting = hi;
 
 greeting("times");
 // "Hi times"
@@ -35,8 +35,7 @@ It is obnoxiously verbose and, as it happens, bad practice to surround a functio
 A solid understanding of this is critical before moving on, so let's examine a few more fun examples excavated from the library of npm packages.
 
 ```js
-
-var
+const
   // ignorant
   getServerStuff = callback => ajaxCall(json => callback(json)),
 
@@ -54,28 +53,28 @@ ajaxCall(json => callback(json));
 ajaxCall(callback);
 
 // so refactor getServerStuff
-var getServerStuff = callback => ajaxCall(callback)
+const getServerStuff = callback => ajaxCall(callback);
 
 // ...which is equivalent to this
-var getServerStuff = ajaxCall; // <-- look mum, no ()'s
+const getServerStuff = ajaxCall; // <-- look mum, no ()'s
 ```
 
 And that, folks, is how it is done. Once more so that we understand why I'm being so persistent.
 
 ```js
-var BlogController = {
+const BlogController = {
   index(posts)       { return Views.index(posts);     },
   show(post)         { return Views.show(post);       },
   create(attrs)      { return Db.create(attrs);       },
   update(post,attrs) { return Db.update(post, attrs); },
   destroy(post)      { return Db.destroy(post);       }
-;
+};
 ```
 
 This ridiculous controller is 99% fluff. We could either rewrite it as:
 
 ```js
-var BlogController = {
+const BlogController = {
   index:   Views.index,
   show:    Views.show,
   create:  Db.create,
@@ -117,7 +116,7 @@ Besides the removal of unnecessary functions, we must name and reference argumen
 Having multiple names for the same concept is a common source of confusion in projects. There is also the issue of generic code. For instance, these two functions do exactly the same thing, but one feels infinitely more general and reusable:
 
 ```js
-var
+const
   // specific to our current blog
   validArticles =
     articles =>
@@ -132,14 +131,13 @@ By using specific naming, we've seemingly tied ourselves to specific data (in th
 I must mention that, just like with Object-Oriented code, you must be aware of `this` coming to bite you in the jugular. If an underlying function uses `this` and we call it first class, we are subject to this leaky abstraction's wrath.
 
 ```js
-var fs = require('fs');
+const fs = require('fs');
 
 // scary
 fs.readFile('freaky_friday.txt', Db.save);
 
 // less so
 fs.readFile('freaky_friday.txt', Db.save.bind(Db));
-
 ```
 
 Having been bound to itself, the `Db` is free to access its prototypical garbage code. I avoid using `this` like a dirty nappy. There's really no need when writing functional code. However, when interfacing with other libraries, you might have to acquiesce to the mad world around us.

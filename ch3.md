@@ -33,14 +33,14 @@ Let's look at another example.
 
 ```js
 // impure
-let minimum = 21
-const checkAge = age => age >= minimum
+let minimum = 21;
+const checkAge = age => age >= minimum;
 
 // pure
 const checkAge = age => {
   const minimum = 21
   return age >= minimum
-}
+};
 ```
 
 In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the [cognitive load](http://en.wikipedia.org/wiki/Cognitive_load) by introducing an external environment.
@@ -50,7 +50,7 @@ It might not seem like a lot in this example, but this reliance upon state is on
 Its pure form, on the other hand, is completely self sufficient. We can  also make `minimum` immutable, which preserves the purity as the state will never change. To do this, we must create an object to freeze.
 
 ```js
-const immutableState = Object.freeze({ minimum: 21 })
+const immutableState = Object.freeze({minimum: 21});
 ```
 
 ## Side effects may include...
@@ -108,12 +108,10 @@ Or even as a graph with `x` as the input and `y` as the output:
 There's no need for implementation details if the input dictates the output. Since functions are simply mappings of input to output, one could simply jot down object literals and run them with `[]` instead of `()`.
 
 ```js
-const toLowerCase = {"A":"a", "B": "b", "C": "c", "D": "d", "E": "e", "D": "d"}
-
+const toLowerCase = {"A":"a","B":"b","C":"c","D":"d","E":"e","D":"d"};
 toLowerCase["C"]; //=> "c"
 
-const isPrime = {1:false, 2: true, 3: true, 4: false, 5: true, 6:false}
-
+const isPrime = {1:false,2:true,3:true,4:false,5:true,6:false};
 isPrime[3]; //=> true
 ```
 
@@ -128,7 +126,7 @@ Here comes the dramatic reveal: Pure functions *are* mathematical functions and 
 For starters, pure functions can always be cached by input. This is typically done using a technique called memoization:
 
 ```js
-const squareNumber = memoize(x => x*x)
+const squareNumber = memoize(x => x*x);
 
 squareNumber(4); //=> 16
 
@@ -146,20 +144,17 @@ const memoize = f => {
   const cache = {};
 
   return (...args) => {
-    const arg_str = JSON.stringify(args)
+    const arg_str = JSON.stringify(args);
     cache[arg_str] = cache[arg_str] || f(...args);
     return cache[arg_str];
   }
-}
+};
 ```
 
 Something to note is that you can transform some impure functions into pure ones by delaying evaluation:
 
 ```js
-const pureHttpCall = memoize(
-  (url, params) => _ =>
-    $.getJSON(url, params)
-)
+const pureHttpCall = memoize((url, params) => _ => $.getJSON(url, params));
 ```
 
 The interesting thing here is that we don't actually make the http call - we instead return a function that will do so when called. This function is pure because it will always return the same output given the same input: the function that will make the particular http call given the `url` and `params`.
@@ -177,13 +172,13 @@ Pure functions are completely self contained. Everything the function needs is h
 const signUp = attrs => {
   const user = saveUser(attrs)
   welcomeUser(user);
-}
+};
 
 //pure
 const signUp = (Db, Email, attrs) => _ => {
   const user = saveUser(Db, attrs)
   welcomeUser(Email, user);
-}
+};
 ```
 
 The example here demonstrates that the pure function must be honest about its dependencies and, as such, tell us exactly what it's up to. Just from its signature, we know that it will use a `Db`, `Email`, and `attrs` which should be telling to say the least.
@@ -211,22 +206,16 @@ Many believe the biggest win when working with pure functions is *referential tr
 Since pure functions always return the same output given the same input, we can rely on them to always return the same results and thus preserve referential transparency. Let's see an example.
 
 ```js
-const Immutable = require("immutable")
+const {Map} = require("immutable");
 
-const decrementHP =
-  player => player.set("hp", player.get("hp")-1)
+const        // Aliases: p = player, a = attacker, t = target
+  jobe        = Map({name:"Jobe"   , hp:20, team: "red"  }),
+  michael     = Map({name:"Michael", hp:20, team: "green"}),
+  decrementHP = p       => p.set("hp", p.get("hp")-1),
+  isSameTeam  = (p1,p2) => p1.get("team") === p2.get("team"),
+  punch       = (a,t)   => isSameTeam(a,t)? t : decrementHP(t);
 
-const isSameTeam =
-  (player1, player2) => player1.get("team") === player2.get("team")
-
-const punch =
-  (player, target) => isSameTeam(player, target)? target : decrementHP(target)
-
-const jobe = Immutable.Map({name:"Jobe", hp:20, team: "red"})
-const michael = Immutable.Map({name:"Michael", hp:20, team: "green"})
-
-punch(jobe, michael);
-//=> Immutable.Map({name:"Michael", hp:19, team: "green"})
+punch(jobe, michael); //=> Map({name:"Michael", hp:19, team: "green"})
 ```
 
 `decrementHP`, `isSameTeam` and `punch` are all pure and therefore referentially transparent. We can use a technique called *equational reasoning* wherein one substitutes "equals for equals" to reason about code. It's a bit like manually evaluating the code without taking into account the quirks of programmatic evaluation. Using referential transparency, let's play with this code a bit.
@@ -234,30 +223,25 @@ punch(jobe, michael);
 First we'll inline the function `isSameTeam`.
 
 ```js
-const punch =
-  (player, target) => player.get("team") === target.get("team")? target : decrementHP(target)
+const punch = (a,t) => a.get("team") === t.get("team")? t : decrementHP(t);
 ```
 
 Since our data is immutable, we can simply replace the teams with their actual value
 
 ```js
-const punch =
-  (player, target) => "red" === "green"? target : decrementHP(target)
+const punch = (a,t) => "red" === "green"? t : decrementHP(t);
 ```
 
 We see that it is false in this case so we can remove the entire if branch
 
 ```js
-const punch =
-  (player, target) => decrementHP(target)
-
+const punch = (a,t) => decrementHP(t);
 ```
 
 And if we inline `decrementHP`, we see that, in this case, punch becomes a call to decrement the `hp` by 1.
 
 ```js
-const punch =
-  (player, target) => target.set("hp", target.get("hp")-1)
+const punch = (a,t) => t.set("hp", t.get("hp")-1);
 ```
 
 This ability to reason about code is terrific for refactoring and understanding code in general. In fact, we used this technique to refactor our flock of seagulls program. We used equational reasoning to harness the properties of addition and multiplication. Indeed, we'll be using these techniques throughout the book.

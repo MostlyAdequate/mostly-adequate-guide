@@ -15,11 +15,10 @@ There are type checking tools available for JavaScript such as [Flow](http://flo
 From the dusty pages of math books, across the vast sea of white papers, amongst casual Saturday morning blog posts, down into the source code itself, we find Hindley-Milner type signatures. The system is quite simple, but warrants a quick explanation and some practice to fully absorb the little language.
 
 ```js
-//  capitalize :: String -> String
-const capitalize = s => toUpperCase(head(s)) + toLowerCase(tail(s))
+//    capitalize :: String -> String
+const capitalize = s => toUpperCase(head(s)) + toLowerCase(tail(s));
 
-capitalize("smurf");
-//=> "Smurf"
+capitalize("smurf"); //=> "Smurf"
 ```
 
 Here, `capitalize` takes a `String` and returns a `String`. Never mind the implementation, it's the type signature we're interested in.
@@ -29,17 +28,17 @@ In HM, functions are written as `a -> b` where `a` and `b` are variables for any
 Let's look at some more function signatures:
 
 ```js
-//  strLength :: String -> Number
-const strLength = s => s.length
+//    strLength :: String -> Number
+const strLength = s => s.length;
 
-//  join :: String -> [String] -> String
-const join = curry((what, xs) => xs.join(what))
+//    join :: String -> [String] -> String
+const join = curry((what, xs) => xs.join(what));
 
-//  match :: Regex -> String -> [String]
-const match = curry((reg, s) => s.match(reg))
+//    match :: Regex -> String -> [String]
+const match = curry((reg, s) => s.match(reg));
 
-//  replace :: Regex -> String -> String -> String
-const replace = curry((reg, sub, s) => s.replace(reg, sub))
+//    replace :: Regex -> String -> String -> String
+const replace = curry((reg, sub, s) => s.replace(reg, sub));
 ```
 
 `strLength` is the same idea as before: we take a `String` and return you a `Number`.
@@ -49,24 +48,23 @@ The others might perplex you at first glance. Without fully understanding the de
 For `match` we are free to group the signature like so:
 
 ```js
-//  match :: Regex -> (String -> [String])
-const match = curry((reg, s) => s.match(reg))
+//    match :: Regex -> (String -> [String])
+const match = curry((reg, s) => s.match(reg));
 ```
 
 Ah yes, grouping the last part in parenthesis reveals more information. Now it is seen as a function that takes a `Regex` and returns us a function from `String` to `[String]`. Because of currying, this is indeed the case: give it a `Regex` and we get a function back waiting for its `String` argument. Of course, we don't have to think of it this way, but it is good to understand why the last type is the one returned.
 
 ```js
-//  match :: Regex -> (String -> [String])
-
-//  onHoliday :: String -> [String]
-const onHoliday = match(/holiday/ig)
+//    match     :: Regex  -> (String -> [String])
+//    onHoliday :: String -> [String]
+const onHoliday = match(/holiday/ig);
 ```
 
 Each argument pops one type off the front of the signature. `onHoliday` is `match` that already has a `Regex`.
 
 ```js
-//  replace :: Regex -> (String -> (String -> String))
-const replace = curry((reg, sub, s) => s.replace(reg, sub))
+//    replace :: Regex -> (String -> (String -> String))
+const replace = curry((reg, sub, s) => s.replace(reg, sub));
 ```
 
 As you can see with the full parenthesis on `replace`, the extra notation can get a little noisy and redundant so we simply omit them. We can give all the arguments at once if we choose so it's easier to just think of it as: `replace` takes a `Regex`, a `String`, another `String` and returns you a `String`.
@@ -75,11 +73,11 @@ A few last things here:
 
 
 ```js
-//  id :: a -> a
-const id = x => x
+//    id :: a -> a
+const id = x => x;
 
-//  map :: (a -> b) -> [a] -> [b]
-const map = curry((f, xs) => xs.map(f))
+//    map :: (a -> b) -> [a] -> [b]
+const map = curry((f, xs) => xs.map(f));
 ```
 
 The `id` function takes any old type `a` and returns something of the same type `a`. We're able to use variables in types just like in code. Variable names like `a` and `b` are convention, but they are arbitrary and can be replaced with whatever name you'd like. If they are the same variable, they have to be the same type. That's an important rule so let's reiterate: `a -> b` can be any type `a` to any type `b`, but `a -> a` means it has to be the same type. For example, `id` may be `String -> String` or `Number -> Number`, but not `String -> Bool`.
@@ -93,14 +91,14 @@ Being able to reason about types and their implications is a skill that will tak
 Here's a few more just to see if you can decipher them on your own.
 
 ```js
-//  head :: [a] -> a
-const head = xs => xs[0]
+//    head :: [a] -> a
+const head = xs => xs[0];
 
-//  filter :: (a -> Bool) -> [a] -> [a]
-const filter = curry((f, xs) => xs.filter(f))
+//    filter :: (a -> Bool) -> [a] -> [a]
+const filter = curry((f, xs) => xs.filter(f));
 
-//  reduce :: (b -> a -> b) -> b -> [a] -> b
-const reduce = curry((f, x, xs) => xs.reduce(f, x))
+//    reduce :: (b -> a -> b) -> b -> [a] -> b
+const reduce = curry((f, x, xs) => xs.reduce(f, x));
 ```
 
 `reduce` is perhaps, the most expressive of all. It's a tricky one, however, so don't feel inadequate should you struggle with it. For the curious, I'll try to explain in English though working through the signature on your own is much more instructive.
