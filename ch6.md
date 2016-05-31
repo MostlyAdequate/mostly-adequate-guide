@@ -67,18 +67,18 @@ We will now build an example application in a declarative, composable way. We'll
 </html>
 ```
 
-And here's the flickr.js skeleton:
+And here's the main.js skeleton:
 
 ```js
 const
-  CDN    = 'https://cdnjs.cloudflare.com/ajax/libs/',
-  ramda  = `${CDN}ramda/0.21.0/ramda.min`,
-  jquery = `${CDN}jquery/3.0.0-rc1/jquery.min`;
+  CDN    = s => `https://cdnjs.cloudflare.com/ajax/libs/${s}`,
+  ramda  = CDN('ramda/0.21.0/ramda.min'),
+  jquery = CDN('jquery/3.0.0-rc1/jquery.min');
 
 requirejs.config({paths:{ramda,jquery}});
 require(['jquery','ramda'], ($,{compose,curry,map,prop}) => {
   // app goes here
-}
+};
 ```
 
 We're pulling in [ramda](http://ramdajs.com) instead of lodash or some other utility library. It includes `compose`, `curry`, and more. I've used requirejs, which may seem like overkill, but we'll be using it throughout the book and consistency is key. Also, I've started us off with our nice `trace` function for easy debugging.
