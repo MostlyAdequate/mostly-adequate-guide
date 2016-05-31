@@ -36,7 +36,7 @@ class Flock {
   }
 }
 
-var
+const
   flock_a = new Flock(4),
   flock_b = new Flock(2),
   flock_c = new Flock(0),
@@ -57,11 +57,11 @@ Let's try again, this time using a more functional approach:
 
 ```js
 // A Running Example: https://jsfiddle.net/m953kxah/
-var
+const
   conjoin = (flock_x, flock_y) => flock_x + flock_y,
   breed   = (flock_x, flock_y) => flock_x * flock_y;
 
-var
+const
   flock_a = 4,
   flock_b = 2,
   flock_c = 0,
@@ -76,11 +76,11 @@ There's really nothing special at all about these two functions other than their
 
 ```js
 // A Running Example: https://jsfiddle.net/7g2brqaf/
-var
+const
   add      = (x, y) => x + y,
   multiply = (x, y) => x * y;
 
-var
+const
   flock_a = 4,
   flock_b = 2,
   flock_c = 0,
