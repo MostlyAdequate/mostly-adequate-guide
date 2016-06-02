@@ -1,5 +1,5 @@
 
-# Contributing to Mostly Adequate Guide to Funcitonal Programming
+# Contributing to Mostly Adequate Guide to Functional Programming
 
 ## Licensing
 
