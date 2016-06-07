@@ -249,73 +249,7 @@ We are now at a point where it would serve us well to see some of this in practi
 
 ## Exercises
 
-```js
-import {last, prop, reduce, map, filter, sortBy, flip} from 'ramda';
-import accounting from 'accounting';
-
-// Example Data
-const CARS = [
-    {name: "Ferrari FF", horsepower: 660, dollar_value: 700000, in_stock: true},
-    {name: "Spyker C12 Zagato", horsepower: 650, dollar_value: 648000, in_stock: false},
-    {name: "Jaguar XKR-S", horsepower: 550, dollar_value: 132000, in_stock: false},
-    {name: "Audi R8", horsepower: 525, dollar_value: 114200, in_stock: false},
-    {name: "Aston Martin One-77", horsepower: 750, dollar_value: 1850000, in_stock: true},
-    {name: "Pagani Huayra", horsepower: 700, dollar_value: 1300000, in_stock: false}
-  ];
-
-// Exercise 1:
-// ============
-// Use _.compose() to rewrite the function below. Hint: _.prop() is curried.
-const isLastInStock = cars => {
-  const last_car = last(cars);
-  return prop('in_stock', last_car);
-}
-
-// Exercise 2:
-// ============
-// Use _.compose(), _.prop() and _.head() to retrieve the name of the first car.
-const nameOfFirstCar = undefined
-
-
-// Exercise 3:
-// ============
-// Use the helper function _average to refactor averageDollarValue as a composition.
-const _average = xs => reduce(_.add, 0, xs) / xs.length // <- leave be
-
-const averageDollarValue = cars => {
-  const dollar_values = map(c => c.dollar_value, cars)
-  return _average(dollar_values);
-}
-
-
-// Exercise 4:
-// ============
-// Write a function: sanitizeNames() using compose that returns a list of lowercase and underscored car's names: e.g: sanitizeNames([{name: "Ferrari FF", horsepower: 660, dollar_value: 700000, in_stock: true}]) //=> ["ferrari_ff"].
-const _underscore = _.replace(/\W+/g, '_') //<-- leave this alone and use to sanitize
-
-const sanitizeNames = undefined
-
-
-// Bonus 1:
-// ============
-// Refactor availablePrices with compose.
-var availablePrices = cars => {
-  const available_cars = filter(prop('in_stock'), cars)
-  return available_cars
-    .map(x => accounting.formatMoney(x.dollar_value))
-    .join(', ');
-}
-
-
-// Bonus 2:
-// ============
-// Refactor to pointfree. Hint: you can use `flip()`.
-const fastestCar = cars => {
-  const sorted = sortBy(prop('horsepower'), cars)
-  const fastest = last(sorted)
-  return fastest.name + ' is the fastest';
-}
-```
+[include](./code/compose/exercises.js)
 
 [lodash-website]: https://lodash.com/
 [underscore-website]: http://underscorejs.org/

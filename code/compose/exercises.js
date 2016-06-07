@@ -6,7 +6,7 @@ const
       ,dollar_value :: Number
       ,in_stock     :: Bool}
   */
-  {CARS} = require('./lib/mock.cars'),
+  {CARS}        = require('./lib/mock.cars'),
   {formatMoney} = require('accounting'),
   {add,compose,concat,prop,last,head,map,filter,flip,sortBy,replace,toLower,join,reduce} = require('ramda');
 
