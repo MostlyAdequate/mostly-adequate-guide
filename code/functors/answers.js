@@ -1,7 +1,7 @@
 const
-  SUPPORT_PATH = '../support',
-  {Identity,IO,Maybe} = require(SUPPORT_PATH),
-  Task = require('data.task'),
+  SUPPORT_PATH                   = '../support',
+  {Identity,IO,Maybe,Right,Left} = require(SUPPORT_PATH),
+  Task                           = require('data.task'),
   {add,concat,compose,curry,head,map,prop,toUpper} = require('ramda');
 
 //-- Exercise 1 -------------------------------------------------------
@@ -20,7 +20,7 @@ const ex2 = map(head);
 // Use `safeProp` and `head` to find the first initial of the user
 const
   safeProp = curry((x, o) => Maybe.of(o[x])),
-  user     = { id: 2, name: "Albert" };
+  user     = {id:2, name:'Albert'};
 
 const ex3 = compose(map(head), safeProp('name'));
 
@@ -28,7 +28,7 @@ const ex3 = compose(map(head), safeProp('name'));
 //-- Exercise 4 -------------------------------------------------------
 // Use Maybe to rewrite ex4 without an if statement
 const
-  ex4_before = n => (n === null || n === undefined) ? null : parseInt(n),
+  ex4_before = n => (n===null || n===undefined)? null : parseInt(n),
   ex4        = compose(map(parseInt), Maybe.of);
 
 
@@ -68,6 +68,6 @@ const save = x =>
     return `${x}-saved`;
   });
 
-const ex8 = compose(either(IO.of, save), ex7)
+const ex8 = compose(either(IO.of, save), ex7);
 
-module.exports = {ex1, ex2, ex3, ex4, ex5, ex6, ex7, ex8}
+module.exports = {ex1,ex2,ex3,ex4,ex5,ex6,ex7,ex8};

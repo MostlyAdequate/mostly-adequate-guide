@@ -1,7 +1,7 @@
 const
-  {assert: {deepEqual,equal}} = require("chai"),
-  {Maybe}                     = require('../../support'),
-  {identity,prop}             = require('ramda');
+  {assert: {deepEqual,equal}}    = require("chai"),
+  {Maybe,unsafePerformIO,either} = require('../../support'),
+  {identity,prop}                = require('ramda');
 
 module.exports = (title,E) =>
   describe(title, () => {

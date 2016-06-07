@@ -1,5 +1,5 @@
 const
-  {IO,Maybe,getPost,getComments} = require('../support'),
+  {IO,Maybe,getPost,getComments,liftA2} = require('../support'),
   Task                           = require('data.task'),
   {add,curry,reduce}             = require('ramda');
 
@@ -20,7 +20,7 @@ const ex2 = liftA2(add);
 //-- Exercise 3 -------------------------------------------------------
 // Run both `getPost(n)` and `getComments(n)` then render the page with both. (the n arg is arbitrary)
 const
-  makeComments = reduce((acc, c) => `${acc}<li>${c}</li>`, ""),
+  makeComments = reduce((acc, {body}) => `${acc}<li>${body}</li>`, ""),
   render       = curry((p, cs) => `<div>${p.title}</div>${makeComments(cs)}`);
 
 const ex3 =
