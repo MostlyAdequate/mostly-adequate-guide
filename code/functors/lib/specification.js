@@ -1,6 +1,6 @@
 const
-  {assert: {deepEqual}} = require("chai"),
-  {Identity,Maybe}      = require('../../support');
+  {assert: {deepEqual}}       = require("chai"),
+  {Identity,Maybe,Left,Right} = require('../../support');
 
 module.exports = (title, E) =>
   describe("Functor Exercises", function(){

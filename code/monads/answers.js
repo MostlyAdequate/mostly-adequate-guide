@@ -1,8 +1,8 @@
 const
-  SUPPORT_PATH = '../support',
-  {IO,Maybe} = require(SUPPORT_PATH),
-  path = require('path'),
-  Task = require('data.task'),
+  SUPPORT_PATH                        = '../support',
+  {IO,Maybe,Left,Right,chain}         = require(SUPPORT_PATH),
+  path                                = require('path'),
+  Task                                = require('data.task'),
   {compose,curry,last,map,prop,split} = require('ramda');
 
 //-- Exercise 1 -------------------------------------------------------
@@ -50,12 +50,7 @@ const
 //-- Exercise 3 -------------------------------------------------------
 // Use `getPost` then pass the post's id to `getComments`.
 const
-  {getPost} = require(SUPPORT_PATH),
-  getComments = post_id => new Task((rej, res) =>
-    setTimeout(() => res([{post_id, body: 'This book should be illegal'}
-                         ,{post_id, body: 'Monads are like smelly shallots'}])
-              ,300));
-
+  {getPost,getComments} = require(SUPPORT_PATH);
 
 const ex3 = compose(chain(compose(getComments, prop('id'))), getPost);
 
@@ -73,8 +68,8 @@ const
   emailBlast = list => new IO(() => `emailed: ${list.join(',')}`),
   validateEmail = x =>
     x.match(/\S+@\S+\.\S+/)
-      ? (new Right(x))
-      : (new Left('invalid email'));
+      ? (Right.of(x))
+      : (Left.of('invalid email'));
 
 const
   ex4 = // :: Email -> Either String (IO String)
@@ -83,4 +78,4 @@ const
            );
 
 
-module.exports = {ex1, ex2, ex3, ex4, user}
+module.exports = {ex1,ex2,ex3,ex4,user}

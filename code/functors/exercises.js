@@ -1,7 +1,7 @@
 const
-  SUPPORT_PATH = '../support',
-  {Identity,IO,Maybe} = require(SUPPORT_PATH),
-  Task = require('data.task'),
+  SUPPORT_PATH                   = '../support',
+  {Identity,IO,Maybe,Right,Left} = require(SUPPORT_PATH),
+  Task                           = require('data.task'),
   {add,concat,compose,curry,head,map,prop,toUpper} = require('ramda');
 
 //-- Exercise 1 -------------------------------------------------------
@@ -27,7 +27,7 @@ const ex3 = undefined;
 
 //-- Exercise 4 -------------------------------------------------------
 // Use Maybe to rewrite ex4 without an if statement
-const ex4 = n => (n === null || n === undefined) ? null : parseInt(n)
+const ex4 = n => (n===null || n===undefined)? null : parseInt(n);
 
 
 //-- Exercise 5 -------------------------------------------------------
@@ -69,4 +69,4 @@ const save = x =>
 
 const ex8 = undefined;
 
-module.exports = {ex1, ex2, ex3, ex4, ex5, ex6, ex7, ex8}
+module.exports = {ex1,ex2,ex3,ex4,ex5,ex6,ex7,ex8};

@@ -39,11 +39,7 @@ const ex2 = undefined;
 //-- Exercise 3 -------------------------------------------------------
 // Use `getPost` then pass the post's id to `getComments`.
 const
-  {getPost} = require(SUPPORT_PATH),
-  getComments = post_id => new Task((rej, res) =>
-    setTimeout(() => res([{post_id, body: 'This book should be illegal'}
-                         ,{post_id, body: 'Monads are like smelly shallots'}])
-              ,300));
+  {getPost,getComments} = require(SUPPORT_PATH);
 
 const ex3 = undefined;
 

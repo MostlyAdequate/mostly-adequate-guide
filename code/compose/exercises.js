@@ -28,7 +28,7 @@ const nameOfFirstCar = undefined;
 const _average = xs => reduce(add, 0, xs) / xs.length;
 
 const averageDollarValue = cars => {
-  const dollar_values = map(dollar_value('prop', cars));
+  const dollar_values = map(prop('dollar_value', cars));
   return _average(dollar_values);
 };
 
