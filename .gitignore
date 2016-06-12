@@ -4,3 +4,5 @@ less
 Gruntfile.js
 npm-debug.log
 .DS_Store
+*.md#*
+_book
