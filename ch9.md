@@ -35,7 +35,7 @@ To avoid the `new` keyword, there are several standard JavaScript tricks or libr
 
 ## Mixing Metaphors
 
-<img src="images/onion.png" alt="http://www.organicchemistry.com/wp-content/uploads/BPOCchapter6-6htm-41.png" />
+<img src="images/onion.png" alt="onion" />
 
 You see, in addition to space burritos (if you've heard the rumors), monads are like onions. Allow me to demonstrate with a common situation:
 
