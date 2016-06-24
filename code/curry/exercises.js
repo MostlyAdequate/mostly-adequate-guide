@@ -32,11 +32,13 @@ const slice = undefined;
 const take = undefined;
 
 
+//-- Exports ----------------------------------------------------------
 module.exports = {
-  words: words,
-  sentences: sentences,
-  filterQs: filterQs,
-  max: max,
-  slice: slice,
-  take: take
+  words,
+  sentences,
+  filterQs,
+  max,
+  slice,
+  take
 };
+

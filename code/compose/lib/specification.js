@@ -17,10 +17,10 @@ const
 
 module.exports = (title,E) =>
   describe(title, () => {
-    it('Exercise 1', () => equal(E.isLastInStock(CARS), false));
-    it('Exercise 2', () => equal(E.nameOfFirstCar(CARS), "Ferrari FF"));
-    it('Exercise 3', () => equal(E.averageDollarValue(CARS), 790700));
-    it('Exercise 4', () => deepEqual(E.sanitizeNames(CARS), ex4));
+    it('1', () => equal(E.isLastInStock(CARS), false));
+    it('2', () => equal(E.nameOfFirstCar(CARS), "Ferrari FF"));
+    it('3', () => equal(E.averageDollarValue(CARS), 790700));
+    it('4', () => deepEqual(E.sanitizeNames(CARS), ex4));
     it('Bonus 1',    () => equal(E.availablePrices(CARS), b1));
     it('Bonus 2',    () => equal(E.fastestCar(CARS), b2));
   });

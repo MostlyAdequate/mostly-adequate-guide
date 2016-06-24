@@ -55,8 +55,8 @@ const match = curry((reg, s) => s.match(reg));
 Ah yes, grouping the last part in parenthesis reveals more information. Now it is seen as a function that takes a `Regex` and returns us a function from `String` to `[String]`. Because of currying, this is indeed the case: give it a `Regex` and we get a function back waiting for its `String` argument. Of course, we don't have to think of it this way, but it is good to understand why the last type is the one returned.
 
 ```js
-//    match     :: Regex  -> (String -> [String])
-//    onHoliday :: String -> [String]
+//    match     :: Regex -> (String -> [String])
+//    onHoliday ::           String -> [String]
 const onHoliday = match(/holiday/ig);
 ```
 

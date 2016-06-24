@@ -41,4 +41,6 @@ const
 
 const ex4 = liftA2(game, getCache('player1'), getCache('player2'));
 
-module.exports = {ex1, ex2, ex3, ex4}
+
+//-- Exports ----------------------------------------------------------
+module.exports = {ex1,ex2,ex3,ex4}
