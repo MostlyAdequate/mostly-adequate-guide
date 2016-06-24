@@ -37,3 +37,6 @@ const
 
 // ex4 :: IO String
 const ex4 = undefined;
+
+//-- Exports ----------------------------------------------------------
+module.exports = {ex1,ex2,ex3,ex4}

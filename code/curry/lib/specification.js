@@ -9,22 +9,22 @@ module.exports = (title,E) =>
       ex1Out  = ex1In.split(' '),
       ex1aIn  = [ex1In , R],
       ex1aOut = [ex1Out, R.split(' ')];
-    it('Exercise 1',  () => deepEqual(E.words(ex1In), ex1Out));
-    it('Exercise 1a', () => deepEqual(E.sentences(ex1aIn), ex1aOut));
+    it('1',  () => deepEqual(E.words(ex1In), ex1Out));
+    it('1a', () => deepEqual(E.sentences(ex1aIn), ex1aOut));
 
     const
       ex2Common = ['quick','quarry','quails'],
       ex2In     = ex2Common.concat(['camels','over']),
       ex2Out    = ex2Common;
-    it('Exercise 2', () => deepEqual(E.filterQs(ex2In), ex2Out));
-    it('Exercise 3', () => equal(E.max([323,523,554,123,5234]), 5234));
+    it('2', () => deepEqual(E.filterQs(ex2In), ex2Out));
+    it('3', () => equal(E.max([323,523,554,123,5234]), 5234));
 
     const
       xs = ['a', 'b', 'c'];
     if (E.slice != undefined) {
-      it('Curry Bonus 1', () => deepEqual(E.slice(1)(3)(xs), ['b', 'c']));
+      it('Bonus 1', () => deepEqual(E.slice(1)(3)(xs), ['b', 'c']));
     }
     if (E.take != undefined) {
-      it('Curry Bonus 2', () => deepEqual(E.take(2)(xs), ['a', 'b']));
+      it('Bonus 2', () => deepEqual(E.take(2)(xs), ['a', 'b']));
     }
   });

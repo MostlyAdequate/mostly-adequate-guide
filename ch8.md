@@ -133,8 +133,8 @@ Notice our app doesn't explode with errors as we map functions over our null val
 This dot syntax is perfectly fine and functional, but for reasons mentioned in Part 1, we'd like to maintain our pointfree style. As it happens, `map` is fully equipped to delegate to whatever functor it receives:
 
 ```js
-//  map :: Functor f => (a -> b) -> f a -> f b
-const map = curry((f, any_functor_at_all => any_functor_at_all.map(f));
+//    map :: Functor f => (a -> b) -> f a -> f b
+const map = curry((f, any_functor => any_functor.map(f));
 ```
 
 This is delightful as we can carry on with composition per usual and `map` will work as expected. This is the case with ramda's `map` as well. We'll use dot notation when it's instructive and the pointfree version when it's convenient. Did you notice that? I've sneakily introduced extra notation into our type signature. The `Functor f =>` tells us that `f` must be a Functor. Not that difficult, but I felt I should mention it.
@@ -144,7 +144,7 @@ This is delightful as we can carry on with composition per usual and `map` will 
 In the wild, we'll typically see `Maybe` used in functions which might fail to return a result.
 
 ```js
-//  safeHead :: [a] -> Maybe(a)
+//    safeHead :: [a] -> Maybe(a)
 const safeHead = xs => Maybe.of(xs[0]);
 
 const streetName = compose(map(prop('street')), safeHead, prop('addresses'))
@@ -164,7 +164,7 @@ Sometimes a function might return a `Maybe(null)` explicitly to signal failure. 
 ```js
 //    withdraw :: Number -> Account -> Maybe(Account)
 const withdraw =
-  curry((amount, {balance}) =>
+  curry((amount,{balance}) =>
     Maybe.of(
       balance >= amount
         ? {balance: balance - amount}
@@ -348,13 +348,13 @@ Had we not surrounded its guts in another function, `getFromStorage` would vary 
 Except, this isn't particularly useful now is it. Like a collectible action figure in its original packaging, we can't actually play with it. If only there were a way to reach inside of the container and get at its contents... Enter `IO`.
 
 ```js
-class ClassName {
+class IO {
   constructor(f) {
     this.__value = f;
   }
 
-  static of(x) {
-    return new IO(_ => x);
+  static of(f) {
+    return new IO(f);
   }
 
   map() {
@@ -368,9 +368,8 @@ class ClassName {
 Let's see it in use:
 
 ```js
-//  io_window :: IO Window
-// TODO Why not use `of`?
-const io_window = new IO(_ => window);
+//    io_window :: IO Window
+const io_window = IO.of(_ => window);
 
 io_window.map(win => win.innerWidth);
 // IO(1430)
@@ -382,8 +381,8 @@ io_window
 // IO(["http:", "", "localhost:8000", "blog", "posts"])
 
 
-//  $ :: String -> IO [DOM]
-const $ = selector => new IO(_ => document.querySelectorAll(selector))
+//    $ :: String -> IO [DOM]
+const $ = selector => IO.of(_ => document.querySelectorAll(selector))
 
 $('#myDiv')
   .map(head)
@@ -398,24 +397,21 @@ Take a moment to channel your functor intuition. If we see past the implementati
 Now, we've caged the beast, but we'll still have to set it free at some point. Mapping over our `IO` has built up a mighty impure computation and running it is surely going to disturb the peace. So where and when can we pull the trigger? Is it even possible to run our `IO` and still wear white at our wedding? The answer is yes, if we put the onus on the calling code. Our pure code, despite the nefarious plotting and scheming, maintains its innocence and it's the caller who gets burdened with the responsibility of actually running the effects. Let's see an example to make this concrete.
 
 ```js
+const
+//url :: IO String
+  url = IO.of(_ => window.location.href),
 
-////// Our pure library: lib/params.js ///////
+//toPairs ::  String -> [[String]]
+  toPairs = compose(map(split('=')), split('&')),
 
-//    url :: IO String
-const url = new IO(_ => window.location.href);
+//params :: String -> [[String]]
+  params = compose(toPairs, last, split('?')),
 
-//    toPairs =  String -> [[String]]
-const toPairs = compose(map(split('=')), split('&'));
+//findParam :: String -> IO Maybe [String]
+  findParam =
+    key => map(compose(Maybe.of, filter(compose(eq(key), head)), params), url);
 
-//    params :: String -> [[String]]
-const params = compose(toPairs, last, split('?'));
-
-//    findParam :: String -> IO Maybe [String]
-const findParam =
-  key => map(compose(Maybe.of, filter(compose(eq(key), head)), params), url);
-
-////// Impure calling code: main.js ///////
-
+//-- Impure calling code ----------------------------------------------
 // run it by calling __value()!
 findParam("searchTerm").__value();
 // Maybe([['searchTerm', 'wafflehouse']])
@@ -426,13 +422,18 @@ Our library keeps its hands clean by wrapping `url` in an `IO` and passing the b
 There's something that's been bothering me and we should rectify it immediately: `IO`'s `__value` isn't really its contained value, nor is it a private property as the underscore prefix suggests. It is the pin in the grenade and it is meant to be pulled by a caller in the most public of ways. Let's rename this property to `unsafePerformIO` to remind our users of its volatility.
 
 ```js
-// TODO Reread
-var IO = function(f) {
-  this.unsafePerformIO = f;
-};
+class IO {
+  constructor(f) {
+    this.unsafePerformIO = f;
+  }
 
-IO.prototype.map = function(f) {
-  return new IO(compose(f, this.unsafePerformIO));
+  static of(f) {
+    return new IO(f);
+  }
+
+  map() {
+    return new IO(compose(f, this.unsafePerformIO));
+  }
 };
 ```
 
@@ -489,10 +490,8 @@ Like `IO`, `Task` will patiently wait for us to give it the green light before r
 To run our `Task`, we must call the method `fork`. This works like `unsafePerformIO`, but as the name suggests, it will fork our process and evaluation continues on without blocking our thread. This can be implemented in numerous ways with threads and such, but here it acts as a normal async call would and the big wheel of the event loop keeps on turning. Let's look at `fork`:
 
 ```js
-// Pure application
-//=====================
-// blogTemplate :: String
-
+//-- Pure application -------------------------------------------------
+//    blogTemplate :: String
 //    blogPage :: Posts -> HTML
 const blogPage = Handlebars.compile(blogTemplate);
 
@@ -503,11 +502,10 @@ const renderPage = compose(blogPage, sortBy('date'));
 const blog = compose(map(renderPage), getJSON('/posts'));
 
 
-// Impure calling code
-//=====================
+//-- Impure calling code ----------------------------------------------
 blog({}).fork(
   error => $("#error").html(error.message),
-  page => $("#main").html(page)
+  page  => $("#main").html(page)
 );
 
 $('#spinner').show();
@@ -526,10 +524,8 @@ Even with `Task`, our `IO` and `Either` functors are not out of a job. Bear with
 // runQuery         :: DbConnection -> ResultSet
 // readFile         :: String -> Task Error String
 
-// Pure application
-//=====================
-
-//  dbUrl :: Config -> Either Error Url
+//-- Pure application -------------------------------------------------
+//    dbUrl :: Config -> Either Error Url
 const dbUrl = ({uname, pass, db}) =>
   (uname && pass && host && db)
     ? Right.of(`db:pg://${uname}:${pass}@${host}5432/${db}`)
@@ -542,8 +538,7 @@ const connectDb = compose(map(Postgres.connect), dbUrl);
 const getConfig = compose(map(compose(connectDb, JSON.parse)), readFile);
 
 
-// Impure calling code
-//=====================
+//-- Impure calling code ----------------------------------------------
 getConfig("db.json").fork(
   logErr("couldn't read file"), either(console.log, map(runQuery))
 );
@@ -633,9 +628,13 @@ map(map(map(toUpperCase)), nested);
 What we have here with `nested` is a future array of elements that might be errors. We `map` to peel back each layer and run our function on the elements. We see no callbacks, if/else's, or for loops; just an explicit context. We do, however, have to `map(map(map(f)))`. We can instead compose functors. You heard me correctly:
 
 ```js
-class ClassName {
+class Compose {
   constructor(f_g_x) {
     this.getCompose = f_g_x;
+  }
+
+  static of(f_g_x) {
+    return new Compose(f_g_x);
   }
 
   map(f) {
@@ -645,7 +644,7 @@ class ClassName {
 
 const tmd = Task.of(Maybe.of("Rock over London");
 
-const ctmd = new Compose(tmd);
+const ctmd = Compose.of(tmd);
 
 map(concat(", rock on, Chicago"), ctmd);
 // Compose(Task(Maybe("Rock over London, rock on, Chicago")))

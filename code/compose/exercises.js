@@ -12,9 +12,9 @@ const
 
 //-- Exercise 1 -------------------------------------------------------
 // use `compose` to rewrite the function below. Hint: `prop` is curried.
-const isLastInStock = function(cars) {
-  const reversed_cars = last(cars);
-  return prop('in_stock', reversed_cars)
+const isLastInStock = cars => {
+  const car = last(cars);
+  return prop('in_stock', car);
 };
 
 
@@ -61,10 +61,10 @@ const fastestCar = cars => {
 
 //-- Exports ----------------------------------------------------------
 module.exports = {
-  isLastInStock: isLastInStock,
-  nameOfFirstCar: nameOfFirstCar,
-  fastestCar: fastestCar,
-  averageDollarValue: averageDollarValue,
-  availablePrices: availablePrices,
-  sanitizeNames: sanitizeNames
+  isLastInStock,
+  nameOfFirstCar,
+  fastestCar,
+  averageDollarValue,
+  availablePrices,
+  sanitizeNames
 };

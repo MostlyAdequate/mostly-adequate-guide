@@ -28,12 +28,13 @@ const slice = curry((start, end, xs) => xs.slice(start, end));
 // use slice to define a function "take" that takes n elements. Make it curried
 const take = slice(0);
 
+
 //-- Exports ----------------------------------------------------------
 module.exports = {
-  words: words,
-  sentences: sentences,
-  filterQs: filterQs,
-  max: max,
-  slice: slice,
-  take: take
+  words,
+  sentences,
+  filterQs,
+  max,
+  slice,
+  take
 };

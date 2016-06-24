@@ -15,12 +15,13 @@ IO.of("tetris").map(concat(" master"));
 Maybe.of(1336).map(add(1));
 // Maybe(1337)
 
-Task.of([{id: 2}, {id: 3}]).map(_.prop('id'));
+Task.of([{id:2},{id:3}]).map(prop('id'));
 // Task([2,3])
 
-Either.of("The past, present and future walk into a bar...").map(
-  concat("it was tense.")
-);
+Either
+  .of("The past, present and future walk into a bar...")
+  .map(concat("it was tense."));
+
 // Right("The past, present and future walk into a bar...it was tense.")
 ```
 
@@ -80,7 +81,7 @@ While it is nice to see that we have two effects packaged up and ready to go in 
 
 ```js
 //    safeProp :: Key -> {Key: a} -> Maybe a
-const safeProp = curry((x, obj) => new Maybe(obj[x]))
+const safeProp = curry((x, obj) => Maybe.of(obj[x]))
 
 //    safeHead :: [a] -> Maybe a
 const safeHead = safeProp(0)
@@ -107,7 +108,7 @@ const mmo = Maybe.of(Maybe.of("nunchucks"));
 mmo.join();
 // Maybe("nunchucks")
 
-const ioio = IO.of(IO.of("pizza"));
+const ioio = IO.of(_ => IO.of(_ => "pizza"));
 // IO(IO("pizza"))
 
 ioio.join();
@@ -162,19 +163,19 @@ Again, we simply remove one layer. Mind you, we have not thrown out purity, but 
 ```js
 //    log :: a -> IO a
 const log =
-  x => new IO(_ => {
+  x => IO.of(_ => {
     console.log(x);
     return x;
   });
 
-//  setStyle :: Selector -> CSSProps -> IO DOM
+//    setStyle :: Selector -> CSSProps -> IO DOM
 const setStyle =
-  curry((sel, props) => new IO(_ => jQuery(sel).css(props)));
+  curry((sel, props) => IO.of(_ => jQuery(sel).css(props)));
 
-//  getItem :: String -> IO String
-const getItem = key => new IO(_ => localStorage.getItem(key));
+//    getItem :: String -> IO String
+const getItem = key => IO.of(_ => localStorage.getItem(key));
 
-//  applyPreferences :: String -> IO DOM
+//    applyPreferences :: String -> IO DOM
 const applyPreferences = compose(
   join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem
 );
@@ -230,22 +231,18 @@ I swapped out any `map/join` with our new `chain` function to tidy things up a b
 // getJSON       :: Url -> Params -> Task JSON
 // querySelector :: Selector -> IO DOM
 
-
 getJSON('/authenticate', {username: 'stale', password: 'crackers'})
   .chain(user => getJSON('/friends', {user_id: user.id}));
 // Task([{name: 'Seimith', id: 14}, {name: 'Ric', id: 39}]);
-
 
 querySelector("input.username")
   .chain(({value: uname}) => querySelector("input.email")
   .chain(({value: email}) => IO.of(`Welcome ${uname} prepare for spam at ${email}`)));
 // IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net");
 
-
 Maybe.of(3)
   .chain(three => Maybe.of(2).map(add(three)));
 // Maybe(5);
-
 
 Maybe.of(null)
   .chain(safeProp('address'))

@@ -70,4 +70,6 @@ const save = x =>
 
 const ex8 = compose(either(IO.of, save), ex7);
 
+
+//-- Exports ----------------------------------------------------------
 module.exports = {ex1,ex2,ex3,ex4,ex5,ex6,ex7,ex8};

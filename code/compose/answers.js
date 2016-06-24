@@ -45,12 +45,13 @@ const
            ,last
            ,sortBy(prop('horsepower')));
 
+
 //-- Exports ----------------------------------------------------------
 module.exports = {
-  isLastInStock: isLastInStock,
-  nameOfFirstCar: nameOfFirstCar,
-  fastestCar: fastestCar,
-  averageDollarValue: averageDollarValue,
-  availablePrices: availablePrices,
-  sanitizeNames: sanitizeNames
+  isLastInStock,
+  nameOfFirstCar,
+  fastestCar,
+  averageDollarValue,
+  availablePrices,
+  sanitizeNames
 };
