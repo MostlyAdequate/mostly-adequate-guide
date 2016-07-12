@@ -37,7 +37,7 @@ var _keepHighest = function(x,y){ return x >= y ? x : y; };
 var max = function(xs) {
   return reduce(function(acc, x){
     return _keepHighest(acc, x);
-  }, 0, xs);
+  }, -Infinity, xs);
 };
 
   
