@@ -199,7 +199,7 @@ Composition will be our tool for constructing programs and, as luck would have i
 
 Category theory is an abstract branch of mathematics that can formalize concepts from several different branches such as set theory, type theory, group theory, logic, and more. It primarily deals with objects, morphisms, and transformations, which mirrors programming quite closely. Here is a chart of the same concepts as viewed from each separate theory.
 
-<img src="images/cat_theory.png" />
+<img src="images/cat_theory.png" alt="category theory" />
 
 Sorry, I didn't mean to frighten you. I don't expect you to be intimately familiar with all these concepts. My point is to show you how much duplication we have so you can see why category theory aims to unify these things.
 
@@ -213,7 +213,7 @@ In category theory, we have something called... a category. It is defined as a c
 Category theory is abstract enough to model many things, but let's apply this to types and functions, which is what we care about at the moment.
 
 **A collection of objects**
-The objects will be data types. For instance, ``String``, ``Boolean``, ``Number``, ``Object``, etc. We often view data types as sets of all the possible values. One could look at ``Boolean`` as the set of `[true, false]` and ``Number`` as the set of all possible numeric values. Treating types as sets is useful because we can use set theory to work with them. 
+The objects will be data types. For instance, ``String``, ``Boolean``, ``Number``, ``Object``, etc. We often view data types as sets of all the possible values. One could look at ``Boolean`` as the set of `[true, false]` and ``Number`` as the set of all possible numeric values. Treating types as sets is useful because we can use set theory to work with them.
 
 
 **A collection of morphisms**
@@ -224,8 +224,8 @@ This, as you may have guessed, is our brand new toy - `compose`. We've discussed
 
 Here is an image demonstrating composition:
 
-<img src="images/cat_comp1.png" />
-<img src="images/cat_comp2.png" />
+<img src="images/cat_comp1.png" alt="category composition 1" />
+<img src="images/cat_comp2.png" alt="category composition 2" />
 
 Here is a concrete example in code:
 

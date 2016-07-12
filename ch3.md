@@ -102,11 +102,11 @@ From mathisfun.com:
 
 In other words, it's just a relation between two values: the input and the output. Though each input has exactly one output, that output doesn't necessarily have to be unique per input. Below shows a diagram of a perfectly valid function from `x` to `y`;
 
-<img src="images/function-sets.gif" />(http://www.mathsisfun.com/sets/function.html)
+<img src="images/function-sets.gif" alt="function sets" />(http://www.mathsisfun.com/sets/function.html)
 
 To contrast, the following diagram shows a relation that is *not* a function since the input value `5` points to several outputs:
 
-<img src="images/relation-not-function.gif" />(http://www.mathsisfun.com/sets/function.html)
+<img src="images/relation-not-function.gif" alt="relation not function" />(http://www.mathsisfun.com/sets/function.html)
 
 Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]` (It appears this function doubles its input).
 
@@ -115,7 +115,7 @@ Or perhaps a table:
 
 Or even as a graph with `x` as the input and `y` as the output:
 
-<img src="images/fn_graph.png" width="300" height="300" />
+<img src="images/fn_graph.png" width="300" height="300" alt="function graph" />
 
 
 There's no need for implementation details if the input dictates the output. Since functions are simply mappings of input to output, one could simply jot down object literals and run them with `[]` instead of `()`.
