@@ -36,7 +36,7 @@
 * [Chapter 8: Tupperware](ch8.md)
   * [The Mighty Container](ch8.md#the-mighty-container)
   * [My First Functor](ch8.md#my-first-functor)
-  * [Schrödinger’s Maybe](ch8.md#schrodingers-maybe)
+  * [Schrödinger’s Maybe](ch8.md#schrödingers-maybe)
   * [Pure Error Handling](ch8.md#pure-error-handling)
   * [Old McDonald had Effects…](ch8.md#old-mcdonald-had-effects)
   * [Asynchronous Tasks](ch8.md#asynchronous-tasks)
