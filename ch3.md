@@ -54,7 +54,7 @@ var checkAge = function(age) {
 };
 ```
 
-In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the cognitive load by introducing an external environment.
+In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the [cognitive load](http://en.wikipedia.org/wiki/Cognitive_load) by introducing an external environment.
 
 It might not seem like a lot in this example, but this reliance upon state is one of the largest contributors to system complexity(http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf). This `checkAge` may return different results depending on factors external to input, which not only disqualifies it from being pure, but also puts our minds through the ringer each time we're reasoning about the software.
 

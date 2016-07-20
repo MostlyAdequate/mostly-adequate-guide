@@ -38,7 +38,7 @@ greeting('times');
 // "Hi times"
 ```
 
-In other words, `hi` is already a function that expects one argument, why place another function around it that simply calls `hi` with the same bloody argument? It doesn't make any damn sense. It's like donning your heaviest parka in the dead of July just to blast the air and demand an ice lolly.
+In other words, `hi` is already a function that expects one argument, why place another function around it that simply calls `hi` with the same bloody argument? It doesn't make any darned sense. It's like donning your heaviest parka in the dead of July just to blast the air and demand an ice lolly.
 
 It is obnoxiously verbose and, as it happens, bad practice to surround a function with another function merely to delay evaluation. (We'll see why in a moment, but it has to do with maintenance.)
 
@@ -128,7 +128,7 @@ var BlogController = {
 
 Okay, let's get down to the reasons to favor first class functions. As we saw in the `getServerStuff` and `BlogController` examples, it's easy to add layers of indirection that have no actual value and only increase the amount of code to maintain and search through.
 
-In addition, if a function we are needlessly wrapping does change, we must also change our wrapper function.
+In addition, if a function that we are needlessly wrapping does change, we must also change our wrapper function.
 
 ```js
 httpGet('/post/2', function(json) {
@@ -139,8 +139,8 @@ httpGet('/post/2', function(json) {
 If `httpGet` were to change to send a possible `err`, we would need to go back and change the "glue".
 
 ```js
-// go back to every httpGet call in the application and explicitly pass err
-// along.
+// go back to every httpGet call in the application and explicitly 
+// pass err along.
 httpGet('/post/2', function(json, err) {
   return renderPost(json, err);
 });
@@ -149,7 +149,8 @@ httpGet('/post/2', function(json, err) {
 Had we written it as a first class function, much less would need to change:
 
 ```js
-// renderPost is called from within httpGet with however many arguments it wants
+// renderPost is called from within httpGet with however many 
+// arguments it wants
 httpGet('/post/2', renderPost);  
 ```
 
