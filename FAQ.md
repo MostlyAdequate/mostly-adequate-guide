@@ -17,14 +17,14 @@
 
 There are two schools in JavaScript, people who use them, and people who don't.  We've made the
 choice here to use them, and now, we strive to be consistent with that choice. If some are
-missing, please let us know and will take care of the oversight.
+missing, please let us know and we will take care of the oversight.
 
 ### Aren't external libraries like _ (ramda) or $ (jquery) making calls impure?
 
 > see [#50]
 
 Those dependencies are available as if they were in the global context, part of the language.
-So, no, calls can still be considered as pure. 
+So, no, calls can still be considered as pure.
 For further reading, have a look at [this article about
 CoEffects](http://tomasp.net/blog/2014/why-coeffects-matter/)
 
@@ -32,11 +32,11 @@ CoEffects](http://tomasp.net/blog/2014/why-coeffects-matter/)
 
 > see [#62]
 
-In a signature, like: 
+In a signature, like:
 
 `map :: Functor f => (a -> b) -> f a -> f b`
 
-`f` refers to a `functor` that could be for instance Maybe or IO. Thus, the signature abstracts
+`f` refers to a `functor` that could be, for instance, Maybe or IO. Thus, the signature abstracts
 the choice of that functor by using a type variable which basically means that any functor
 might be used where `f` stands as long as all `f` are of the same type (if the first `f a` in
 the signature represents a `Maybe a`, then the second one **cannot refer to** an `IO b` but
@@ -45,7 +45,7 @@ should be a `Maybe b`. For instance:
 ```javascript
 let maybeString = Maybe.of("Patate")
 let f = function (x) { return x.length }
-let maybeNumber = map(f, maybeString) // Maybe(6)  
+let maybeNumber = map(f, maybeString) // Maybe(6)
 
 // With the following 'refined' signature:
 // map :: (string -> number) -> Maybe string -> Maybe number
@@ -56,8 +56,8 @@ let maybeNumber = map(f, maybeString) // Maybe(6)
 > see [#77], [#192]
 
 Should you haven't reached it yet, you may have a look at the [Chapter
-6](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch6.md) which present a
-simple flickr application. 
+6](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch6.md) which presents a
+simple flickr application.
 Other examples are likely to come later on. By the way, feel free to share with us your
 experience!
 
@@ -68,7 +68,7 @@ experience!
 The book aims at being widely accessible. It started before ES6 went out, and now, as the new
 standard is being more and more accepted, we are considering making two separated editions with
 ES5 and ES6. Members of the community are already working on the ES6 version (have a look to
-[#235] for more informations).
+[#235] for more information).
 
 ### What the heck is that reduce function about?
 
@@ -84,7 +84,7 @@ more insights about the reduce function.
 > see [#176]
 
 The book is written in its own style which contributes to make it consistent as a whole. If
-you're not familiar with English, see it as a good training. Nevertheless, should you need help
+you're not familiar with English, see it as good training. Nevertheless, should you need help
 to understand the meaning sometimes, there are now [several
 translations](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/TRANSLATIONS.md)
 available that could probably help you.
@@ -93,17 +93,17 @@ available that could probably help you.
 
 > see [#194]
 
-We introduce all of those structure throughout the book. Therefore, you won't find any use of a
+We introduce all of those structures throughout the book. Therefore, you won't find any use of a
 structure that hasn't previously be defined. Do not hesitate to read again some old parts if
-you ever feel uncomfortable with those types. 
-A glossary/vade mecum will come at the end to synthesize all these notions. 
+you ever feel uncomfortable with those types.
+A glossary/vade mecum will come at the end to synthesize all these notions.
 
 ### Where do map, filter, compose ... methods come from?
 
 > see [#198]
 
 Most of the time, those methods are defined in specific vendor libraries such as `ramda` or
-`underscore`. You should also have a look to
+`underscore`. You should also have a look at
 [support.js](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/code%2Fpart1_exercises%2Fsupport.js)
 in which we define several implementations used for the exercises. Those functions are really
 common in functional programming and even though their implementations may vary a bit, their
