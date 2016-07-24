@@ -12,7 +12,7 @@ There are type checking tools available for JavaScript such as [Flow](http://flo
 
 ## Tales from the cryptic
 
-From the dusty pages of math books, across the vast sea of white papers, amongst casual saturday morning blog posts, down into the source code itself, we find Hindley-Milner type signatures. The system is quite simple, but warrants a quick explanation and some practice to fully absorb the little language.
+From the dusty pages of math books, across the vast sea of white papers, amongst casual Saturday morning blog posts, down into the source code itself, we find Hindley-Milner type signatures. The system is quite simple, but warrants a quick explanation and some practice to fully absorb the little language.
 
 ```js
 //  capitalize :: String -> String
