@@ -736,7 +736,7 @@ map(concat(', rock on, Chicago'), ctmd);
 // Compose(Task(Maybe('Rock over London, rock on, Chicago')))
 
 ctmd.getCompose;
-// Task(Maybe('Rock over London, rock on, Chicago'))
+// Task(Maybe('Rock over London'))
 ```
 
 There, one `map`. Functor composition is associative and earlier, we defined `Container`, which is actually called the `Identity` functor. If we have identity and associative composition we have a category. This particular category has categories as objects and functors as morphisms, which is enough to make one's brain perspire. We won't delve too far into this, but it's nice to appreciate the architectural implications or even just the simple abstract beauty in the pattern.
