@@ -72,7 +72,7 @@ var ex3 = _.compose(chain(_.compose(getComments, _.prop('id'))), getPost);
 var addToMailingList = (function(list){
   return function(email) {
     return new IO(function(){
-      list.push(email);
+      list.concat(email);
       return list;
     });
   }
