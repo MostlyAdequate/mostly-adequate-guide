@@ -513,8 +513,7 @@ var ex3 = undefined;
 var addToMailingList = (function(list) {
   return function(email) {
     return new IO(function() {
-      list.concat(email);
-      return list;
+      return list.concat(email);
     });
   };
 })([]);
