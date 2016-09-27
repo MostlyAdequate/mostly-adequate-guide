@@ -469,7 +469,7 @@ var url = new IO(function() {
   return window.location.href;
 });
 
-//  toPairs =  String -> [[String]]
+//  toPairs ::  String -> [[String]]
 var toPairs = compose(map(split('=')), split('&'));
 
 //  params :: String -> [[String]]
