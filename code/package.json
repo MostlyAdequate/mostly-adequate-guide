@@ -4,21 +4,21 @@
   "description": "Exercises for the Book",
   "dependencies": {
     "accounting": "^0.4.1",
-    "data.task": "^3.0.0",
+    "data.task": "^3.1.1",
     "ramda": "^0.21.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "live-server": "^1.0.0",
+    "live-server": "^1.1.0",
     "mocha": "^2.5.3"
   },
   "scripts": {
-    "app":         "cd app && live-server",
-    "compose":     "mocha -w ./compose/lib/eval_spec.js",
-    "curry":       "mocha -w ./curry/lib/eval_spec.js",
-    "functors":    "mocha -w ./functors/lib/eval_spec.js",
+    "app": "cd app && live-server",
+    "compose": "mocha -w ./compose/lib/eval_spec.js",
+    "curry": "mocha -w ./curry/lib/eval_spec.js",
+    "functors": "mocha -w ./functors/lib/eval_spec.js",
     "applicative": "mocha -w ./applicative/lib/eval_spec.js",
-    "monads":      "mocha -w ./monads/lib/eval_spec.js"
+    "monads": "mocha -w ./monads/lib/eval_spec.js"
   },
   "repository": {
     "type": "git",
