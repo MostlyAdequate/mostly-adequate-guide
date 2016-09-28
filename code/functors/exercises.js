@@ -1,7 +1,7 @@
 const
-  SUPPORT_PATH                   = '../support',
-  {Identity,IO,Maybe,Right,Left} = require(SUPPORT_PATH),
-  Task                           = require('data.task'),
+  SUPPORT_PATH                          = '../support',
+  {Identity,IO,Maybe,Right,Left,either} = require(SUPPORT_PATH),
+  Task                                  = require('data.task'),
   {add,concat,compose,curry,head,map,prop,toUpper} = require('ramda');
 
 //-- Exercise 1 -------------------------------------------------------
