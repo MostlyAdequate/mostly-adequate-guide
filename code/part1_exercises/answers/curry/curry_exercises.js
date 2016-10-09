@@ -7,7 +7,7 @@ console.log('add', map(add(2)));
 // Exercise 1
 //==============
 
-var words = split(' ');
+var words = _.split(' ');
 
 // Exercise 1a
 //==============
