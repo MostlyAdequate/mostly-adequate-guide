@@ -12,7 +12,7 @@ var words = _.split(' ');
 // Exercise 1a
 //==============
 
-var sentences = map(words);
+var sentences = _.map(words);
 
 
 // Exercise 2
