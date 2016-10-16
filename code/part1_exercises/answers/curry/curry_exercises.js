@@ -7,18 +7,18 @@ console.log('add', map(add(2)));
 // Exercise 1
 //==============
 
-var words = split(' ');
+var words = _.split(' ');
 
 // Exercise 1a
 //==============
 
-var sentences = map(words);
+var sentences = _.map(words);
 
 
 // Exercise 2
 //==============
 
-var filterQs = filter(match(/q/i));
+var filterQs = _.filter(match(/q/i));
 
 
 // Exercise 3
@@ -27,7 +27,7 @@ var filterQs = filter(match(/q/i));
 
 var _keepHighest = function(x,y){ return x >= y ? x : y; }; // <- leave be
 
-var max = reduce(_keepHighest, -Infinity);
+var max = _.reduce(_keepHighest, -Infinity);
 
 
 // Bonus 1:
