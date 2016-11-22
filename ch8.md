@@ -320,7 +320,7 @@ getAge(moment(), {
 // Right(9)
 
 getAge(moment(), {
-  birthdate: '20010704',
+  birthdate: 'July 4, 2001',
 });
 // Left('Birth date could not be parsed')
 ```
