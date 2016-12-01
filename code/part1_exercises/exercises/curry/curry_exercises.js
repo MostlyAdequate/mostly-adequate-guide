@@ -6,10 +6,6 @@ var _ = require('ramda');
 //==============
 // Refactor to remove all arguments by partially applying the function
 
-// var words = function() {
-//   return R.split(' ');
-// };
-
 var words = function(str) {
   return split(' ', str);
 };
@@ -21,8 +17,6 @@ var words = function(str) {
 // Use map to make a new words fn that works on an array of strings.
 
 var sentences = map(words);
-
-// var sentences = undefined;
 
 // Exercise 2
 //==============
