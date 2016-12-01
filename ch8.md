@@ -477,7 +477,16 @@ var params = compose(toPairs, last, split('?'));
 
 //  findParam :: String -> IO Maybe [String]
 var findParam = function(key) {
-  return map(compose(Maybe.of, filter(compose(eq(key), head)), params), url);
+  return map(
+    compose(
+      Maybe.of, 
+      filter(
+        compose(eq(key), head)
+      ), 
+      params
+    ), 
+    url
+  );
 };
 
 ////// Impure calling code: main.js ///////
