@@ -43,7 +43,7 @@ const ex5 = undefined;
 //-- Exercise 6 -------------------------------------------------------
 // Write a function that uses `checkActive` and `showWelcome` to grant access or return the error
 const
-  showWelcome = compose(concat( "Welcome "), prop('name'))
+  showWelcome = compose(concat("Welcome "), prop('name'))
   checkActive = user =>
     user.active
       ? Right.of(user)
