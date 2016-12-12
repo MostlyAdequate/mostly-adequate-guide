@@ -1,0 +1,29 @@
+{
+  "name": "mostly-adequate-guide",
+  "version": "0.1.0",
+  "description": "",
+  "main": "",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gitbook-cli": "^2.3.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "$(npm bin)/gitbook install",
+    "start": "$(npm bin)/gitbook serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christiantakle/mostly-adequate-guide.git"
+  },
+  "keywords": [
+    "gitbook"
+  ],
+  "author": "Christian Takle",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/christiantakle/mostly-adequate-guide/issues"
+  },
+  "homepage": "https://github.com/christiantakle/mostly-adequate-guide#readme"
+}
