@@ -1,7 +1,6 @@
 require('../../support');
 var _ = require('ramda');
 
-
 // Exercise 1
 //==============
 // Refactor to remove all arguments by partially applying the function
@@ -40,7 +39,7 @@ var max = function(xs) {
   }, -Infinity, xs);
 };
 
-  
+
 // Bonus 1:
 // ============
 // wrap array's slice to be functional and curried.
@@ -54,11 +53,12 @@ var slice = undefined;
 // For ['a', 'b', 'c'] with n=2 it should return ['a', 'b']
 var take = undefined;
 
-
-module.exports = { words: words,
-                   sentences: sentences,
-                   filterQs: filterQs,
-                   max: max,
-                   slice: slice,
-                   take: take
-                 };
+//-- Ignore, used for testing -----------------------------------------
+module.exports = {
+  words: words,
+  sentences: sentences,
+  filterQs: filterQs,
+  max: max,
+  slice: slice,
+  take: take
+};
