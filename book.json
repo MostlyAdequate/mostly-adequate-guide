@@ -1,0 +1,6 @@
+{
+  "gitbook": "3.2.2",
+  "root": ".",
+  "plugins":
+    ["include-codeblock@2.1.0"]
+}
