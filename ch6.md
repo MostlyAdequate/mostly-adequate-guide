@@ -51,37 +51,20 @@ Because we are not encoding order of evaluation, declarative coding lends itself
 
 We will now build an example application in a declarative, composable way. We'll still cheat and use side effects for now, but we'll keep them minimal and separate from our pure codebase. We are going to build a browser widget that sucks in flickr images and displays them. Let's start by scaffolding the app. Here's the html:
 
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.11/require.min.js"></script>
-    <script src="flickr.js"></script>
-  </head>
-  <body></body>
-</html>
-```
+[include](./code/part1_demo/index.html)
 
 And here's the flickr.js skeleton:
-
 ```js
-requirejs.config({
-  paths: {
-    ramda: 'https://cdnjs.cloudflare.com/ajax/libs/ramda/0.13.0/ramda.min',
-    jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min'
-  },
-});
-
 require([
     'ramda',
-    'jquery',
+    'jquery'
   ],
-  function(_, $) {
+  function (_, $) {
+    //-- Debug --------------------------------------------------------
     var trace = _.curry(function(tag, x) {
       console.log(tag, x);
       return x;
-    });
+    })
     // app goes here
   });
 ```
@@ -114,9 +97,9 @@ Here we've simply wrapped jQuery's methods to be curried and we've swapped the a
 Next we must construct a url to pass to our `Impure.getJSON` function.
 
 ```js
-var url = function(term) {
-  return 'https://api.flickr.com/services/feeds/photos_public.gne?tags=' +
-    term + '&format=json&jsoncallback=?';
+var url = function (t) {
+  var query = '?tags='+t+'&format=json&jsoncallback=?'
+  return 'https://api.flickr.com/services/feeds/photos_public.gne'+query;
 };
 ```
 
@@ -155,7 +138,8 @@ var srcs = _.compose(_.map(mediaUrl), _.prop('items'));
 Once we gather the `items`, we must `map` over them to extract each media url. This results in a nice array of srcs. Let's hook this up to our app and print them on the screen.
 
 ```js
-var renderImages = _.compose(Impure.setHtml('body'), srcs);
+var renderImages = _.compose(Impure.setHtml('#js-app'), srcs);
+
 var app = _.compose(Impure.getJSON(renderImages), url);
 ```
 
@@ -165,9 +149,7 @@ Our final step is to turn these srcs into bonafide images. In a bigger applicati
 
 ```js
 var img = function(url) {
-  return $('<img />', {
-    src: url
-  });
+  return $('<img />', { src: url });
 };
 ```
 
@@ -175,7 +157,9 @@ jQuery's `html()` method will accept an array of tags. We only have to transform
 
 ```js
 var images = _.compose(_.map(img), srcs);
-var renderImages = _.compose(Impure.setHtml('body'), images);
+
+var renderImages = _.compose(Impure.setHtml('#js-app'), images);
+
 var app = _.compose(Impure.getJSON(renderImages), url);
 ```
 
@@ -184,63 +168,7 @@ And we're done!
 <img src="images/cats_ss.png" alt="cats grid" />
 
 Here is the finished script:
-```js
-requirejs.config({
-  paths: {
-    ramda: 'https://cdnjs.cloudflare.com/ajax/libs/ramda/0.13.0/ramda.min',
-    jquery: 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min',
-  },
-});
-
-require([
-    'ramda',
-    'jquery',
-  ],
-  function(_, $) {
-    ////////////////////////////////////////////
-    // Utils
-
-    var Impure = {
-      getJSON: _.curry(function(callback, url) {
-        $.getJSON(url, callback);
-      }),
-
-      setHtml: _.curry(function(sel, html) {
-        $(sel).html(html);
-      }),
-    };
-
-    var img = function(url) {
-      return $('<img />', {
-        src: url,
-      });
-    };
-
-    var trace = _.curry(function(tag, x) {
-      console.log(tag, x);
-      return x;
-    });
-
-    ////////////////////////////////////////////
-
-    var url = function(t) {
-      return 'http://api.flickr.com/services/feeds/photos_public.gne?tags=' +
-        t + '&format=json&jsoncallback=?';
-    };
-
-    var mediaUrl = _.compose(_.prop('m'), _.prop('media'));
-
-    var srcs = _.compose(_.map(mediaUrl), _.prop('items'));
-
-    var images = _.compose(_.map(img), srcs);
-
-    var renderImages = _.compose(Impure.setHtml('body'), images);
-
-    var app = _.compose(Impure.getJSON(renderImages), url);
-
-    app('cats');
-  });
-```
+[include](./code/part1_demo/flickr.js)
 
 Now look at that. A beautifully declarative specification of what things are, not how they come to be. We now view each line as an equation with properties that hold. We can use these properties to reason about our application and refactor.
 
