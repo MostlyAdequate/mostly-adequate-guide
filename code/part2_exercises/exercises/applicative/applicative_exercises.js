@@ -72,4 +72,5 @@ function getComments(i) {
   });
 }
 
-module.exports = {ex1: ex1, ex2: ex2, ex3: ex3, ex4: ex4}
+//-- Ignore, used for testing -----------------------------------------
+module.exports = {ex1:ex1,ex2:ex2,ex3:ex3,ex4:ex4}
