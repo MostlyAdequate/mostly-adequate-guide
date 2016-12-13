@@ -50,7 +50,7 @@ var ex4 = undefined;
 var getPost = function (i) {
   return new Task(function(rej, res) {
     setTimeout(function(){
-      res({id: i, title: 'Love them futures'})  
+      res({id: i, title: 'Love them futures'})
     }, 300)
   });
 };
@@ -96,4 +96,6 @@ var save = function(x) {
 
 var ex8 = undefined;
 
-module.exports = {ex1: ex1, ex2: ex2, ex3: ex3, ex4: ex4, ex5: ex5, ex6: ex6, ex7: ex7, ex8: ex8};
+//-- Ignore, used for testing -----------------------------------------
+module.exports =
+  {ex1:ex1,ex2:ex2,ex3:ex3,ex4:ex4,ex5:ex5,ex6:ex6,ex7:ex7,ex8:ex8};
