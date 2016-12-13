@@ -1,7 +1,7 @@
 require('../../support');
 var _ = require('ramda');
 var accounting = require('accounting');
-  
+
 // Example Data
 var CARS = [
     {name: "Ferrari FF", horsepower: 660, dollar_value: 700000, in_stock: true},
@@ -69,11 +69,13 @@ var fastestCar = function(cars) {
 };
 
 
-module.exports = { CARS: CARS,
-                   isLastInStock: isLastInStock,
-                   nameOfFirstCar: nameOfFirstCar,
-                   fastestCar: fastestCar,
-                   averageDollarValue: averageDollarValue,
-                   availablePrices: availablePrices,
-                   sanitizeNames: sanitizeNames
-                 };
+//-- Ignore, used for testing -----------------------------------------
+module.exports = {
+  CARS: CARS,
+  isLastInStock: isLastInStock,
+  nameOfFirstCar: nameOfFirstCar,
+  fastestCar: fastestCar,
+  averageDollarValue: averageDollarValue,
+  availablePrices: availablePrices,
+  sanitizeNames: sanitizeNames
+};
