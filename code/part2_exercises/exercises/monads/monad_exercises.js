@@ -93,5 +93,5 @@ var validateEmail = function(x){
 //  ex4 :: Email -> Either String (IO String)
 var ex4 = undefined;
 
-
-module.exports = {ex1: ex1, ex2: ex2, ex3: ex3, ex4: ex4, user: user}
+//-- Ignore, used for testing -----------------------------------------
+module.exports = {ex1:ex1,ex2:ex2,ex3:ex3,ex4:ex4,user:user}
