@@ -51,7 +51,7 @@ Because we are not encoding order of evaluation, declarative coding lends itself
 
 We will now build an example application in a declarative, composable way. We'll still cheat and use side effects for now, but we'll keep them minimal and separate from our pure codebase. We are going to build a browser widget that sucks in flickr images and displays them. Let's start by scaffolding the app. Here's the html:
 
-[include](./code/part1_demo/index.html)
+[include](./code/app/index.html)
 
 And here's the flickr.js skeleton:
 ```js
@@ -168,7 +168,7 @@ And we're done!
 <img src="images/cats_ss.png" alt="cats grid" />
 
 Here is the finished script:
-[include](./code/part1_demo/flickr.js)
+[include](./code/app/main.js)
 
 Now look at that. A beautifully declarative specification of what things are, not how they come to be. We now view each line as an equation with properties that hold. We can use these properties to reason about our application and refactor.
 

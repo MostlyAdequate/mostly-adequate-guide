@@ -751,4 +751,4 @@ What about calling a function with multiple functor arguments? How about working
 [Chapter 9: Monadic Onions](ch9.md)
 
 ## Exercises
-[include](./code/part2_exercises/exercises/functors/functor_exercises.js)
+[include](./code/functors/exercises.js)

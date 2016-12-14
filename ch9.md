@@ -425,4 +425,4 @@ In the next chapter, we'll see how applicative functors fit into the container w
 
 
 ## Exercises
-[include](./code/part2_exercises/exercises/monads/monad_exercises.js)
+[include](./code/monads/exercises.js)

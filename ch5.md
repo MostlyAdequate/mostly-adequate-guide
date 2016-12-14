@@ -275,7 +275,7 @@ We are now at a point where it would serve us well to see some of this in practi
 [Chapter 6: Example Application](ch6.md)
 
 ## Exercises
-[include](./code/part1_exercises/exercises/compose/compose_exercises.js)
+[include](./code/compose/exercises.js)
 
 [lodash-website]: https://lodash.com/
 [underscore-website]: http://underscorejs.org/
