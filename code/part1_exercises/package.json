@@ -12,7 +12,7 @@
     "mocha": "^1.17.1"
   },
   "scripts": {
-    "test": "mocha exercises/**/*_spec.js"
+    "test": "node_modules/.bin/mocha exercises/**/*_spec.js"
   },
   "repository": {
     "type": "git",
