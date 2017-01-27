@@ -193,7 +193,7 @@ var slice = undefined;
 
 // Bonus 2:
 // ============
-// Use slice to define a function "take" that takes n elements from the beginning of the string. Make it curried.
-// // Result for "Something" with n=4 should be "Some"
+// Use slice to define a function "take" that returns n elements from the beginning of an array. Make it curried.
+// For ['a', 'b', 'c'] with n=2 it should return ['a', 'b'].
 var take = undefined;
 ```
