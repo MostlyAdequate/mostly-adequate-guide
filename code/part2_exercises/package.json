@@ -4,12 +4,12 @@
   "description": "Exercises for Part 2 of the Book",
   "main": "index.js",
   "dependencies": {
-    "chai": "^1.9.1",
+    "chai": "^3.5.0",
     "data.task": "^3.0.0",
-    "ramda": "^0.13.0"
+    "ramda": "^0.23.0"
   },
   "devDependencies": {
-    "mocha": "^1.17.1"
+    "mocha": "^3.2.0"
   },
   "scripts": {
     "test": "mocha exercises/**/*_spec.js"

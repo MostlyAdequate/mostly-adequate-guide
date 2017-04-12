@@ -5,11 +5,11 @@
   "main": "index.js",
   "dependencies": {
     "accounting": "^0.4.1",
-    "chai": "^1.9.1",
-    "ramda": "^0.13.0"
+    "chai": "^3.5.0",
+    "ramda": "^0.23.0"
   },
   "devDependencies": {
-    "mocha": "^1.17.1"
+    "mocha": "^3.2.0"
   },
   "scripts": {
     "test": "mocha exercises/**/*_spec.js"

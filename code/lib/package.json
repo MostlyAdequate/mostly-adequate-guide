@@ -4,7 +4,7 @@
   "description": "Support libs for the book",
   "main": "index.js",
   "dependencies": {
-    "ramda": "^0.13.0"
+    "ramda": "^0.23.0"
   },
   "repository": {
     "type": "git",
