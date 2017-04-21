@@ -58,13 +58,22 @@ In the impure portion, `checkAge` depends on the mutable variable `minimum` to d
 
 It might not seem like a lot in this example, but this reliance upon state is one of the largest contributors to system complexity(http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf). This `checkAge` may return different results depending on factors external to input, which not only disqualifies it from being pure, but also puts our minds through the ringer each time we're reasoning about the software.
 
-Its pure form, on the other hand, is completely self sufficient. We can  also make `minimum` immutable, which preserves the purity as the state will never change. To do this, we must create an object to freeze.
+Its pure form, on the other hand, is completely self sufficient. We can  also make `minimum` immutable, which preserves the purity as the state will never change. To do this, we must create either create an object to freeze:
 
 ```js
 var immutableState = Object.freeze({
   minimum: 21,
 });
 ```
+
+Or use ES6's `const`:
+```js
+var checkAge = function(age) {
+  const minimum = 21;
+  return age >= minimum;
+};
+```
+
 
 ## Side effects may include...
 
