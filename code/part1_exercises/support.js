@@ -1,8 +1,9 @@
 //var curry = require('ramda').curry;
-//
-//
-//
-//
+
+function toArray(x) {
+  return x != null ? Array.from(x) : x;
+}
+
 function inspect(x) {
   return (typeof x === 'function') ? inspectFn(x) : inspectArgs(x);
 }
