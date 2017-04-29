@@ -288,7 +288,7 @@ Right.of('rain').map(function(str) {
 Left.of('rain').map(function(str) {
   return 'b' + str;
 });
-// Left('rain')
+// Left('brain')
 
 Right.of({
   host: 'localhost',
