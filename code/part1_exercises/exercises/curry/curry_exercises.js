@@ -10,12 +10,13 @@ var words = function(str) {
   return split(' ', str);
 };
 
+
+
 // Exercise 1a
 //==============
 // Use map to make a new words fn that works on an array of strings.
 
-var sentences = undefined;
-
+var sentences = map(words);
 
 // Exercise 2
 //==============
@@ -40,7 +41,7 @@ var max = function(xs) {
   }, -Infinity, xs);
 };
 
-  
+
 // Bonus 1:
 // ============
 // wrap array's slice to be functional and curried.

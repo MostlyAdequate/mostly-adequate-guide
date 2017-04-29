@@ -1,7 +1,7 @@
 require('../../support');
 var _ = require('ramda');
 var accounting = require('accounting');
-  
+
 // Example Data
 var CARS = [
     {name: "Ferrari FF", horsepower: 660, dollar_value: 700000, in_stock: true},
@@ -23,7 +23,7 @@ var isLastInStock = function(cars) {
 // Exercise 2:
 // ============
 // use _.compose(), _.prop() and _.head() to retrieve the name of the first car
-var nameOfFirstCar = undefined;
+var nameOfFirstCar = _.compose(_.prop('name'), _.head());
 
 
 // Exercise 3:
@@ -43,8 +43,7 @@ var averageDollarValue = function(cars) {
 
 var _underscore = replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
 
-var sanitizeNames = undefined;
-
+var sanitizeNames = _.map(_.compose(_underscore, toLowerCase, _.prop('name')));
 
 // Bonus 1:
 // ============
