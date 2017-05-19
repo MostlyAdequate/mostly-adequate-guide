@@ -161,7 +161,7 @@ var sentences = undefined;
 
 var filterQs = function(xs) {
   return _.filter(function(x) {
-    return match(/q/i, x);
+    return _.match(/q/i, x);
   }, xs);
 };
 
