@@ -570,7 +570,7 @@ To run our `Task`, we must call the method `fork`. This works like `unsafePerfor
 //  blogPage :: Posts -> HTML
 var blogPage = Handlebars.compile(blogTemplate);
 
-//  renderPage :: Posts -> HTML
+//  renderPage :: Posts -> Posts
 var renderPage = compose(blogPage, sortBy('date'));
 
 //  blog :: Params -> Task Error HTML
