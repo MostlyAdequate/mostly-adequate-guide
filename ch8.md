@@ -261,7 +261,7 @@ Left.of = function(x) {
 };
 
 Left.prototype.map = function(f) {
-  return this;
+  return Left.of(f(this.__value));
 };
 
 var Right = function(x) {
