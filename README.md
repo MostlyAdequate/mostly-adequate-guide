@@ -1,33 +1,34 @@
 [![cover](images/cover.png)](SUMMARY.md)
 
-## About this book
+## Про цю книгу
 
-This is a book on the functional paradigm in general. We'll use the world's most popular functional programming language: JavaScript. Some may feel this is a poor choice as it's against the grain of the current culture which, at the moment, feels predominately imperative. However, I believe it is the best way to learn FP for several reasons:
+Ця книга розповідає про парадигму функціонального програмування вцілому. Ми будемо використовувати найбільш популярну у Світі функціональну мову програмування: JavaScript. Комусь може здатись, що це не найкращий вибір, оскільки в даний момент у світі JavaScript переважає імперативність. Проте, я переконаний, що це найкращий спосіб вивчити FP(функціональне програмування) з декількох причин:
 
- * **You likely use it every day at work.**
+ * **Ви, вірогідніше за все, щоденно використовуєте його у роботі.**
 
-    This makes it possible to practice and apply your acquired knowledge each day on real world programs rather than pet projects on nights and weekends in an esoteric FP language.
-
-
- * **We don't have to learn everything up front to start writing programs.**
-
-    In a pure functional language, you cannot log a variable or read a DOM node without using monads. Here we can cheat a little as we learn to purify our codebase. It's also easier to get started in this language since it's mixed paradigm and you can fall back on your current practices while there are gaps in your knowledge.
+    Це дає можливість тренуватись і використовувати на практиці отримані знання кожен день у реальних програмах, а не на власних пет-проектах у нічний час та вихідні дні за допомогою езотеричної ФП мови.
 
 
- * **The language is fully capable of writing top notch functional code.**
+ * **Вам не потрібно вивчати все, для того, щоб почати писати програми.**
 
-    We have all the features we need to mimic a language like Scala or Haskell with the help of a tiny library or two. Object-oriented programming currently dominates the industry, but it's clearly awkward in JavaScript. It's akin to camping off of a highway or tap dancing in galoshes. We have to `bind` all over the place lest `this` change out from under us, we don't have classes (yet), we have various work arounds for the quirky behavior when the `new` keyword is forgotten, private members are only available via closures. To a lot of us, FP feels more natural anyways.
-
-That said, typed functional languages will, without a doubt, be the best place to code in the style presented by this book. JavaScript will be our means of learning a paradigm, where you apply it is up to you. Luckily, the interfaces are mathematical and, as such, ubiquitous. You'll find yourself at home with swiftz, scalaz, haskell, purescript, and other mathematically inclined environments.
+    У чистих функціональних мовах програмування ви не можете залогіювати змінну чи отримати вузол DOM без використання монад. Тут ми можемо трохи хитрувати, оскільки ми вчимося очищати нашу кодову базу. Тут також легше розпочати, оскільки JavaScript використовує змішану парадигму, тож ви в будь-який момент зможете підстрахувати себе у разі того, коли вам бракуватиме знаннь.
 
 
-### Gitbook (for a better reading experience)
+ * **Мова JavaScript надає змогу писати пречудовий функціональний код.**
 
-* [Read it online](https://drboolean.gitbooks.io/mostly-adequate-guide/content/)
-* [Download EPUB](https://www.gitbook.com/download/epub/book/drboolean/mostly-adequate-guide)
-* [Download Mobi (Kindle)](https://www.gitbook.com/download/mobi/book/drboolean/mostly-adequate-guide)
+    У нас є всі можливості які нам потрібні для імітації таких мов як Scala чи Haskell, за допомогою однієї чи двух бібліотек. Об'єктно-орієнтоване програмування наразі домінує в індустрії, але воно точно незручне у JavaScript. Це нагадує похід по шосе або танок у галошах. Ми змушені повсюди використовувати `bind`, щоб не загубити десь `this`, у нас до сих пір немає класів(щоправда нещодавно в ES6 було внесено трохи [синтаксичного цукру](https://developer.mozilla.org/uk/docs/Web/JavaScript/Reference/Classes)), ми можемо отримати численне різноманіття багів та дивакувату поведінку нашого коду, коли ми забуваємо вжити ключове слово `new`, приватні поля доступні нам лише через замикання. Багато хто з нас відчуває, що функціональне програмування є більш прийнятним рішенням.
 
-### Do it yourself
+Тим не менш, типізовані мови функціонального програмування будуть, без жодного сумніву, кращим місцем щоб кодити у стилі, який виклажається у цій книзі. JavaScript буде нашим засобом вивчення парадигми функціонального програмування, а от де ви будете його використовувати - залежить від вас. На щастя, інтерфейси математичні, а тому можуть бути використані будь-де. Ви будете комфортно себе почувати використовуючі такі математично-орієнтовані мови як swiftz, scalaz, haskell, purescript та інші.
+
+
+
+### Gitbook (для більшої зручності)
+
+* [Читайте її online(англ.)](https://drboolean.gitbooks.io/mostly-adequate-guide/content/)
+* [Завантажте EPUB(англ.)](https://www.gitbook.com/download/epub/book/drboolean/mostly-adequate-guide)
+* [Завантажте Mobi (Kindle)(англ.)](https://www.gitbook.com/download/mobi/book/drboolean/mostly-adequate-guide)
+
+### Зберіть цю книгу самостійно
 
 ```
 git clone https://github.com/DrBoolean/mostly-adequate-guide.git
@@ -43,26 +44,26 @@ gitbook mobi . ./functional.mobi
 ```
 
 
-# Table of Contents
+# Зміст
 
-See [SUMMARY.md](SUMMARY.md)
+Дивіться [SUMMARY.md](SUMMARY.md)
 
-### Contributing
+### Сприяння
 
-See [CONTRIBUTING.md](CONTRIBUTING.md)
+Дивіться [CONTRIBUTING.md](CONTRIBUTING.md)
 
-### Translations
+### Переклади
 
-See [TRANSLATIONS.md](TRANSLATIONS.md)
+Дивіться [TRANSLATIONS.md](TRANSLATIONS.md)
 
-### FAQ
+### FAQ (Найчастіші запитання)
 
-See [FAQ.md](FAQ.md)
+Дивіться [FAQ.md](FAQ.md)
 
 
 
-# Plans for the future
+# Плани на майбутнє
 
-* **Part 1** (currently chapters 1-7) is a guide to the basics. I'm updating as I find errors since this is the initial draft. Feel free to help!
-* **Part 2** (currently chapters 8+) will address type classes like functors and monads all the way through to traversable. I hope to squeeze in transformers and a pure application.
-* **Part 3** will start to dance the fine line between practical programming and academic absurdity. We'll look at comonads, f-algebras, free monads, yoneda, and other categorical constructs.
+* **Частина 1** (на данний момент це частини 1-7) це керівнитство з основ. Я оновлююсь одразу як тільки знаходжу помилки, оскільки це початкова чернетка. Почувайте себе вільно та допомагайте!
+* **Частина 2** (на данний момент частини 8+) будуть звертатись до типових класів, таких як функтори та монади і аж до traversable. Сподіваюсь втиснутись у трансформери та pure application.
+* **Частина 3** почне балансувати на межі прикладного програмування та академічного абсурду. Ми розглянемо комонади, f-алгебри, вільні монади, yoneda та інші categorical constructs.
