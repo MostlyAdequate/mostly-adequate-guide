@@ -1,8 +1,8 @@
 # Зміст
 
 * [Частина 1: Що ми взагалі робимо?](ch1-uk.md)
-  * [Вступ](ch1-uk.md#вступ)
-  * [Коротке знайомство](ch1-uk.md#коротке-знайомство)
+  * [Вступ](ch1-uk.md#Вступ)
+  * [Коротке знайомство](ch1-uk.md#Коротке-знайомство)
 * [Частина 2: Функції Першого Класу](ch2-uk.md)
   * [A quick review](ch2.md#a-quick-review)
   * [Why favor first class?](ch2.md#why-favor-first-class)
