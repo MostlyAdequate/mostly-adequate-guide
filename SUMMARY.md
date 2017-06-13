@@ -1,9 +1,9 @@
-# Summary
+# Зміст
 
-* [Chapter 1: What ever are we doing?](ch1.md)
-  * [Introductions](ch1.md#introductions)
-  * [A brief encounter](ch1.md#a-brief-encounter)
-* [Chapter 2: First Class Functions](ch2.md)
+* [Частина 1: Що ми взагалі робимо?](ch1-uk.md)
+  * [Вступ](ch1-uk.md#вступ)
+  * [Коротке знайомство](ch1-uk.md#коротке-знайомство)
+* [Частина 2: Функції Першого Класу](ch2-uk.md)
   * [A quick review](ch2.md#a-quick-review)
   * [Why favor first class?](ch2.md#why-favor-first-class)
 * [Chapter 3: Pure Happiness with Pure Functions](ch3.md)
