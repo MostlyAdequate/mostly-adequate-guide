@@ -15,9 +15,9 @@
 
 <!--BREAK-->
 
-## A brief encounter
+## Коротке знайомство
 
-Let's start with a touch of insanity. Here is a seagull application. When flocks conjoin they become a larger flock, and when they breed, they increase by the number of seagulls with whom they're breeding. Now, this is not intended to be good Object-Oriented code, mind you, it is here to highlight the perils of our modern, assignment based approach. Behold:
+Давайте почнемо з нотки божевілля. Уявімо програму чайки. Коли зграйки об'єднуються - вони стають більшими зграйками, а коли чайки паруються - вони збільшують чисельність зграї на кількість чайок з якими вони паруються. Ця програмка не претендує на те, щоб бути гарним об'єктно-орієнтовним кодом, але зауважте, що він підкреслює небезпечність сучаного, базуючогось на присвоєнні підходу. Ось погляньте:
 
 ```js
 var Flock = function(n) {
@@ -43,11 +43,11 @@ var result = flock_a.conjoin(flock_c)
 //=> 32
 ```
 
-Who on earth would craft such a ghastly abomination? It is unreasonably difficult to keep track of the mutating internal state. And, good heavens, the answer is even incorrect! It should have been `16`, but `flock_a` wound up permanently altered in the process. Poor `flock_a`. This is anarchy in the I.T.! This is wild animal arithmetic!
+Хто б у Світі міг би створити таку гидоту? Адже це невиправдано складно слідкувати за зміную внутрішнього стану програми. І, Слава Яйцям, відповідь навіть не правильна! Мало б бути `16`, але зграйка `flock_a` була остаточно змінена в процесі розмноження. Бідна зграйка. Це - анархія в I.T.! Це арифметика диких тварин!
 
-If you don't understand this program, it's okay, neither do I. The point to remember here is that state and mutable values are hard to follow, even in such a small example.
+Якщо ви не розумієте цю програму - не лякайтесь, я теж її не розумію. Але що важливо винести з цього прикладу, так це те, що стан програми та змінюємі(мутабельні) значення важко відслідковувати, навіть у такому невеличкому прикладі, як з нещасними чайками.
 
-Let's try again, this time using a more functional approach:
+Давайте спробуємо знову, але цього разу використаємо більш функціональний підхід:
 
 ```js
 var conjoin = function(flock_x, flock_y) { return flock_x + flock_y; };
@@ -63,9 +63,9 @@ var result = conjoin(
 //=>16
 ```
 
-Well, this time we got the right answer. With much less code. The function nesting is a tad confusing... (we'll remedy this situation in ch5). It's better, but let's dig a little bit deeper. There are benefits to calling a spade a spade. Had we scrutinized our custom functions more closely, we would have discovered that we're just working with simple addition (`conjoin`) and multiplication (`breed`).
+Ну що ж, цього разу ми отримали правильну відповідь. І менше писанини, доречі. Щоправда вкладеність функції трохи збентежлива...(ми виправимо цю ситуацію у [Частині 5](ch5-uk.md)). Це вже краще, але давайте копати трохи глибше. Є безсумнівні переваги від називання лопати лопатою. Якби ми розглянули наші функцію трохи детальніше, ми б помітили, що ми працюємо зі звичайним додаванням(`conjoin`) та множенням(`breed`).
 
-There's really nothing special at all about these two functions other than their names. Let's rename our custom functions to `multiply` and `add` in order to reveal their true identities.
+Виходить, що в цих двох функціяї немає нічого дивного окрім їх назв. Тоє давайте переіменуємо наші функції у `multiply`(помножити) та `add`(додати) для того, щоб продемострувати їхні справжні сутності.
 
 ```js
 var add = function(x, y) { return x + y; };
@@ -80,46 +80,46 @@ var result = add(
 );
 //=>16
 ```
-And with that, we gain the knowledge of the ancients:
+Тепер давайте пригадаємо знання предків:
 
 ```js
-// associative
+// асоціатив
 add(add(x, y), z) === add(x, add(y, z));
 
-// commutative
+// комутатив
 add(x, y) === add(y, x);
 
-// identity
+// ідентичність
 add(x, 0) === x;
 
-// distributive
+// дистрибутив
 multiply(x, add(y,z)) === add(multiply(x, y), multiply(x, z));
 ```
 
-Ah yes, those old faithful mathematical properties should come in handy. Don't worry if you didn't know them right off the top of your head. For a lot of us, it's been a while since we learned about these laws of arithmetic. Let's see if we can use these properties to simplify our little seagull program.
+О так, ті старі добрі математичні властивості мають стати нам в нагоді. Не переймайтесь, якщо ви не можете їй отак одразу пригадати. Для багатьох з нас сплило вже достатньо часу з того моменту, коли ми вчили ті закони арифметики. Давайте краще поглянемо чи зможемо ми використати ті математичні штуки для того, щоб спростити нашу програму "Чайка".
 
 ```js
-// Original line
+// Початкова строка
 add(multiply(flock_b, add(flock_a, flock_c)), multiply(flock_a, flock_b));
 
-// Apply the identity property to remove the extra add
+// Застосуємо властивість ідентичності, щоб прибрати зайвий `add`
 // (add(flock_a, flock_c) == flock_a)
 add(multiply(flock_b, flock_a), multiply(flock_a, flock_b));
 
-// Apply distributive property to achieve our result
+// Застосуємо властивість дистрибутиву, щоб отримати наш результат
 multiply(flock_b, add(flock_a, flock_a));
 ```
 
-Brilliant! We didn't have to write a lick of custom code other than our calling function. We include `add` and `multiply` definitions here for completeness, but there is really no need to write them - we surely have an `add` and `multiply` provided by some existing library.
+Відмінно! Ми не повинні писати додатковий код, а лише викликати наші функції. Ми включили сюди `add` та `multiply` для повноти картини, але насправді немає необхідності писати їх самостійно, бо, безумовно, вже існують бібліотеки, які реалізують готові методи `add` та `multiply`.
 
-You may be thinking "how very strawman of you to put such a mathy example up front". Or "real programs are not this simple and cannot be reasoned about in such a way." I've chosen this example because most of us already know about addition and multiplication, so it's easy to see how math is very useful for us here.
+Ви можете подумати, "хто взагалі надав такий код в якості прикладу". Чи "справжні програми не настільки примітивні і їх не можна писати таким чином". Я обрав цей приклаж, оскільки більшість з нас знайомі з додаванням та множенням, тож це спрощує пояснення та усвідомлення того, наскільки математика може бути тут корисною для нас.
 
-Don't despair - throughout this book, we'll sprinkle in some category theory, set theory, and lambda calculus and write real world examples that achieve the same elegant simplicity and results as our flock of seagulls example. You needn't be a mathematician either. It will feel natural and easy, just like you were using a "normal" framework or API.
+Не засмучуйтесь, в цій книзі ми будемо занурюватись у різні теорії та лямбда-вирахування і будемо писати справжні приклади з реального Світу, які будуть настільки ж елегантні як і наша програма "Чайка". І при цьому вам не потрібно бути математиками. Це буде дуже природньо та легко, так само легко, як коли ви використовуєте "нормальний" фреймворк або API.
 
-It may come as a surprise to hear that we can write full, everyday applications along the lines of the functional analog above. Programs that have sound properties. Programs that are terse, yet easy to reason about. Programs that don't reinvent the wheel at every turn. Lawlessness is good if you're a criminal, but in this book, we'll want to acknowledge and obey the laws of math.
+Ви напевно здивуєтесь, коли я скажу вам, що ми можемо писати повноцінні щоденні програми у рядок, як у нашому попередньому функціональному прикладі. Програми, які не багатослівні, але достатньо зрозумілі і які легко читати. Програми які не винаходять повторно колеса. Беззаконня та анархія кльові, якщо ви злочинець, але в цій книзі ми захочемо визнати та поважати закони математики.
 
-We'll want to use a theory where every piece tends to fit together so politely. We'll want to represent our specific problem in terms of generic, composable bits and then exploit their properties for our own selfish benefit. It will take a bit more discipline than the "anything goes" approach of imperative programming (we'll go over the precise definition of "imperative" later in the book, but for now consider it anything other than functional programming). The payoff of working within a principled, mathematical framework will truly astound you.
+Ми захочемо використовувати теорію, в якій кожна частинка ідеально підходить одна до одної. Ми захочемо висвітлити нашу конкретну проблему з точки зору загальниї, взаємозамінниї частин і дослідити їх властивості для досягнення наших цілей. Це вимагатиме трохи більше дисципліни ніж звичайний "все можна" підхід імперативного програмування (ми перейдемо до точного визначення "імперативного" програмування, але до тих пір, вважайте, що все не функціональне - імперативне). І результат роботи у чіткому математичному підході вас дійсно вразить.
 
-We've seen a flicker of our functional northern star, but there are a few concrete concepts to grasp before we can really begin our journey.
+Ми з вами побачили, як спалахнула наша Північна Зоря Функціонального Програмування(ФП), але є ще декілька конкретних концепцій, які потрібно зрозуміти, перед тим як ми насправді продовжимо нашу подорож.
 
-[Chapter 2: First Class Functions](ch2.md)
+[Частина 2: Функції Першого Класу](ch2-uk.md)
