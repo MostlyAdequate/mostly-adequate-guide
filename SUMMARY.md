@@ -1,11 +1,11 @@
 # Зміст
 
-* [Частина 1: Що ми взагалі робимо?](ch1-uk.md)
-  * [Вступ](ch1-uk.md#Вступ)
-  * [Коротке знайомство](ch1-uk.md#Коротке-знайомство)
-* [Частина 2: Функції Першого Класу](ch2-uk.md)
-  * [A quick review](ch2.md#a-quick-review)
-  * [Why favor first class?](ch2.md#why-favor-first-class)
+* [__Частина 1: Що ми взагалі робимо?__](ch1-uk.md)
+  * [__Вступ__](ch1-uk.md#Вступ)
+  * [__Коротке знайомство__](ch1-uk.md#Коротке-знайомство)
+* [__Частина 2: Функції Першого Класу__](ch2-uk.md)
+  * [__Короткий огляд__](ch2-uk.md#Короткий-огляд)
+  * [__Навіщо віддавати перевагу першому класу__](ch2.md#Навіщо-віддавати-перевагу-першому-класу)
 * [Chapter 3: Pure Happiness with Pure Functions](ch3.md)
   * [Oh to be pure again](ch3.md#oh-to-be-pure-again)
   * [Side effects may include...](ch3.md#side-effects-may-include)
