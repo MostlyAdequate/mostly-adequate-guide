@@ -39,7 +39,7 @@ function curry(fx) {
 }
 
 compose = function() {
-  var fns = Array.prototype.slice.call(arguments, 0),
+  var fns = Array.prototype.slice.call(arguments),
       arglen = fns.length;
 
   return function(){
