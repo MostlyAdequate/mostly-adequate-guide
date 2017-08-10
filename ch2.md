@@ -139,8 +139,8 @@ httpGet('/post/2', function(json) {
 If `httpGet` were to change to send a possible `err`, we would need to go back and change the "glue".
 
 ```js
-// go back to every httpGet call in the application and explicitly pass err
-// along.
+// go back to every httpGet call in the application and explicitly
+// pass err along.
 httpGet('/post/2', function(json, err) {
   return renderPost(json, err);
 });
@@ -149,7 +149,8 @@ httpGet('/post/2', function(json, err) {
 Had we written it as a first class function, much less would need to change:
 
 ```js
-// renderPost is called from within httpGet with however many arguments it wants
+// renderPost is called from within httpGet with however many
+// arguments it wants
 httpGet('/post/2', renderPost);
 ```
 
