@@ -28,7 +28,7 @@ const nameOfFirstCar = undefined;
 const _average = xs => reduce(add, 0, xs) / xs.length;
 
 const averageDollarValue = cars => {
-  const dollar_values = map(prop('dollar_value', cars));
+  const dollar_values = map(prop('dollar_value'), cars);
   return _average(dollar_values);
 };
 
@@ -52,7 +52,7 @@ const availablePrices = cars => {
 // Refactor to pointfree. Hint: you can use `flip`
 const fastestCar = cars => {
   const
-    sorted = sortBy(prop('horsepower', cars)),
+    sorted = sortBy(prop('horsepower'),cars),
     {name} = last(sorted);
 
   return `${name} is the fastest`;
