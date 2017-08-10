@@ -5,12 +5,12 @@
   "dependencies": {
     "accounting": "^0.4.1",
     "data.task": "^3.1.1",
-    "ramda": "^0.21.0"
+    "ramda": "^0.24.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "live-server": "^1.1.0",
-    "mocha": "^2.5.3"
+    "chai": "^4.1.1",
+    "live-server": "^1.2.0",
+    "mocha": "^3.5.0"
   },
   "scripts": {
     "app": "cd app && live-server",
