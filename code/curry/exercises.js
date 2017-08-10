@@ -18,7 +18,7 @@ const filterQs = xs => filter(x => test(/q/i, x), xs);
 // Use the helper function `_keepHighest` to refactor `max` to not reference any arguments
 const _keepHighest = (x,y) => x >= y ? x : y;
 
-const max = xs => reduce((acc,x) => _keepHighest(acc, x), 0, xs);
+const max = xs => reduce((acc,x) => _keepHighest(acc, x), -Infinity, xs);
 
 
 //-- Bonus 1 ----------------------------------------------------------
@@ -26,9 +26,9 @@ const max = xs => reduce((acc,x) => _keepHighest(acc, x), 0, xs);
 // [1,2,3].slice(0, 2)
 const slice = undefined;
 
-
 //-- Bonus 2 ----------------------------------------------------------
-// use slice to define a function "take" that takes n elements. Make it curried
+// Use slice to define a function "take" that returns n elements from the beginning of an array. Make it curried.
+// For ['a', 'b', 'c'] with n=2 it should return ['a', 'b'].
 const take = undefined;
 
 
@@ -41,4 +41,3 @@ module.exports = {
   slice,
   take
 };
-
