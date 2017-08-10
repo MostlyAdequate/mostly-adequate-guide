@@ -1,4 +1,4 @@
-# Seting up an immediate feedback loop
+# Setting up an immediate feedback loop
 
 Clone the repo to a `local_folder`
 
