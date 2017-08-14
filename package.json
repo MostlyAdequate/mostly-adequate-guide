@@ -4,7 +4,7 @@
   "description": "",
   "main": "",
   "devDependencies": {
-    "gitbook-cli": "^2.3.0"
+    "gitbook-cli": "^2.3.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/MostlyAdequate/mostly-adequate-guide/issues"
   },
-  "homepage": "https://github.com/MostlyAdequate/mostly-adequate-guide#readme"
+  "homepage": "https://github.com/MostlyAdequate/mostly-adequate-guide#readme",
+  "dependencies": {
+    "gitbook-plugin-include-codeblock": "^3.1.2"
+  }
 }
