@@ -19,13 +19,14 @@ const max = reduce(_keepHighest, -Infinity);
 
 
 //-- Bonus 1 ----------------------------------------------------------
-// wrap array's slice to be functional and curried.
+// Wrap array's slice to be functional and curried.
 // [1,2,3].slice(0, 2)
 const slice = curry((start, end, xs) => xs.slice(start, end));
 
 
 //-- Bonus 2 ----------------------------------------------------------
-// use slice to define a function "take" that takes n elements. Make it curried
+// Use slice to define a function "take" that returns n elements from the beginning of an array. Make it curried.
+// For ['a', 'b', 'c'] with n=2 it should return ['a', 'b'].
 const take = slice(0);
 
 

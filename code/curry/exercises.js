@@ -22,7 +22,7 @@ const max = xs => reduce((acc,x) => _keepHighest(acc, x), -Infinity, xs);
 
 
 //-- Bonus 1 ----------------------------------------------------------
-// wrap array's slice to be functional and curried.
+// Wrap array's slice to be functional and curried.
 // [1,2,3].slice(0, 2)
 const slice = undefined;
 
