@@ -25,7 +25,8 @@ var slice = _.curry(function(start, end, xs) { return xs.slice(start, end); });
 
 
 //-- Bonus 2 ----------------------------------------------------------
-// use slice to define a function "take" that takes n elements. Make it curried
+// Use slice to define a function "take" that returns n elements from the beginning of an array. Make it curried.
+// For ['a', 'b', 'c'] with n=2 it should return ['a', 'b'].
 var take = slice(0);
 
 
