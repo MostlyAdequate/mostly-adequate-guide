@@ -24,6 +24,7 @@ That said, typed functional languages will, without a doubt, be the best place t
 ### Gitbook (for a better reading experience)
 
 * [Read it online](https://drboolean.gitbooks.io/mostly-adequate-guide/content/)
+* [Download PDF](https://www.gitbook.com/download/pdf/book/drboolean/mostly-adequate-guide)
 * [Download EPUB](https://www.gitbook.com/download/epub/book/drboolean/mostly-adequate-guide)
 * [Download Mobi (Kindle)](https://www.gitbook.com/download/mobi/book/drboolean/mostly-adequate-guide)
 
