@@ -6,35 +6,25 @@ When we say functions are "first class", we mean they are just like everyone els
 That is JavaScript 101, but worth mentioning since a quick code search on github will reveal the collective evasion, or perhaps widespread ignorance of this concept. Shall we go for a feigned example? We shall.
 
 ```js
-var hi = function(name) {
-  return 'Hi ' + name;
-};
-
-var greeting = function(name) {
-  return hi(name);
-};
+const
+  hi       = name => `Hi ${name}`,
+  greeting = name => hi(name);
 ```
 
 Here, the function wrapper around `hi` in `greeting` is completely redundant. Why? Because functions are *callable* in JavaScript. When `hi` has the `()` at the end it will run and return a value. When it does not, it simply returns the function stored in the variable. Just to be sure, have a look yourself:
 
 
 ```js
-hi;
-// function(name) {
-//  return 'Hi ' + name
-// }
-
-hi('jonas');
-// "Hi jonas"
+hi;          // name => `Hi ${name}`
+hi("jonas"); // "Hi jonas"
 ```
 
 Since `greeting` is merely in turn calling `hi` with the very same argument, we could simply write:
 
 ```js
-var greeting = hi;
+const greeting = hi;
 
-
-greeting('times');
+greeting("times");
 // "Hi times"
 ```
 
@@ -45,80 +35,51 @@ It is obnoxiously verbose and, as it happens, bad practice to surround a functio
 A solid understanding of this is critical before moving on, so let's examine a few more fun examples excavated from the library of npm packages.
 
 ```js
-// ignorant
-var getServerStuff = function(callback) {
-  return ajaxCall(function(json) {
-    return callback(json);
-  });
-};
+const
+  // ignorant
+  getServerStuff = callback => ajaxCall(json => callback(json)),
 
-// enlightened
-var getServerStuff = ajaxCall;
+  // enlightened
+  getServerStuff = ajaxCall;
 ```
 
 The world is littered with ajax code exactly like this. Here is the reason both are equivalent:
 
 ```js
 // this line
-return ajaxCall(function(json) {
-  return callback(json);
-});
+ajaxCall(json => callback(json));
 
 // is the same as this line
-return ajaxCall(callback);
+ajaxCall(callback);
 
 // so refactor getServerStuff
-var getServerStuff = function(callback) {
-  return ajaxCall(callback);
-};
+const getServerStuff = callback => ajaxCall(callback);
 
 // ...which is equivalent to this
-var getServerStuff = ajaxCall; // <-- look mum, no ()'s
+const getServerStuff = ajaxCall; // <-- look mum, no ()'s
 ```
 
 And that, folks, is how it is done. Once more so that we understand why I'm being so persistent.
 
 ```js
-var BlogController = (function() {
-  var index = function(posts) {
-    return Views.index(posts);
-  };
-
-  var show = function(post) {
-    return Views.show(post);
-  };
-
-  var create = function(attrs) {
-    return Db.create(attrs);
-  };
-
-  var update = function(post, attrs) {
-    return Db.update(post, attrs);
-  };
-
-  var destroy = function(post) {
-    return Db.destroy(post);
-  };
-
-  return {
-    index: index,
-    show: show,
-    create: create,
-    update: update,
-    destroy: destroy,
-  };
-})();
+const BlogController = {
+  index(posts)       { return Views.index(posts);     },
+  show(post)         { return Views.show(post);       },
+  create(attrs)      { return Db.create(attrs);       },
+  update(post,attrs) { return Db.update(post, attrs); },
+  destroy(post)      { return Db.destroy(post);       }
+};
 ```
 
 This ridiculous controller is 99% fluff. We could either rewrite it as:
 
 ```js
-var BlogController = {
-  index: Views.index,
-  show: Views.show,
-  create: Db.create,
-  update: Db.update,
-  destroy: Db.destroy,
+const BlogController = {
+  index:   Views.index,
+  show:    Views.show,
+  create:  Db.create,
+  update:  Db.update,
+  destroy: Db.destroy
 };
 ```
 
@@ -131,9 +92,7 @@ Okay, let's get down to the reasons to favor first class functions. As we saw in
 In addition, if such a needlessly wrapped function must be changed, we must also need to change our wrapper function as well.
 
 ```js
-httpGet('/post/2', function(json) {
-  return renderPost(json);
-});
+httpGet('/post/2', json => renderPost(json));
 ```
 
 If `httpGet` were to change to send a possible `err`, we would need to go back and change the "glue".
@@ -141,9 +100,7 @@ If `httpGet` were to change to send a possible `err`, we would need to go back a
 ```js
 // go back to every httpGet call in the application and explicitly
 // pass err along.
-httpGet('/post/2', function(json, err) {
-  return renderPost(json, err);
-});
+httpGet('/post/2', (json, err) => renderPost(json, err));
 ```
 
 Had we written it as a first class function, much less would need to change:
@@ -159,19 +116,14 @@ Besides the removal of unnecessary functions, we must name and reference argumen
 Having multiple names for the same concept is a common source of confusion in projects. There is also the issue of generic code. For instance, these two functions do exactly the same thing, but one feels infinitely more general and reusable:
 
 ```js
-// specific to our current blog
-var validArticles = function(articles) {
-  return articles.filter(function(article) {
-    return article !== null && article !== undefined;
-  });
-};
+const
+  // specific to our current blog
+  validArticles =
+    articles =>
+      articles.filter(article => article !== null && article !== undefined),
 
-// vastly more relevant for future projects
-var compact = function(xs) {
-  return xs.filter(function(x) {
-    return x !== null && x !== undefined;
-  });
-};
+  // vastly more relevant for future projects
+  compact = xs => xs.filter(x => x !== null && x !== undefined);
 ```
 
 By using specific naming, we've seemingly tied ourselves to specific data (in this case `articles`). This happens quite a bit and is a source of much reinvention.
@@ -179,14 +131,13 @@ By using specific naming, we've seemingly tied ourselves to specific data (in th
 I must mention that, just like with Object-Oriented code, you must be aware of `this` coming to bite you in the jugular. If an underlying function uses `this` and we call it first class, we are subject to this leaky abstraction's wrath.
 
 ```js
-var fs = require('fs');
+const fs = require('fs');
 
 // scary
 fs.readFile('freaky_friday.txt', Db.save);
 
 // less so
 fs.readFile('freaky_friday.txt', Db.save.bind(Db));
-
 ```
 
 Having been bound to itself, the `Db` is free to access its prototypical garbage code. I avoid using `this` like a dirty nappy. There's really no need when writing functional code. However, when interfacing with other libraries, you might have to acquiesce to the mad world around us.

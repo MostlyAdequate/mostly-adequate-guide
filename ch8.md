@@ -1,4 +1,4 @@
-# Chapter 8: Tupperware
+# Tupperware
 
 ## The Mighty Container
 
@@ -9,11 +9,14 @@ We've seen how to write programs which pipe data through a series of pure functi
 First we will create a container. This container must hold any type of value; a ziplock that holds only tapioca pudding is rarely useful. It will be an object, but we will not give it properties and methods in the OO sense. No, we will treat it like a treasure chest - a special box that cradles our valuable data.
 
 ```js
-var Container = function(x) {
-  this.__value = x;
+class Container {
+  constructor(x) {
+    this.__value = x;
+  }
+  static of(x) {
+    return new Container(x);
+  }
 }
-
-Container.of = function(x) { return new Container(x); };
 ```
 
 Here is our first container. We've thoughtfully named it `Container`. We will use `Container.of` as a constructor which saves us from having to write that awful `new` keyword all over the place. There's more to the `of` function than meets the eye, but for now, think of it as the proper way to place values into our container.
@@ -21,18 +24,10 @@ Here is our first container. We've thoughtfully named it `Container`. We will us
 Let's examine our brand new box...
 
 ```js
-Container.of(3);
-//=> Container(3)
-
-
-Container.of('hotdogs');
-//=> Container("hotdogs")
-
-
-Container.of(Container.of({
-  name: 'yoda',
-}));
-//=> Container(Container({name: "yoda" }))
+Container.of(3);                //=> Container(3)
+Container.of("hotdogs");        //=> Container("hotdogs")
+Container.of(
+  Container.of({name:"yoda"})); //=> Container(Container({name:"yoda"}))
 ```
 
 If you are using node, you will see `{__value: x}` even though we've got ourselves a `Container(x)`. Chrome will output the type properly, but no matter; as long as we understand what a `Container` looks like, we'll be fine. In some environments you can overwrite the `inspect` method if you'd like, but we will not be so thorough. For this book, we will write the conceptual output as if we'd overwritten `inspect` as it's much more instructive than `{__value: x}` for pedagogical as well as aesthetic reasons.
@@ -55,26 +50,24 @@ Once our value, whatever it may be, is in the container, we'll need a way to run
 // (a -> b) -> Container a -> Container b
 Container.prototype.map = function(f) {
   return Container.of(f(this.__value));
-}
+};
+// TODO `=>` do not work, since it capture `this` of the enclosing context
+// f => Container.of(f(this.__value))
+// We could define `map` when making the class
 ```
 
 Why, it's just like Array's famous `map`, except we have `Container a` instead of `[a]`. And it works essentially the same way:
 
 ```js
-Container.of(2).map(function(two) {
-  return two + 2;
-});
-//=> Container(4)
+Container.of(2).map(two => two + 2) //=> Container(4)
 
+Container
+  .of("flamethrowers")
+  .map(s => s.toUpperCase()) //=> Container("FLAMETHROWERS")
 
-Container.of("flamethrowers").map(function(s) {
-  return s.toUpperCase();
-});
-//=> Container("FLAMETHROWERS")
-
-
-Container.of("bombs").map(_.concat(' away')).map(_.prop('length'));
-//=> Container(10)
+Container
+  .of("bombs")
+  .map(concat(' away')).map(prop('length')) //=> Container(10)
 ```
 
 We can work with our value without ever having to leave the `Container`. This is a remarkable thing. Our value in the `Container` is handed to the `map` function so we can fuss with it and afterward, returned to its `Container` for safe keeping. As a result of never leaving the `Container`, we can continue to `map` away, running functions as we please. We can even change the type as we go along as demonstrated in the latter of the three examples.
@@ -94,42 +87,45 @@ What reason could we possibly have for bottling up a value and using `map` to ge
 `Container` is fairly boring. In fact, it is usually called `Identity` and has about the same impact as our `id` function(again there is a mathematical connection we'll look at when the time is right). However, there are other functors, that is, container-like types that have a proper `map` function, which can provide useful behaviour whilst mapping. Let's define one now.
 
 ```js
-var Maybe = function(x) {
-  this.__value = x;
-};
+class Maybe {
+  constructor(x) {
+    this.__value = x;
+  }
 
-Maybe.of = function(x) {
-  return new Maybe(x);
-};
+  static of(x) {
+    return new Maybe(x);
+  }
 
-Maybe.prototype.isNothing = function() {
-  return (this.__value === null || this.__value === undefined);
-};
+  isNothing() {
+    return this.__value === null || this.__value === undefined;
+  }
 
-Maybe.prototype.map = function(f) {
-  return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value));
-};
+  map(f) {
+    return Maybe.of(this.isNothing()? null : f(this.__value));
+  }
+}
 ```
 
-Now, `Maybe` looks a lot like `Container` with one minor change: it will first check to see if it has a value before calling the supplied function. This has the effect of side stepping those pesky nulls as we `map`(Note that this implementation is simplified for teaching).
+Now, `Maybe` looks a lot like `Container` with one minor change: it will first check to see if it has a value before calling the supplied function. This has the effect of side stepping those pesky nulls as we `map`(Note that this implementation is simplied for teaching).
 
 ```js
-Maybe.of('Malkovich Malkovich').map(match(/a/ig));
-//=> Maybe(['a', 'a'])
+Maybe
+  .of("Malkovich Malkovich")
+  .map(match(/a/ig)); //=> Maybe(['a','a'])
 
-Maybe.of(null).map(match(/a/ig));
-//=> Maybe(null)
+Maybe
+  .of(null)
+  .map(match(/a/ig)); //=> Maybe(null)
 
-Maybe.of({
-  name: 'Boris',
-}).map(_.prop('age')).map(add(10));
-//=> Maybe(null)
+Maybe
+  .of({name:"Boris"})
+  .map(prop("age"))
+  .map(add(10));      //=> Maybe(null)
 
-Maybe.of({
-  name: 'Dinah',
-  age: 14,
-}).map(_.prop('age')).map(add(10));
-//=> Maybe(24)
+Maybe
+  .of({name:"Dinah",age:14})
+  .map(prop("age"))
+  .map(add(10));      //=> Maybe(24)
 ```
 
 Notice our app doesn't explode with errors as we map functions over our null values. This is because `Maybe` will take care to check for a value each and every time it applies a function.
@@ -137,10 +133,8 @@ Notice our app doesn't explode with errors as we map functions over our null val
 This dot syntax is perfectly fine and functional, but for reasons mentioned in Part 1, we'd like to maintain our pointfree style. As it happens, `map` is fully equipped to delegate to whatever functor it receives:
 
 ```js
-//  map :: Functor f => (a -> b) -> f a -> f b
-var map = curry(function(f, any_functor_at_all) {
-  return any_functor_at_all.map(f);
-});
+//    map :: Functor f => (a -> b) -> f a -> f b
+const map = curry((f, any_functor => any_functor.map(f));
 ```
 
 This is delightful as we can carry on with composition per usual and `map` will work as expected. This is the case with ramda's `map` as well. We'll use dot notation when it's instructive and the pointfree version when it's convenient. Did you notice that? I've sneakily introduced extra notation into our type signature. The `Functor f =>` tells us that `f` must be a Functor. Not that difficult, but I felt I should mention it.
@@ -150,58 +144,42 @@ This is delightful as we can carry on with composition per usual and `map` will 
 In the wild, we'll typically see `Maybe` used in functions which might fail to return a result.
 
 ```js
-//  safeHead :: [a] -> Maybe(a)
-var safeHead = function(xs) {
-  return Maybe.of(xs[0]);
-};
+//    safeHead :: [a] -> Maybe(a)
+const safeHead = xs => Maybe.of(xs[0]);
 
-var streetName = compose(map(_.prop('street')), safeHead, _.prop('addresses'));
+const streetName = compose(map(prop('street')), safeHead, prop('addresses'))
 
-streetName({
-  addresses: [],
-});
+streetName({addresses: []});
 // Maybe(null)
 
-streetName({
-  addresses: [{
-    street: 'Shady Ln.',
-    number: 4201,
-  }],
-});
+streetName({addresses: [{street: "Shady Ln.", number: 4201}]});
 // Maybe("Shady Ln.")
 ```
 
-`safeHead` is like our normal `_.head`, but with added type safety. A curious thing happens when `Maybe` is introduced into our code; we are forced to deal with those sneaky `null` values. The `safeHead` function is honest and up front about its possible failure - there's really nothing to be ashamed of - and so it returns a `Maybe` to inform us of this matter. We are more than merely *informed*, however, because we are forced to `map` to get at the value we want since it is tucked away inside the `Maybe` object. Essentially, this is a `null` check enforced by the `safeHead` function itself. We can now sleep better at night knowing a `null` value won't rear its ugly, decapitated head when we least expect it. APIs like this will upgrade a flimsy application from paper and tacks to wood and nails. They will guarantee safer software.
+`safeHead` is like our normal `head`, but with added type safety. A curious thing happens when `Maybe` is introduced into our code; we are forced to deal with those sneaky `null` values. The `safeHead` function is honest and up front about its possible failure - there's really nothing to be ashamed of - and so it returns a `Maybe` to inform us of this matter. We are more than merely *informed*, however, because we are forced to `map` to get at the value we want since it is tucked away inside the `Maybe` object. Essentially, this is a `null` check enforced by the `safeHead` function itself. We can now sleep better at night knowing a `null` value won't rear its ugly, decapitated head when we least expect it. APIs like this will upgrade a flimsy application from paper and tacks to wood and nails. They will guarantee safer software.
 
 
 Sometimes a function might return a `Maybe(null)` explicitly to signal failure. For instance:
 
 ```js
-//  withdraw :: Number -> Account -> Maybe(Account)
-var withdraw = curry(function(amount, account) {
-  return account.balance >= amount ?
-    Maybe.of({
-      balance: account.balance - amount,
-    }) :
-    Maybe.of(null);
-});
+//    withdraw :: Number -> Account -> Maybe(Account)
+const withdraw =
+  curry((amount,{balance}) =>
+    Maybe.of(
+      balance >= amount
+        ? {balance: balance - amount}
+        : null
+    );
 
-//  finishTransaction :: Account -> String
-var finishTransaction = compose(remainingBalance, updateLedger); // <- these composed functions are hypothetical, not implemented here...
+// these composed functions are hypothetical, not implemented here...
+//    finishTransaction :: Account -> String
+const finishTransaction = compose(remainingBalance, updateLedger);
 
-//  getTwenty :: Account -> Maybe(String)
-var getTwenty = compose(map(finishTransaction), withdraw(20));
+//    getTwenty :: Account -> Maybe(String)
+const getTwenty = compose(map(finishTransaction), withdraw(20))
 
-
-getTwenty({
-  balance: 200.00,
-});
-// Maybe("Your balance is $180.00")
-
-getTwenty({
-  balance: 10.00,
-});
-// Maybe(null)
+getTwenty({balance: 200.00}); // Maybe("Your balance is $180.00")
+getTwenty({balance: 10.00});  // Maybe(null)
 ```
 
 `withdraw` will tip its nose at us and return `Maybe(null)` if we're short on cash. This function also communicates its fickleness and leaves us no choice, but to `map` everything afterwards. The difference is that the `null` was intentional here. Instead of a `Maybe(String)`, we get the `Maybe(null)` back to signal failure and our application effectively halts in its tracks. This is important to note: if the `withdraw` fails, then `map` will sever the rest of our computation since it doesn't ever run the mapped functions, namely `finishTransaction`. This is precisely the intended behaviour as we'd prefer not to update our ledger or show a new balance if we hadn't successfully withdrawn funds.
@@ -215,26 +193,15 @@ Our application's job is to retrieve, transform, and carry that data along until
 There is, however, an escape hatch. If we would rather return a custom value and continue on, we can use a little helper called `maybe`.
 
 ```js
-//  maybe :: b -> (a -> b) -> Maybe a -> b
-var maybe = curry(function(x, f, m) {
-  return m.isNothing() ? x : f(m.__value);
-});
+//    maybe :: b -> (a -> b) -> Maybe a -> b
+const maybe = curry((x, f, m) => m.isNothing()? x : f(m.__value));
 
-//  getTwenty :: Account -> String
-var getTwenty = compose(
-  maybe("You're broke!", finishTransaction), withdraw(20)
-);
+const
+//getTwenty :: Account -> String
+  getTwenty = compose(maybe("You're broke!", finishTransaction), withdraw(20));
 
-
-getTwenty({
-  balance: 200.00,
-});
-// "Your balance is $180.00"
-
-getTwenty({
-  balance: 10.00,
-});
-// "You're broke!"
+getTwenty({balance: 200.00}); // "Your balance is $180.00"
+getTwenty({balance: 10.00});  // "You're broke!"
 ```
 
 We will now either return a static value (of the same type that `finishTransaction` returns) or continue on merrily finishing up the transaction sans `Maybe`. With `maybe`, we are witnessing the equivalent of an `if/else` statement whereas with `map`, the imperative analog would be: `if (x !== null) { return f(x) }`.
@@ -252,52 +219,46 @@ I'd be remiss if I didn't mention that the "real" implementation will split `May
 It may come as a shock, but `throw/catch` is not very pure. When an error is thrown, instead of returning an output value, we sound the alarms! The function attacks, spewing thousands of 0's and 1's like shields & spears in an electric battle against our intruding input. With our new friend `Either`, we can do better than to declare war on input, we can respond with a polite message. Let's take a look:
 
 ```js
-var Left = function(x) {
-  this.__value = x;
+class Either {
+  constructor(x) {
+    this.__value = x;
+  }
 };
 
-Left.of = function(x) {
-  return new Left(x);
+class Left extends Either{
+  static of(x) {
+    return new Left(x);
+  }
+
+  map(f) {
+    return this;
+  }
 };
 
-Left.prototype.map = function(f) {
-  return this;
-};
+class Right extends Either {
+  static of(x) {
+    return new Right(x);
+  }
 
-var Right = function(x) {
-  this.__value = x;
+  map(f) {
+    return Right.of(f(this.__value));
+  }
 };
-
-Right.of = function(x) {
-  return new Right(x);
-};
-
-Right.prototype.map = function(f) {
-  return Right.of(f(this.__value));
-}
 ```
 
 `Left` and `Right` are two subclasses of an abstract type we call `Either`. I've skipped the ceremony of creating the `Either` superclass as we won't ever use it, but it's good to be aware. Now then, there's nothing new here besides the two types. Let's see how they act:
 
 ```js
-Right.of('rain').map(function(str) {
-  return 'b' + str;
-});
-// Right('brain')
+Right.of("rain").map(str => "b" + str); // Right("brain")
+Left.of("rain").map(str => "b" + str);  // Left("rain")
 
-Left.of('rain').map(function(str) {
-  return 'b' + str;
-});
-// Left('rain')
+Right
+  .of({host: 'localhost', port: 80})
+  .map(prop('host'));                   // Right('localhost')
 
-Right.of({
-  host: 'localhost',
-  port: 80,
-}).map(_.prop('host'));
-// Right('localhost')
-
-Left.of('rolls eyes...').map(_.prop('host'));
-// Left('rolls eyes...')
+Left
+  .of("rolls eyes...")
+  .map(prop("host"));                   // Left('rolls eyes...')
 ```
 
 `Left` is the teenagery sort and ignores our request to `map` over it. `Right` will work just like `Container` (a.k.a Identity). The power comes from the ability to embed an error message within the `Left`.
@@ -305,45 +266,35 @@ Left.of('rolls eyes...').map(_.prop('host'));
 Suppose we have a function that might not succeed. How about we calculate an age from a birth date. We could use `Maybe(null)` to signal failure and branch our program, however, that doesn't tell us much. Perhaps, we'd like to know why it failed. Let's write this using `Either`.
 
 ```js
-var moment = require('moment');
+const moment = require('moment');
 
 //  getAge :: Date -> User -> Either(String, Number)
-var getAge = curry(function(now, user) {
-  var birthdate = moment(user.birthdate, 'YYYY-MM-DD');
-  if (!birthdate.isValid()) return Left.of('Birth date could not be parsed');
-  return Right.of(now.diff(birthdate, 'years'));
+const getAge = curry((now, user) => {
+  const birthdate = moment(user.birthdate, 'YYYY-MM-DD')
+
+  return birthdate.isValid()
+    ? Right.of(now.diff(birthdate, 'years'))
+    : Left.of("Birthdate: parse error");
 });
 
-getAge(moment(), {
-  birthdate: '2005-12-12',
-});
-// Right(9)
-
-getAge(moment(), {
-  birthdate: 'July 4, 2001',
-});
-// Left('Birth date could not be parsed')
+getAge(moment(), {birthdate: '2005-12-12'});   // Right(9)
+getAge(moment(), {birthdate: 'July 4, 2001'}); // Left('Birth date could not be parsed')
 ```
 
 Now, just like `Maybe(null)`, we are short circuiting our app when we return a `Left`. The difference, is now we have a clue as to why our program has derailed. Something to notice is that we return `Either(String, Number)`, which holds a `String` as its left value and a `Number` as its `Right`. This type signature is a bit informal as we haven't taken the time to define an actual `Either` superclass, however, we learn a lot from the type. It informs us that we're either getting an error message or the age back.
 
 ```js
-//  fortune :: Number -> String
-var fortune = compose(concat('If you survive, you will be '), add(1));
+//    fortune :: Number -> String
+const fortune = compose(concat("If you survive, you will be "), add(1));
 
-//  zoltar :: User -> Either(String, _)
-var zoltar = compose(map(console.log), map(fortune), getAge(moment()));
+//    zoltar :: User -> Either(String, _)
+const zoltar = compose(map(console.log), map(fortune), getAge(moment()));
 
-zoltar({
-  birthdate: '2005-12-12',
-});
-// 'If you survive, you will be 10'
+zoltar({birthdate: '2005-12-12'});
+// "If you survive, you will be 10"
 // Right(undefined)
 
-zoltar({
-  birthdate: 'balloons!',
-});
-// Left('Birth date could not be parsed')
+zoltar({birthdate: 'balloons!'}); // Left("Birthdate: parse error")
 ```
 
 When the `birthdate` is valid, the program outputs its mystical fortune to the screen for us to behold. Otherwise, we are handed a `Left` with the error message plain as day though still tucked away in its container. That acts just as if we'd thrown an error, but in a calm, mild manner fashion as opposed to losing its temper and screaming like a child when something goes wrong.
@@ -359,28 +310,22 @@ Now, I can't help, but feel I've done `Either` a disservice by introducing it as
 Just like with `Maybe`, we have little `either`, which behaves similarly, but takes two functions instead of one and a static value. Each function should return the same type:
 
 ```js
-//  either :: (a -> c) -> (b -> c) -> Either a b -> c
-var either = curry(function(f, g, e) {
-  switch (e.constructor) {
-    case Left:
-      return f(e.__value);
-    case Right:
-      return g(e.__value);
+//    either :: (a -> c) -> (b -> c) -> Either a b -> c
+const either = curry((f, g, e) => {
+  switch(e.constructor) {
+    case Left: return f(e.__value);
+    case Right: return g(e.__value);
   }
 });
 
-//  zoltar :: User -> _
-var zoltar = compose(console.log, either(id, fortune), getAge(moment()));
+//    zoltar :: User -> _
+const zoltar = compose(console.log, either(id, fortune), getAge(moment()));
 
-zoltar({
-  birthdate: '2005-12-12',
-});
+zoltar({birthdate: '2005-12-12'});
 // "If you survive, you will be 10"
 // undefined
 
-zoltar({
-  birthdate: 'balloons!',
-});
+zoltar({birthdate: 'balloons!'});
 // "Birth date could not be parsed"
 // undefined
 ```
@@ -394,12 +339,8 @@ Finally, a use for that mysterious `id` function. It simply parrots back the val
 In our chapter about purity we saw a peculiar example of a pure function. This function contained a side-effect, but we dubbed it pure by wrapping its action in another function. Here's another example of this:
 
 ```js
-//  getFromStorage :: String -> (_ -> String)
-var getFromStorage = function(key) {
-  return function() {
-    return localStorage[key];
-  };
-};
+//    getFromStorage :: String -> (_ -> String)
+const getFromStorage = key => _ => localStorage[key];
 ```
 
 Had we not surrounded its guts in another function, `getFromStorage` would vary its output depending on external circumstance. With the sturdy wrapper in place, we will always get the same output per input: a function that, when called, will retrieve a particular item from `localStorage`. And just like that (maybe throw in a few Hail Mary's) we've cleared our conscience and all is forgiven.
@@ -407,18 +348,18 @@ Had we not surrounded its guts in another function, `getFromStorage` would vary 
 Except, this isn't particularly useful now is it. Like a collectible action figure in its original packaging, we can't actually play with it. If only there were a way to reach inside of the container and get at its contents... Enter `IO`.
 
 ```js
-var IO = function(f) {
-  this.__value = f;
-};
+class IO {
+  constructor(f) {
+    this.__value = f;
+  }
 
-IO.of = function(x) {
-  return new IO(function() {
-    return x;
-  });
-};
+  static of(f) {
+    return new IO(f);
+  }
 
-IO.prototype.map = function(f) {
-  return new IO(_.compose(f, this.__value));
+  map() {
+    return new IO(compose(f, this.__value));
+  }
 };
 ```
 
@@ -427,30 +368,25 @@ IO.prototype.map = function(f) {
 Let's see it in use:
 
 ```js
-//  io_window :: IO Window
-var io_window = new IO(function() {
-  return window;
-});
+//    io_window :: IO Window
+const io_window = IO.of(_ => window);
 
-io_window.map(function(win) {
-  return win.innerWidth;
-});
+io_window.map(win => win.innerWidth);
 // IO(1430)
 
-io_window.map(_.prop('location')).map(_.prop('href')).map(_.split('/'));
+io_window
+  .map(prop('location'))
+  .map(prop('href'))
+  .map(split('/'));
 // IO(["http:", "", "localhost:8000", "blog", "posts"])
 
 
-//  $ :: String -> IO [DOM]
-var $ = function(selector) {
-  return new IO(function() {
-    return document.querySelectorAll(selector);
-  });
-};
+//    $ :: String -> IO [DOM]
+const $ = selector => IO.of(_ => document.querySelectorAll(selector))
 
-$('#myDiv').map(head).map(function(div) {
-  return div.innerHTML;
-});
+$('#myDiv')
+  .map(head)
+  .map(div => div.innerHTML);
 // IO('I am some inner html')
 ```
 
@@ -461,27 +397,21 @@ Take a moment to channel your functor intuition. If we see past the implementati
 Now, we've caged the beast, but we'll still have to set it free at some point. Mapping over our `IO` has built up a mighty impure computation and running it is surely going to disturb the peace. So where and when can we pull the trigger? Is it even possible to run our `IO` and still wear white at our wedding? The answer is yes, if we put the onus on the calling code. Our pure code, despite the nefarious plotting and scheming, maintains its innocence and it's the caller who gets burdened with the responsibility of actually running the effects. Let's see an example to make this concrete.
 
 ```js
+const
+//url :: IO String
+  url = IO.of(_ => window.location.href),
 
-////// Our pure library: lib/params.js ///////
+//toPairs ::  String -> [[String]]
+  toPairs = compose(map(split('=')), split('&')),
 
-//  url :: IO String
-var url = new IO(function() {
-  return window.location.href;
-});
+//params :: String -> [[String]]
+  params = compose(toPairs, last, split('?')),
 
-//  toPairs ::  String -> [[String]]
-var toPairs = compose(map(split('=')), split('&'));
+//findParam :: String -> IO Maybe [String]
+  findParam =
+    key => map(compose(Maybe.of, filter(compose(eq(key), head)), params), url);
 
-//  params :: String -> [[String]]
-var params = compose(toPairs, last, split('?'));
-
-//  findParam :: String -> IO Maybe [String]
-var findParam = function(key) {
-  return map(compose(Maybe.of, filter(compose(eq(key), head)), params), url);
-};
-
-////// Impure calling code: main.js ///////
-
+//-- Impure calling code ----------------------------------------------
 // run it by calling __value()!
 findParam("searchTerm").__value();
 // Maybe([['searchTerm', 'wafflehouse']])
@@ -492,12 +422,18 @@ Our library keeps its hands clean by wrapping `url` in an `IO` and passing the b
 There's something that's been bothering me and we should rectify it immediately: `IO`'s `__value` isn't really its contained value, nor is it a private property as the underscore prefix suggests. It is the pin in the grenade and it is meant to be pulled by a caller in the most public of ways. Let's rename this property to `unsafePerformIO` to remind our users of its volatility.
 
 ```js
-var IO = function(f) {
-  this.unsafePerformIO = f;
-};
+class IO {
+  constructor(f) {
+    this.unsafePerformIO = f;
+  }
 
-IO.prototype.map = function(f) {
-  return new IO(_.compose(f, this.unsafePerformIO));
+  static of(f) {
+    return new IO(f);
+  }
+
+  map() {
+    return new IO(compose(f, this.unsafePerformIO));
+  }
 };
 ```
 
@@ -516,18 +452,15 @@ The internals are a bit too complicated to spill out all over the page here so w
 // Node readfile example:
 //=======================
 
-var fs = require('fs');
+const fs = require('fs');
 
-//  readFile :: String -> Task Error String
-var readFile = function(filename) {
-  return new Task(function(reject, result) {
-    fs.readFile(filename, 'utf-8', function(err, data) {
-      err ? reject(err) : result(data);
-    });
-  });
-};
+//    readFile :: String -> Task Error String
+const readFile = filename =>
+  new Task((reject, result) =>
+    fs.readFile(filename, 'utf-8', (err, data) =>
+      err? reject(err) : result(data)));
 
-readFile('metamorphosis').map(split('\n')).map(head);
+readFile("metamorphosis").map(split('\n')).map(head);
 // Task("One morning, as Gregor Samsa was waking up from anxious dreams, he discovered that
 // in bed he had been changed into a monstrous verminous bug.")
 
@@ -536,21 +469,15 @@ readFile('metamorphosis').map(split('\n')).map(head);
 //========================
 
 //  getJSON :: String -> {} -> Task Error JSON
-var getJSON = curry(function(url, params) {
-  return new Task(function(reject, result) {
-    $.getJSON(url, params, result).fail(reject);
-  });
-});
+var getJSON =
+  curry((url, params) =>
+    new Task((reject, result) => $.getJSON(url, params, result).fail(reject));
 
-getJSON('/video', {
-  id: 10,
-}).map(_.prop('title'));
+getJSON('/video', {id: 10}).map(prop('title'));
 // Task("Family Matters ep 15")
 
 // We can put normal, non futuristic values inside as well
-Task.of(3).map(function(three) {
-  return three + 1,
-});
+Task.of(3).map(three => three + 1);
 // Task(4)
 ```
 
@@ -563,29 +490,22 @@ Like `IO`, `Task` will patiently wait for us to give it the green light before r
 To run our `Task`, we must call the method `fork`. This works like `unsafePerformIO`, but as the name suggests, it will fork our process and evaluation continues on without blocking our thread. This can be implemented in numerous ways with threads and such, but here it acts as a normal async call would and the big wheel of the event loop keeps on turning. Let's look at `fork`:
 
 ```js
-// Pure application
-//=====================
-// blogTemplate :: String
+//-- Pure application -------------------------------------------------
+//    blogTemplate :: String
+//    blogPage :: Posts -> HTML
+const blogPage = Handlebars.compile(blogTemplate);
 
-//  blogPage :: Posts -> HTML
-var blogPage = Handlebars.compile(blogTemplate);
+//    renderPage :: Posts -> HTML
+const renderPage = compose(blogPage, sortBy('date'));
 
-//  renderPage :: Posts -> HTML
-var renderPage = compose(blogPage, sortBy('date'));
-
-//  blog :: Params -> Task Error HTML
-var blog = compose(map(renderPage), getJSON('/posts'));
+//    blog :: Params -> Task Error HTML
+const blog = compose(map(renderPage), getJSON('/posts'));
 
 
-// Impure calling code
-//=====================
+//-- Impure calling code ----------------------------------------------
 blog({}).fork(
-  function(error) {
-    $("#error").html(error.message);
-  },
-  function(page) {
-    $("#main").html(page);
-  }
+  error => $("#error").html(error.message),
+  page  => $("#main").html(page)
 );
 
 $('#spinner').show();
@@ -601,30 +521,26 @@ Even with `Task`, our `IO` and `Either` functors are not out of a job. Bear with
 
 ```js
 // Postgres.connect :: Url -> IO DbConnection
-// runQuery :: DbConnection -> ResultSet
-// readFile :: String -> Task Error String
+// runQuery         :: DbConnection -> ResultSet
+// readFile         :: String -> Task Error String
 
-// Pure application
-//=====================
+//-- Pure application -------------------------------------------------
+//    dbUrl :: Config -> Either Error Url
+const dbUrl = ({uname, pass, db}) =>
+  (uname && pass && host && db)
+    ? Right.of(`db:pg://${uname}:${pass}@${host}5432/${db}`)
+    : Left.of(Error("Invalid config!"));
 
-//  dbUrl :: Config -> Either Error Url
-var dbUrl = function(c) {
-  return (c.uname && c.pass && c.host && c.db)
-    ? Right.of('db:pg://'+c.uname+':'+c.pass+'@'+c.host+'5432/'+c.db)
-    : Left.of(Error('Invalid config!'));
-}
+//    connectDb :: Config -> Either Error (IO DbConnection)
+const connectDb = compose(map(Postgres.connect), dbUrl);
 
-//  connectDb :: Config -> Either Error (IO DbConnection)
-var connectDb = compose(map(Postgres.connect), dbUrl);
-
-//  getConfig :: Filename -> Task Error (Either Error (IO DbConnection))
-var getConfig = compose(map(compose(connectDb, JSON.parse)), readFile);
+//    getConfig :: Filename -> Task Error (Either Error (IO DbConnection))
+const getConfig = compose(map(compose(connectDb, JSON.parse)), readFile);
 
 
-// Impure calling code
-//=====================
-getConfig('db.json').fork(
-  logErr('couldn\'t read file'), either(console.log, map(runQuery))
+//-- Impure calling code ----------------------------------------------
+getConfig("db.json").fork(
+  logErr("couldn't read file"), either(console.log, map(runQuery))
 );
 ```
 
@@ -632,7 +548,7 @@ In this example, we still make use of `Either` and `IO` from within the success 
 
 I could go on, but that's all there is to it. Simple as `map`.
 
-In practice, you'll likely have multiple asynchronous tasks in one workflow and we haven't yet acquired the full container APIs to tackle this scenario. Not to worry, we'll look at monads and such soon, but first, we must examine the maths that make this all possible.
+In practice, you'll likely have multiple asynchronous tasks in one workflow and we haven't yet acquired the full container apis to tackle this scenario. Not to worry, we'll look at monads and such soon, but first, we must examine the maths that make this all possible.
 
 
 ## A Spot of Theory
@@ -650,27 +566,23 @@ compose(map(f), map(g)) === map(compose(f, g));
 The *identity* law is simple, but important. These laws are runnable bits of code so we can try them on our own functors to validate their legitimacy.
 
 ```js
-var idLaw1 = map(id);
-var idLaw2 = id;
+const
+  idLaw1 = map(id),
+  idLaw2 = id;
 
-idLaw1(Container.of(2));
-//=> Container(2)
-
-idLaw2(Container.of(2));
-//=> Container(2)
+idLaw1(Container.of(2)); //=> Container(2)
+idLaw2(Container.of(2)); //=> Container(2)
 ```
 
 You see, they are equal. Next let's look at composition.
 
 ```js
-var compLaw1 = compose(map(concat(' world')), map(concat(' cruel')));
-var compLaw2 = map(compose(concat(' world'), concat(' cruel')));
+const
+  compLaw1 = compose(map(concat(" world")), map(concat(" cruel"))),
+  compLaw2 = map(compose(concat(" world"), concat(" cruel")));
 
-compLaw1(Container.of('Goodbye'));
-//=> Container(' world cruelGoodbye')
-
-compLaw2(Container.of('Goodbye'));
-//=> Container(' world cruelGoodbye')
+compLaw1(Container.of("Goodbye")); //=> Container(' world cruelGoodbye')
+compLaw2(Container.of("Goodbye")); //=> Container(' world cruelGoodbye')
 ```
 
 In category theory, functors take the objects and morphisms of a category and map them to a different category. By definition, this new category must have an identity and the ability to compose morphisms, but we needn't check because the aforementioned laws ensure these are preserved.
@@ -688,18 +600,14 @@ We can also visualize the mapping of a morphism and its corresponding objects wi
 In addition to visualizing the mapped morphism from one category to another under the functor `F`, we see that the diagram commutes, which is to say, if you follow the arrows each route produces the same result. The different routes mean different behavior, but we always end at the same type. This formalism gives us principled ways to reason about our code - we can boldly apply formulas without having to parse and examine each individual scenario. Let's take a concrete example.
 
 ```js
-//  topRoute :: String -> Maybe String
-var topRoute = compose(Maybe.of, reverse);
+//    topRoute :: String -> Maybe String
+const topRoute = compose(Maybe.of, reverse);
 
-//  bottomRoute :: String -> Maybe String
-var bottomRoute = compose(map(reverse), Maybe.of);
+//    bottomRoute :: String -> Maybe String
+const bottomRoute = compose(map(reverse), Maybe.of);
 
-
-topRoute('hi');
-// Maybe('ih')
-
-bottomRoute('hi');
-// Maybe('ih')
+topRoute("hi");    // Maybe("ih")
+bottomRoute("hi"); // Maybe("ih")
 ```
 
 Or visually:
@@ -711,32 +619,38 @@ We can instantly see and refactor code based on properties held by all functors.
 Functors can stack:
 
 ```js
-var nested = Task.of([Right.of('pillows'), Left.of('no sleep for you')]);
+const nested = Task.of([Right.of("pillows"), Left.of("no sleep for you")])
 
 map(map(map(toUpperCase)), nested);
-// Task([Right('PILLOWS'), Left('no sleep for you')])
+// Task([Right("PILLOWS"), Left("no sleep for you")])
 ```
 
 What we have here with `nested` is a future array of elements that might be errors. We `map` to peel back each layer and run our function on the elements. We see no callbacks, if/else's, or for loops; just an explicit context. We do, however, have to `map(map(map(f)))`. We can instead compose functors. You heard me correctly:
 
 ```js
-var Compose = function(f_g_x) {
-  this.getCompose = f_g_x;
+class Compose {
+  constructor(f_g_x) {
+    this.getCompose = f_g_x;
+  }
+
+  static of(f_g_x) {
+    return new Compose(f_g_x);
+  }
+
+  map(f) {
+    return new Compose(map(map(f), this.getCompose));
+  }
 };
 
-Compose.prototype.map = function(f) {
-  return new Compose(map(map(f), this.getCompose));
-};
+const tmd = Task.of(Maybe.of("Rock over London");
 
-var tmd = Task.of(Maybe.of('Rock over London'));
+const ctmd = Compose.of(tmd);
 
-var ctmd = new Compose(tmd);
-
-map(concat(', rock on, Chicago'), ctmd);
-// Compose(Task(Maybe('Rock over London, rock on, Chicago')))
+map(concat(", rock on, Chicago"), ctmd);
+// Compose(Task(Maybe("Rock over London, rock on, Chicago")))
 
 ctmd.getCompose;
-// Task(Maybe('Rock over London'))
+// Task(Maybe("Rock over London, rock on, Chicago"))
 ```
 
 There, one `map`. Functor composition is associative and earlier, we defined `Container`, which is actually called the `Identity` functor. If we have identity and associative composition we have a category. This particular category has categories as objects and functors as morphisms, which is enough to make one's brain perspire. We won't delve too far into this, but it's nice to appreciate the architectural implications or even just the simple abstract beauty in the pattern.
@@ -752,116 +666,4 @@ What about calling a function with multiple functor arguments? How about working
 
 ## Exercises
 
-```js
-require('../../support');
-var Task = require('data.task');
-var _ = require('ramda');
-
-// Exercise 1
-// ==========
-// Use _.add(x,y) and _.map(f,x) to make a function that increments a value
-// inside a functor.
-
-var ex1 = undefined;
-
-
-
-// Exercise 2
-// ==========
-// Use _.head to get the first element of the list.
-var xs = Identity.of(['do', 'ray', 'me', 'fa', 'so', 'la', 'ti', 'do']);
-
-var ex2 = undefined;
-
-
-
-// Exercise 3
-// ==========
-// Use safeProp and _.head to find the first initial of the user.
-var safeProp = _.curry(function(x, o) {
-  return Maybe.of(o[x]);
-});
-
-var user = {
-  id: 2,
-  name: 'Albert',
-};
-
-var ex3 = undefined;
-
-
-// Exercise 4
-// ==========
-// Use Maybe to rewrite ex4 without an if statement.
-
-var ex4 = function(n) {
-  if (n) {
-    return parseInt(n);
-  }
-};
-
-var ex4 = undefined;
-
-
-
-// Exercise 5
-// ==========
-// Write a function that will getPost then toUpperCase the post's title.
-
-// getPost :: Int -> Future({id: Int, title: String})
-var getPost = function(i) {
-  return new Task(function(rej, res) {
-    setTimeout(function() {
-      res({
-        id: i,
-        title: 'Love them futures',
-      });
-    }, 300);
-  });
-};
-
-var ex5 = undefined;
-
-
-
-// Exercise 6
-// ==========
-// Write a function that uses checkActive() and showWelcome() to grant access
-// or return the error.
-
-var showWelcome = _.compose(_.concat( "Welcome "), _.prop('name'));
-
-var checkActive = function(user) {
-  return user.active ? Right.of(user) : Left.of('Your account is not active');
-};
-
-var ex6 = undefined;
-
-
-
-// Exercise 7
-// ==========
-// Write a validation function that checks for a length > 3. It should return
-// Right(x) if it is greater than 3 and Left("You need > 3") otherwise.
-
-var ex7 = function(x) {
-  return undefined; // <--- write me. (don't be pointfree)
-};
-
-
-
-// Exercise 8
-// ==========
-// Use ex7 above and Either as a functor to save the user if they are valid or
-// return the error message string. Remember either's two arguments must return
-// the same type.
-
-var save = function(x) {
-  return new IO(function() {
-    console.log('SAVED USER!');
-    return x + '-saved';
-  });
-};
-
-var ex8 = undefined;
-```
+[include](./code/functors/exercises.js)
