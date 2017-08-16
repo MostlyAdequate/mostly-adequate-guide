@@ -1,6 +1,3 @@
-//var curry = require('ramda').curry;
-
-
 var toArray = Function.call.bind(Array.prototype.slice);
 
 function inspect(x) {
@@ -28,7 +25,7 @@ function curry(fx) {
     else {
       var f2 = function f2() {
         var args2 = toArray(arguments, 0);
-        return f1.apply(null, args.concat(args2)); 
+        return f1.apply(null, args.concat(args2));
       }
       f2.toString = function() {
         return inspectFn(fx) + inspectArgs(args);
