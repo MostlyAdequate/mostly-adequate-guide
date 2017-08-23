@@ -21,7 +21,7 @@ run the test runner with the spec file for that exercise
 
 ```shell
     # for example
-    mocha exercises/curry/curry_exercises_spec.js -w
+    ./node_modules/.bin/mocha exercises/curry/curry_exercises_spec.js -w
 ```
 
 this brings up the mocha test runner which shows the error immediately when you save the file with changed code. Achieve the requested refactor while keeping all the arrows green.
