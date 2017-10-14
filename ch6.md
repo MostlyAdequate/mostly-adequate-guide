@@ -290,3 +290,4 @@ var images = _.compose(_.map(mediaToImg), _.prop('items'));
 
 We have seen how to put our new skills into use with a small, but real world app. We've used our mathematical framework to reason about and refactor our code. But what about error handling and code branching? How can we make the whole application pure instead of merely namespacing destructive functions? How can we make our app safer and more expressive? These are the questions we will tackle in part 2.
 
+[Chapter 7: Hindley-Milner and Me](ch7.md)

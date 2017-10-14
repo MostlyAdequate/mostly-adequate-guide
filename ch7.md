@@ -66,13 +66,22 @@ var match = curry(function(reg, s){
 Ah yes, grouping the last part in parenthesis reveals more information. Now it is seen a function that takes a `Regex` and returns us a function from `String` to `[String]`. Because of currying, this is indeed the case: give it a `Regex` and we get a function back waiting for it's `String` argument. Of course, we don't have to think of it this way, but it is good to understand why the last type is the one returned.
 
 ```js
+//  match :: Regex -> (String -> [String])
+
+//  onHoliday :: String -> String
+var onHoliday = match(/holiday/ig);
+```
+
+Each argument pops one type off the front of the signature. `onHoliday` is `match` that already has a `Regex`.
+
+```js
 //  replace :: Regex -> (String -> (String -> String))
 var replace = curry(function(reg, sub, s){
   return s.replace(reg, sub);
 });
 ```
 
-As you can see, the parenthesis can get a little noisy and redundant so we simply omit them. We can give all the arguments at once if we choose so it's easier to just think of it as: `replace` takes a `Regex`, a `String`, another `String` and returns you a `String`.
+As you can see with the full parenthesis on `replace`, the extra notation can get a little noisy and redundant so we simply omit them. We can give all the arguments at once if we choose so it's easier to just think of it as: `replace` takes a `Regex`, a `String`, another `String` and returns you a `String`.
 
 A few last things here:
 
@@ -159,3 +168,4 @@ These are just two examples, but you can apply this reasoning to any polymorphic
 
 Hindley-Milner type signatures are ubiquitous in the functional world. Though they are simple to read and write, it takes time to master the technique of understanding programs through signatures alone. We will add type signatures to each line of code from here on out.
 
+[Chapter 8: Tupperware](ch8.md)
