@@ -66,32 +66,32 @@ var immutableState = Object.freeze({
 });
 ```
 
-## Side effects may include...
+## Під побічними ефектами ми розуміємо...
 
-Let's look more at these "side effects" to improve our intuition. So what is this undoubtedly nefarious *side effect* mentioned in the definition of *pure function*? We'll be referring to *effect* as anything that occurs in our computation other than the calculation of a result.
+Давайте більш детальніше поглянемо на ці "побічні ефекти", для того, щоб покращити нашу інтуіцію. То щож це за такі мерзенні *побічні ефекти* про які згадувалось у визначенні *чистої функції*? Ми будемо посилатись на *ефекти*, як щось, що стається під час виконання наших розрахунків і не є безпосереднім вираховуванням результату.
 
-There's nothing intrinsically bad about effects and we'll be using them all over the place in the chapters to come. It's that *side* part that bears the negative connotation. Water alone is not an inherent larvae incubator, it's the *stagnant* part that yields the swarms, and I assure you, *side* effects are a similar breeding ground in your own programs.
+Власне кажучи, немає нічого поганого в ефектах і ми будемо використовувати їх усюди а наступних розділах. А от *побічні* - це саме те, що несе в собі додаткове і негативне значення. Вода, сама по собі, не є інкубатором для личинок, але це *застій* води призводить до їх розмноження, і я вас запевняю, що *побічні* ефекти - це таке саме середовище в наших програмах.
 
->A *side effect* is a change of system state or *observable interaction* with the outside world that occurs during the calculation of a result.
+>*Побічний ефект* - це зміна стану системи чи *видима взаємодія* з зовнішнім світом, що виникає в ході вирахунку результату.
 
-Side effects may include, but are not limited to
+Побічні ефекти включаються в себе(і не обмежуються лише цим переліком)
 
-  * changing the file system
-  * inserting a record into a database
-  * making an http call
-  * mutations
-  * printing to the screen / logging
-  * obtaining user input
-  * querying the DOM
-  * accessing system state
+  * зміна файлової системи
+  * внесення запису у базу данних
+  * виконання http запиту
+  * мутації
+  * вивід на екран / логування
+  * одержання користувацького вводу
+  * запит до DOM
+  * доступ до стану системи
 
-And the list goes on and on. Any interaction with the world outside of a function is a side effect, which is a fact that may prompt you to suspect the practicality of programming without them. The philosophy of functional programming postulates that side effects are a primary cause of incorrect behavior.
+І цей перелік можна продовжувати і продовжувати. Будь-яка взаємодія зі світом, який знаходиться поза межами функції є побічним ефектом, який, напевно, змусить вас засумніватися в практичності програмування без їх використання. Філософія функціонального програмування стоїть горою на тому, що побічні ефекти є головною причиною неправильної поведінки.
 
-It is not that we're forbidden to use them, rather we want to contain them and run them in a controlled way. We'll learn how to do this when we get to functors and monads in later chapters, but for now, let's try to keep these insidious functions separate from our pure ones.
+Не те щоб нам було суворо забороненно їх використовувати, ні, ми радше воліємо опанувати їх і використовувати контрольовано. Ми вивчимо як це робити, коли дістанемось до функторів і монад в подальших розділах, але покищо, давайте тримати ці підступні функції окремо від наших чистих.
 
-Side effects disqualify a function from being *pure*. And it makes sense: pure functions, by definition, must always return the same output given the same input, which is not possible to guarantee when dealing with matters outside our local function.
+Через побічні ефекти функція припиняє бути *чистою*. І в цьому є сенс: чисті функції, за визначенням, мають завжди повертати однаковий результат при однакових вхідних даних, що неможливо гарантувати, коли щось залежить від оточуючого світу поза межами конкретної функції.
 
-Let's take a closer look at why we insist on the same output per input. Pop your collars, we're going to look at some 8th grade math.
+Давайте більш ретельно розглянемо, чому ми наполягаємо на однакових результатах при однакових вхідних даних. Підніміть ваші комірці, бо зараз ми з вами поглянемо на математику за 8ий клас.
 
 ## 8th grade math
 
