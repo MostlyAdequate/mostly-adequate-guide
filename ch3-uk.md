@@ -262,9 +262,9 @@ var welcomeUser = function(Email, user) {
 
 ### Обгрунтованість
 
-Many believe the biggest win when working with pure functions is *referential transparency*. A spot of code is referentially transparent when it can be substituted for its evaluated value without changing the behavior of the program.
+Багато людей вірять, що найбільшою перемогою, при роботі з чистими функціями є *референтна прозорість*. Шматок коду референтно прозорий тоді, коли він може бути замінений на його обчислений результат без зміни поведінки програми.
 
-Since pure functions always return the same output given the same input, we can rely on them to always return the same results and thus preserve referential transparency. Let's see an example.
+Оскільки чисті функції завжди повертають один й той самий результат при одній і тій самій вхідній величині, ми можемо покладатись на них, що вони повернуть той самий результат, і тому вони зберігають референтну прозорість. Давайте розглянемо приклад.
 
 ```js
 
@@ -297,9 +297,9 @@ punch(jobe, michael);
 //=> Immutable.Map({name:'Michael', hp:19, team: 'green'})
 ```
 
-`decrementHP`, `isSameTeam` and `punch` are all pure and therefore referentially transparent. We can use a technique called *equational reasoning* wherein one substitutes "equals for equals" to reason about code. It's a bit like manually evaluating the code without taking into account the quirks of programmatic evaluation. Using referential transparency, let's play with this code a bit.
+`decrementHP`, `isSameTeam` та `punch` - чисті функції і тому референтно прозорі. Для обмірковування коду, ми можемо використати техніку, яку називають *рівноправними міркуваннями*, де один замінює "рівними для рівних". Це трохи схоже на ручну оцінку коду без урахування примх програмної оцінки. Використовуючи референтну прозорість, давайте трохи пограємо з цим кодом.
 
-First we'll inline the function `isSameTeam`.
+Спочатку ми запишимо в одну строку функцію `isSameTeam`.
 
 ```js
 var punch = function(player, target) {
@@ -307,7 +307,7 @@ var punch = function(player, target) {
 };
 ```
 
-Since our data is immutable, we can simply replace the teams with their actual value
+Оскільки наші дані немутабельні, ми можемо просто замінити команди їхніми актуальними значеннями.
 
 ```js
 var punch = function(player, target) {
@@ -315,7 +315,7 @@ var punch = function(player, target) {
 };
 ```
 
-We see that it is false in this case so we can remove the entire if branch
+Ми бачимо, що це `false` у цьому випадку, тож ми можемо прибрати усю if гілку
 
 ```js
 var punch = function(player, target) {
@@ -324,7 +324,7 @@ var punch = function(player, target) {
 
 ```
 
-And if we inline `decrementHP`, we see that, in this case, punch becomes a call to decrement the `hp` by 1.
+І якщо ми запишимо строкою `decrementHP` то побачимо, що, в цьому випадку, _punch_ перетворюється на виклик зменшення `hp` на 1.
 
 ```js
 var punch = function(player, target) {
@@ -332,7 +332,7 @@ var punch = function(player, target) {
 };
 ```
 
-This ability to reason about code is terrific for refactoring and understanding code in general. In fact, we used this technique to refactor our flock of seagulls program. We used equational reasoning to harness the properties of addition and multiplication. Indeed, we'll be using these techniques throughout the book.
+Ця здатність до роздумів щодо коду надзвичайна для обробки/виправлення та розуміння коду взагалі. Насправді, ми використали цю техніку для виправлення нашої програми про чайок. Ми використовували порівняльні обгрунтовування, щоб використовувати властивості додавання та множення. І, насправді, ми будемо використовувати ці методи в усій книзі.
 
 ### Parallel Code
 
