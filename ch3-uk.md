@@ -150,11 +150,11 @@ isPrime[3];
 
 І тут настає драматичне відкриття: чисті функції - це математичні функції, і саме це - функціональне програмування. Програмування за допомогою цих маленьких ангелів може забезпечити величезну користь. Давайте розглянемо деякі причини, чому ми можемо вдатись до великих довжин, заради збереження чистоти.
 
-## The case for purity
+## Випадок для чистоти
 
-### Cacheable
+### Здатність до кешування
 
-For starters, pure functions can always be cached by input. This is typically done using a technique called memoization:
+Для початку, чисті функції завжди можуть бути закешовані вхідною величиною. Це робиться за допомогою техніки, яка називається _мемоізація_(memoization):
 
 ```js
 var squareNumber = memoize(function(x) {
@@ -164,17 +164,17 @@ var squareNumber = memoize(function(x) {
 squareNumber(4);
 //=> 16
 
-squareNumber(4); // returns cache for input 4
+squareNumber(4); // повертає кеш для вхіного значення 4
 //=> 16
 
 squareNumber(5);
 //=> 25
 
-squareNumber(5); // returns cache for input 5
+squareNumber(5); // повертає кеш для вхіного значення 5
 //=> 25
 ```
 
-Here is a simplified implementation, though there are plenty of more robust versions available.
+Ось проста реалізація, хоча існує безліч більш надійних версій.
 
 ```js
 var memoize = function(f) {
@@ -188,7 +188,7 @@ var memoize = function(f) {
 };
 ```
 
-Something to note is that you can transform some impure functions into pure ones by delaying evaluation:
+Варто відзначити, що ви можете перетворити деякі не чисті функції у чисті за допомогою відтермінування обчислення(evaluation):
 
 ```js
 var pureHttpCall = memoize(function(url, params) {
@@ -198,11 +198,11 @@ var pureHttpCall = memoize(function(url, params) {
 });
 ```
 
-The interesting thing here is that we don't actually make the http call - we instead return a function that will do so when called. This function is pure because it will always return the same output given the same input: the function that will make the particular http call given the `url` and `params`.
+Цікавий момент тут це те, що ми не виконуємо http запит - ми, натомість, повертаємо функцію, яка виконає запит в момент коли її викличуть. Ця функція є чистою, бо вона завжди поверне однаковий результат при одному й тому самому вхідному значенні: фунцію, що виконає конкретний http запит з аргументами `url` та `params`.
 
-Our `memoize` function works just fine, though it doesn't cache the results of the http call, rather it caches the generated function.
+Наша `memoize` функція працює чудово, не дивлячись на те, що вона не кешує результат http запиту, бо вона кешує згенеровану функцію.
 
-This is not very useful yet, but we'll soon learn some tricks that will make it so. The takeaway is that we can cache every function no matter how destructive they seem.
+Це, покищо, не дуже корисно, але ми скоро вивчимо деякі фокуси, які нам в цьому допоможуть. Висновок полягає в тому, що ми можемо кешувати кожну функцію, в не залежності наскільки руйнівною вона виглядає.
 
 ### Portable / Self-Documenting
 
