@@ -93,32 +93,32 @@ var immutableState = Object.freeze({
 
 Давайте більш ретельно розглянемо, чому ми наполягаємо на однакових результатах при однакових вхідних даних. Підніміть ваші комірці, бо зараз ми з вами поглянемо на математику за 8ий клас.
 
-## 8th grade math
+## Математика за 8ий клас
 
-From mathisfun.com:
+З mathisfun.com:
 
-> A function is a special relationship between values:
-> Each of its input values gives back exactly one output value.
+> Функція - спеціальни зв'язок між значеннями:
+> Кожна її вхідна величина віддає рівно одне вихідне значення.
 
-In other words, it's just a relation between two values: the input and the output. Though each input has exactly one output, that output doesn't necessarily have to be unique per input. Below shows a diagram of a perfectly valid function from `x` to `y`;
+Інакше кажучи, це лише зв'язок між двума величинами: вхідними даними та результатом. Не дивлячись на те, що кожена вхідна величина має конкретно одне кінцеве значення, це не означає що кінцеве значення мусить бути унікальним для кожнної вхідної величини. Нижче наведена діаграма з ідеально валідною функцією:
 
 <img src="images/function-sets.gif" alt="function sets" />(http://www.mathsisfun.com/sets/function.html)
 
-To contrast, the following diagram shows a relation that is *not* a function since the input value `5` points to several outputs:
+На противагу цьому, наступна діаграмма демонструє зв'язок, що *не* є функцією, оскільки значення вхідної величини(`5`) веде до кількох рузельтатів:
 
 <img src="images/relation-not-function.gif" alt="relation not function" />(http://www.mathsisfun.com/sets/function.html)
 
-Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]` (It appears this function doubles its input).
+Фунції можуть бути описані як набір пар з положенням (вхідна величина, результат): `[(1,2), (3,6), (5,10)]` (Схоже на те, що ця функція подвоює отримувану величину).
 
-Or perhaps a table:
-<table> <tr> <th>Input</th> <th>Output</th> </tr> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>2</td> <td>4</td> </tr> <tr> <td>3</td> <td>6</td> </tr> </table>
+Чи можлива таблиця:
+<table> <tr> <th>Вхідна величина</th> <th>Результат</th> </tr> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>2</td> <td>4</td> </tr> <tr> <td>3</td> <td>6</td> </tr> </table>
 
-Or even as a graph with `x` as the input and `y` as the output:
+Чи навіть графік з `x` як вхідна величина та `y` як результат:
 
 <img src="images/fn_graph.png" width="300" height="300" alt="function graph" />
 
 
-There's no need for implementation details if the input dictates the output. Since functions are simply mappings of input to output, one could simply jot down object literals and run them with `[]` instead of `()`.
+Немає жодної потреба в деталях реалізації, до тих пір, поки вхідна величина диктує результат. А оскільки функції є простими поєднаннями вхідних величини та результатів, то можна побачити, що модна прибрати фігурні дужки і запустити функцію з `[]` замість `()`.
 
 ```js
 var toLowerCase = {
@@ -146,9 +146,9 @@ isPrime[3];
 //=> true
 ```
 
-Of course, you might want to calculate instead of hand writing things out, but this illustrates a different way to think about functions. (You may be thinking "what about functions with multiple arguments?". Indeed, that presents a bit of an inconvenience when thinking in terms of mathematics. For now, we can bundle them up in an array or just think of the `arguments` object as the input. When we learn about *currying*, we'll see how we can directly model the mathematical definition of a function.)
+Звісно, ви можете захотіти вираховувати замість вручну виписувати результати, але це демонструє різні способи думати про функції. (Ви можете подумати "а що ж щодо функції з кількома аргументами?". Дійсно, це трохи незручно, коли мислимо з точки зору математики. Покищо, ми можемо скласти їх в масив чи просто думати про об'єкт `arguments` як про вхідну величину. Коли ми почнемо вчити _каррування_, ми побачимо, як ми можемо безпосередньо моделювати математичне визначення функції).
 
-Here comes the dramatic reveal: Pure functions *are* mathematical functions and they're what functional programming is all about. Programming with these little angels can provide huge benefits. Let's look at some reasons why we're willing to go to great lengths to preserve purity.
+І тут настає драматичне відкриття: чисті функції - це математичні функції, і саме це - функціональне програмування. Програмування за допомогою цих маленьких ангелів може забезпечити величезну користь. Давайте розглянемо деякі причини, чому ми можемо вдатись до великих довжин, заради збереження чистоти.
 
 ## The case for purity
 
