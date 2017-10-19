@@ -254,11 +254,11 @@ var welcomeUser = function(Email, user) {
 
 Коли в останній раз ви скопіювали метод у нову програму? Одна з моїх улюблених цитат належить творцю Ерланга Джо Армстронгу: «Проблема з об'єктно-орієнтованими мовами - це все це неявне оточення, яке вони несуть із собою. Ви хотіли банан, але те, що ви отримали, - це горилла, яка тримає банан ... і всі джунглі".
 
-### Testable
+### Гарно тестуємий
 
-Next, we come to realize pure functions make testing much easier. We don't have to mock a "real" payment gateway or setup and assert the state of the world after each test. We simply give the function input and assert output.
+Наступним ми усвідомлюємо, що чисті функції роблять тестування значно простішим. Нам не потрібно робити заглушку(mock) зі "справжньою" відповіддю, чи налаштувати та зазначити стан програми після кожного тесту. Ми просто передаємо функції вхідне значення і зазначаємо вихідне.
 
-In fact, we find the functional community pioneering new test tools that can blast our functions with generated input and assert that properties hold on the output. It's beyond the scope of this book, but I strongly encourage you to search for and try *Quickcheck* - a testing tool that is tailored for a purely functional environment.
+Насправді, ми розуміємо, що функціональна спільнота розробляє нові новаторські інструменти тестування, які можуть вистрілювати наші функції зі згенерованими вхідними значеннями та стверджувати, що властивості все таки лишаються на виході. Це поза межами цієї книги, але я наполегливо рекомендую вам пошукати та спробувати *Quickcheck* - інструмент тестування, який призначений для суто функціонального середовища.
 
 ### Reasonable
 
