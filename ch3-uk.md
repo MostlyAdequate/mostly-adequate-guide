@@ -204,12 +204,12 @@ var pureHttpCall = memoize(function(url, params) {
 
 Це, покищо, не дуже корисно, але ми скоро вивчимо деякі фокуси, які нам в цьому допоможуть. Висновок полягає в тому, що ми можемо кешувати кожну функцію, в не залежності наскільки руйнівною вона виглядає.
 
-### Portable / Self-Documenting
+### Портативний / Само-задокументований
 
-Pure functions are completely self contained. Everything the function needs is handed to it on a silver platter. Ponder this for a moment... How might this be beneficial? For starters, a function's dependencies are explicit and therefore easier to see and understand - no funny business going on under the hood.
+Чисті функції повністю автономні. Все що потрібно функції передається в неї, як на срібній таці. Обдумайте це хвилинку... Але як це може бути користим? Ну, для початку, залежності функції є явними, тому їх простіше бачити і розуміти - жодних смішних процесів під капотом.
 
 ```js
-//impure
+//не чиста
 var signUp = function(attrs) {
   var user = saveUser(attrs);
   welcomeUser(user);
@@ -225,7 +225,7 @@ var welcomeUser = function(user) {
     ...
 };
 
-//pure
+//чиста
 var signUp = function(Db, Email, attrs) {
   return function() {
     var user = saveUser(Db, attrs);
@@ -242,17 +242,17 @@ var welcomeUser = function(Email, user) {
 };
 ```
 
-The example here demonstrates that the pure function must be honest about its dependencies and, as such, tell us exactly what it's up to. Just from its signature, we know that it will use a `Db`, `Email`, and `attrs` which should be telling to say the least.
+Цей приклад демострує, що чиста функція має бути чесною про свої залежності і тому каже нам точно про що вона. Вже по її сигнатурі ми знаємо, що вона буде використовувати `Db`, `Email`, та `attrs`, і це важливо це продемонструвати.
 
-We'll learn how to make functions like this pure without merely deferring evaluation, but the point should be clear that the pure form is much more informative than its sneaky impure counterpart which is up to God knows what.
+Ми вивчимо, як робити функції чистими як ця без відкладеного обчислення(evaluation), але має бути чітко зрозуміло, що чиста форма набагато інформативніша, аніж її підступна та слизька аналогія, про яку лише Богові відомо, що і як вона робить насправді.
 
-Something else to notice is that we're forced to "inject" dependencies, or pass them in as arguments, which makes our app much more flexible because we've parameterized our database or mail client or what have you (don't worry, we'll see a way to make this less tedious than it sounds). Should we choose to use a different Db we need only to call our function with it. Should we find ourselves writing a new application in which we'd like to reuse this reliable function, we simply give this function whatever `Db` and `Email` we have at the time.
+Іще важливо відзначити, що ми змушені "вставляти"("inject") залежності чи передавати їх в якості аргументів, що робить нашу програму більш гнучкою, бо ми параметризували нашу базу даних чи поштовий клієнт чи будь що ще (не хвилюйтесь, ми побачимо як робити це менш неприємним ніж воно звучить). Якщо ми раптом вирішили використовувати іншу базу даних, нам лише потрібно викликати нашу функцію з цією залежністю. Якщо ми пишимо нову програму в якій ми хотіли б використати нашу надійну функцію - ми просто передаємо в неї будь-яку `Db` та `Email` яка нам потрібна в цьому випадку.
 
-In a JavaScript setting, portability could mean serializing and sending functions over a socket. It could mean running all our app code in web workers. Portability is a powerful trait.
+У JavaScript налаштування та портативність можуть значити серіалізацію та відправку функцій через сокет (socket). Це може означати, що весь код нашої програми може виконуватись у веб-воркерах (web workers). Портативність - дуже потужна риса.
 
-Contrary to "typical" methods and procedures in imperative programming rooted deep in their environment via state, dependencies, and available effects, pure functions can be run anywhere our hearts desire.
+На відміну від "типових" методів та процедур в імперативному програмуванні, глибоко занурених у їх оточення через стан, залежності та доступні ефекти, чисті функції можуть бути запущені будь-де, де наше серце тільки забажає.
 
-When was the last time you copied a method into a new app? One of my favorite quotes comes from Erlang creator, Joe Armstrong: "The problem with object-oriented languages is they’ve got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana... and the entire jungle".
+Коли в останній раз ви скопіювали метод у нову програму? Одна з моїх улюблених цитат належить творцю Ерланга Джо Армстронгу: «Проблема з об'єктно-орієнтованими мовами - це все це неявне оточення, яке вони несуть із собою. Ви хотіли банан, але те, що ви отримали, - це горилла, яка тримає банан ... і всі джунглі".
 
 ### Testable
 
