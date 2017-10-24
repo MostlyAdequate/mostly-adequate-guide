@@ -1,13 +1,13 @@
-# Summary
+# Зміст
 
-* [Chapter 1: What ever are we doing?](ch1.md)
-  * [Introductions](ch1.md#introductions)
-  * [A brief encounter](ch1.md#a-brief-encounter)
-* [Chapter 2: First Class Functions](ch2.md)
-  * [A quick review](ch2.md#a-quick-review)
-  * [Why favor first class?](ch2.md#why-favor-first-class)
-* [Chapter 3: Pure Happiness with Pure Functions](ch3.md)
-  * [Oh to be pure again](ch3.md#oh-to-be-pure-again)
+* [__Частина 1: Що ми взагалі робимо?__](ch1-uk.md)
+  * [__Вступ__](ch1-uk.md#Вступ)
+  * [__Коротке знайомство__](ch1-uk.md#Коротке-знайомство)
+* [__Частина 2: Функції Першого Класу__](ch2-uk.md)
+  * [__Короткий огляд__](ch2-uk.md#Короткий-огляд)
+  * [__Навіщо віддавати перевагу першому класу__](ch2-uk.md#Навіщо-віддавати-перевагу-першому-класу)
+* [Частина 3: Справжнє щастя з чистими функціями](ch3-uk.md)
+  * [__О, знову бути чистими__](ch3-uk.md#О-знову-бути-чистими)
   * [Side effects may include...](ch3.md#side-effects-may-include)
   * [8th grade math](ch3.md#8th-grade-math)
   * [The case for purity](ch3.md#the-case-for-purity)
