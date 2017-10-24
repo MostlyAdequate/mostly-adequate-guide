@@ -334,11 +334,11 @@ var punch = function(player, target) {
 
 Ця здатність до роздумів щодо коду надзвичайна для обробки/виправлення та розуміння коду взагалі. Насправді, ми використали цю техніку для виправлення нашої програми про чайок. Ми використовували порівняльні обгрунтовування, щоб використовувати властивості додавання та множення. І, насправді, ми будемо використовувати ці методи в усій книзі.
 
-### Parallel Code
+### Паралельний код
 
-Finally, and here's the coup de grâce, we can run any pure function in parallel since it does not need access to shared memory and it cannot, by definition, have a race condition due to some side effect.
+I нарешті переламний момент: ми можемо виконувати будь-яку чисту функцію паралельно, оскільки вона не потребує доступу до спільної пам'яті, і, згідно визначенню, вона не може бути в стані перегонів через якийсь побічний ефект.
 
-This is very much possible in a server side js environment with threads as well as in the browser with web workers though current culture seems to avoid it due to complexity when dealing with impure functions.
+Це дуже вірогідний сценарій у js-середовищі з потоками на стороні сервера, а також в браузері з веб-воркерами(пер. _web workers_), хоча існуюча культура, здається, уникає його через складність при роботі з нечистими функціями.
 
 
 ## In Summary
