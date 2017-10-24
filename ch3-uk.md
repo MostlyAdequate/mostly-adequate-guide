@@ -341,10 +341,10 @@ I нарешті переламний момент: ми можемо викон
 Це дуже вірогідний сценарій у js-середовищі з потоками на стороні сервера, а також в браузері з веб-воркерами(пер. _web workers_), хоча існуюча культура, здається, уникає його через складність при роботі з нечистими функціями.
 
 
-## In Summary
+## І в довершення
 
-We've seen what pure functions are and why we, as functional programmers, believe they are the cat's evening wear. From this point on, we'll strive to write all our functions in a pure way. We'll require some extra tools to help us do so, but in the meantime, we'll try to separate the impure functions from the rest of the pure code.
+Ми дізнались, що таке чисті функції і чому ми, як програмісти функціонального стилю, вважаємо, що вони - святкове вбрання для котиків. З цього моменту ми будемо намагатись писати всі наші функції чисто. Нам потрібні додаткові інструменти, які допоможуть нам це зробити, але, тим часом, ми намагатимемось відокремити нечисті функції від решти чистого коду.
 
-Writing programs with pure functions is a tad laborious without some extra tools in our belt. We have to juggle data by passing arguments all over the place, we're forbidden to use state, not to mention effects. How does one go about writing these masochistic programs? Let's acquire a new tool called curry.
+Без додаткових інструментів у нашому арсеналі, написання програм за допомогою чистих функцій може бути трохи трудомістким. Ми повинні жонглювати даними, передаючи аргументи всюди де тільки можливо, і при цьому нам заборонено використовувати стан програми, не кажучи вже про побічні ефекти. Як можна писати ці мазохістські програми? Давайте ознайомимось з новим інструментом під назвою **каррування**(пер. _curry_).
 
 [Частина 4: Каррування.](ch4-uk.md)
