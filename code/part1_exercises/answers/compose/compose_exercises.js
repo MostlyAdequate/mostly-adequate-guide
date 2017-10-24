@@ -36,7 +36,7 @@ var averageDollarValue = _.compose(_average, _.map(_.prop('dollar_value')));
 
 var _underscore = replace(/\W+/g, '_'); //<-- leave this alone and use to sanitize
 
-var sanitizeNames = _.map(_.compose(_underscore, toLowerCase, _.prop('name')));
+var sanitizeNames = _.map(_.compose(_underscore, _.toLower, _.prop('name')));
 
 
 // Bonus 1:

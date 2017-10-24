@@ -145,7 +145,7 @@ Pointfree code can again, help us remove needless names and keep us concise and 
 A common mistake is to compose something like `map`, a function of two arguments, without first partially applying it.
 
 ```js
-//wrong - we end up giving angry an array and we partially applied map with god knows what.
+//wrong - we end up giving angry an array and we partially applied map with who knows what.
 var latin = compose(map, angry, reverse);
 
 latin(['frog', 'eyes']);

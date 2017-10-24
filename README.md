@@ -25,6 +25,7 @@
 ### Gitbook (для більшої зручності)
 
 * [Читайте її online(англ.)](https://drboolean.gitbooks.io/mostly-adequate-guide/content/)
+* [Завантажте PDF(англ.)](https://www.gitbook.com/download/pdf/book/drboolean/mostly-adequate-guide)
 * [Завантажте EPUB(англ.)](https://www.gitbook.com/download/epub/book/drboolean/mostly-adequate-guide)
 * [Завантажте Mobi (Kindle)(англ.)](https://www.gitbook.com/download/mobi/book/drboolean/mostly-adequate-guide)
 
