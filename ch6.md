@@ -28,7 +28,7 @@ The `map` version is one expression. It does not require any order of evaluation
 
 In addition to being clearer and more concise, the map function may be optimized at will and our precious application code needn't change.
 
-For those of you who are thinking "Yes, but it's much faster to do the imperative loop", I suggest you educate yourself on how the JIT optimizes your code. Here's a [terrific video that may shed some light](https://www.youtube.com/watch?v=65-RbBwZQdU)
+For those of you who are thinking "Yes, but it's much faster to do the imperative loop", I suggest you educate yourself on how the JIT optimizes your code. Here's a [terrific video that may shed some light](https://www.youtube.com/watch?v=g0ek4vV7nEA)
 
 Here is another example.
 
