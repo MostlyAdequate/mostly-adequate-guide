@@ -8,13 +8,12 @@ The concept is simple: You can call a function with fewer arguments than it expe
 You can choose to call it all at once or simply feed in each argument piecemeal.
 
 ```js
-const
-  add       = x => y => x + y,
-  increment = add(1),
-  addTen    = add(10);
+const add = x => y => x + y;
+const increment = add(1);
+const addTen = add(10);
 
-increment(2); //=> 3
-addTen(2);    //=> 12
+increment(2); // 3
+addTen(2); // 12
 ```
 
 Here we've made a function `add` that takes one argument and returns a function. By calling it, the returned function remembers the first argument from then on via the closure. Calling it with both arguments all at once is a bit of a pain, however, so we can use a special helper function called `curry` to make defining and calling functions like this easier.
@@ -22,34 +21,32 @@ Here we've made a function `add` that takes one argument and returns a function.
 Let's set up a few curried functions for our enjoyment.
 
 ```js
-const {curry} = require('ramda');
+const { curry } = require('ramda');
 
-const
-  match   = curry((what,s)             => s.match(what)),
-  replace = curry((what,replacement,s) => s.replace(what, replacement)),
-  filter  = curry((f,xs)               => xs.filter(f)),
-  map     = curry((f,xs)               => xs.map(f));
+const match = curry((what, s) => s.match(what));
+const replace = curry((what, replacement, s) => s.replace(what, replacement));
+const filter = curry((f, xs) => xs.filter(f));
+const map = curry((f, xs) => xs.map(f));
 ```
 
 The pattern I've followed is a simple, but important one. I've strategically positioned the data we're operating on (String, Array) as the last argument. It will become clear as to why upon use.
 
 ```js
-match(/\s+/g, "hello world"); // [ ' ' ]
-match(/\s+/g)("hello world"); // [ ' ' ]
+match(/\s+/g, 'hello world'); // [ ' ' ]
+match(/\s+/g)('hello world'); // [ ' ' ]
 
 const hasSpaces = match(/\s+/g); // x => x.match(/\s+/g)
-hasSpaces("hello world");        // [ ' ' ]
-hasSpaces("spaceless");          // null
+hasSpaces('hello world'); // [ ' ' ]
+hasSpaces('spaceless'); // null
 
-filter(hasSpaces, ["tori_spelling","tori amos"]); // ["tori amos"]
+filter(hasSpaces, ['tori_spelling', 'tori amos']); // ['tori amos']
 
 const findSpaces = filter(hasSpaces); // xs => xs.filter(x => x.match(/\s+/g))
-findSpaces(["tori_spelling","tori amos"]); // ["tori amos"]
+findSpaces(['tori_spelling', 'tori amos']); // ['tori amos']
 
-const
-  noVowels = replace(/[aeiou]/ig), // (r,x) => x.replace(/[aeiou]/ig, r)
-  censored = noVowels("*");        // x => x.replace(/[aeiou]/ig, "*")
-censored("Chocolate Rain");        // 'Ch*c*l*t* R**n'
+const noVowels = replace(/[aeiou]/ig); // (r,x) => x.replace(/[aeiou]/ig, r)
+const censored = noVowels('*'); // x => x.replace(/[aeiou]/ig, '*')
+censored('Chocolate Rain'); // 'Ch*c*l*t* R**n'
 ```
 
 What's demonstrated here is the ability to "pre-load" a function with an argument or two in order to receive a new function that remembers those arguments.
@@ -63,9 +60,8 @@ Currying is useful for many things. We can make new functions just by giving our
 We also have the ability to transform any function that works on single elements into a function that works on arrays simply by wrapping it with `map`:
 
 ```js
-const
-  getChildren    = x => x.childNodes,
-  allTheChildren = map(getChildren);
+const getChildren = x => x.childNodes;
+const allTheChildren = map(getChildren);
 ```
 
 Giving a function fewer arguments than it expects is typically called *partial application*. Partially applying a function can remove a lot of boiler plate code. Consider what the above `allTheChildren` function would be with the uncurried `map` from lodash (note the arguments are in a different order):

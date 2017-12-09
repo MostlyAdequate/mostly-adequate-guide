@@ -5,7 +5,7 @@
 Here's `compose`:
 
 ```js
-const compose = (f,g) => x => f(g(x));
+const compose = (f, g) => x => f(g(x));
 ```
 
 `f` and `g` are functions and `x` is the value being "piped" through them.
@@ -13,12 +13,11 @@ const compose = (f,g) => x => f(g(x));
 Composition feels like function husbandry. You, breeder of functions, select two with traits you'd like to combine and mash them together to spawn a brand new one. Usage is as follows:
 
 ```js
-const
-  toUpperCase = x => x.toUpperCase(),
-  exclaim     = x => x + '!',
-  shout       = compose(exclaim, toUpperCase);
+const toUpperCase = x => x.toUpperCase();
+const exclaim = x => `${x}!`;
+const shout = compose(exclaim, toUpperCase);
 
-shout("send in the clowns"); //=> "SEND IN THE CLOWNS!"
+shout('send in the clowns'); // "SEND IN THE CLOWNS!"
 ```
 
 The composition of two functions returns a new function. This makes perfect sense: composing two units of some type (in this case function) should yield a new unit of that very type. You don't plug two legos together and get a lincoln log. There is a theory here, some underlying law that we will discover in due time.
@@ -32,19 +31,18 @@ const shout = x => exclaim(toUpperCase(x));
 Instead of inside to outside, we run right to left, which I suppose is a step in the left direction(boo). Let's look at an example where sequence matters:
 
 ```js
-const
-  head    = x => x[0],
-  reverse = reduce((acc, x) => [x].concat(acc), []),
-  last    = compose(head, reverse);
+const head = x => x[0];
+const reverse = reduce((acc, x) => [x].concat(acc), []);
+const last = compose(head, reverse);
 
-last(['jumpkick','roundhouse','uppercut']); //=> 'uppercut'
+last(['jumpkick', 'roundhouse', 'uppercut']); // 'uppercut'
 ```
 
 `reverse` will turn the list around while `head` grabs the initial item. This results in an effective, albeit inefficient, `last` function. The sequence of functions in the composition should be apparent here. We could define a left to right version, however, we mirror the mathematical version much more closely as it stands. That's right, composition is straight from the math books. In fact, perhaps it's time to look at a property that holds for any composition.
 
 ```js
 // associativity
-compose(f, compose(g, h)) == compose(compose(f, g), h)
+compose(f, compose(g, h)) === compose(compose(f, g), h);
 ```
 
 Composition is associative, meaning it doesn't matter how you group two of them. So, should we choose to uppercase the string, we can write:
@@ -58,14 +56,14 @@ compose(compose(toUpperCase, head), reverse);
 Since it doesn't matter how we group our calls to `compose`, the result will be the same. That allows us to write a variadic compose and use it as follows:
 
 ```js
-// previously we'd have to write two composes, but since it's associative, we can give compose as many fn's as we like and let it decide how to group them.
-const
-  arg           = ['jumpkick','roundhouse','uppercut'],
-  lastUpper     = compose(toUpperCase, head, reverse),
-  loudLastUpper = compose(exclaim, toUpperCase, head, reverse);
+// previously we'd have to write two composes, but since it's associative, 
+// we can give compose as many fn's as we like and let it decide how to group them.
+const arg = ['jumpkick', 'roundhouse', 'uppercut'];
+const lastUpper = compose(toUpperCase, head, reverse);
+const loudLastUpper = compose(exclaim, toUpperCase, head, reverse);
 
-lastUpper(arg);     //=> 'UPPERCUT'
-loudLastUpper(arg); //=> 'UPPERCUT!'
+lastUpper(arg); // 'UPPERCUT'
+loudLastUpper(arg); // 'UPPERCUT!'
 ```
 
 Applying the associative property gives us this flexibility and peace of mind that the result will be equivalent. The slightly more complicated variadic definition is included with the support libraries for this book and is the normal definition you'll find in libraries like [lodash][lodash-website], [underscore][underscore-website], and [ramda][ramda-website].
@@ -73,17 +71,18 @@ Applying the associative property gives us this flexibility and peace of mind th
 One pleasant benefit of associativity is that any group of functions can be extracted and bundled together in their very own composition. Let's play with refactoring our previous example:
 
 ```js
-const
-  loudLastUpper = compose(exclaim, toUpperCase, head, reverse);
-//-- or ---------------------------------------------------------------
-const
-  last          = compose(head, reverse),
-  loudLastUpper = compose(exclaim, toUpperCase, last);
-//-- or ---------------------------------------------------------------
-const
-  last          = compose(head, reverse),
-  angry         = compose(exclaim, toUpperCase),
-  loudLastUpper = compose(angry, last);
+const loudLastUpper = compose(exclaim, toUpperCase, head, reverse);
+
+// -- or ---------------------------------------------------------------
+
+const last = compose(head, reverse);
+const loudLastUpper = compose(exclaim, toUpperCase, last);
+
+// -- or ---------------------------------------------------------------
+
+const last = compose(head, reverse);
+const angry = compose(exclaim, toUpperCase);
+const loudLastUpper = compose(angry, last);
 
 // more variations...
 ```
@@ -108,14 +107,12 @@ Let's look at another example.
 
 ```js
 // not pointfree because we mention the data: name
-const initials =
-  name => name.split(' ').map(compose(toUpperCase, head)).join('. ');
+const initials = name => name.split(' ').map(compose(toUpperCase, head)).join('. ');
 
 // pointfree
-const initials =
-  compose(join('. '), map(compose(toUpperCase, head)), split(' '));
+const initials2 = compose(join('. '), map(compose(toUpperCase, head)), split(' '));
 
-initials("hunter stockton thompson"); // 'H. S. T'
+initials('hunter stockton thompson'); // 'H. S. T'
 ```
 
 Pointfree code can again, help us remove needless names and keep us concise and generic. Pointfree is a good litmus test for functional code as it lets us know we've got small functions that take input to output. One can't compose a while loop, for instance. Be warned, however, pointfree is a double-edged sword and can sometimes obfuscate intention. Not all functional code is pointfree and that is O.K. We'll shoot for it where we can and stick with normal functions otherwise.
@@ -124,16 +121,15 @@ Pointfree code can again, help us remove needless names and keep us concise and 
 A common mistake is to compose something like `map`, a function of two arguments, without first partially applying it.
 
 ```js
-//wrong - we end up giving angry an array and we partially applied map with who knows what.
+// wrong - we end up giving angry an array and we partially applied map with who knows what.
 const latin = compose(map, angry, reverse);
 
-latin(["frog","eyes"]); // error
-
+latin(['frog', 'eyes']); // error
 
 // right - each function expects 1 argument.
 const latin = compose(map(angry), reverse);
 
-latin(["frog", "eyes"]); // ["EYES!", "FROG!"])
+latin(['frog', 'eyes']); // ['EYES!', 'FROG!'])
 ```
 
 If you are having trouble debugging a composition, we can use this helpful, but impure trace function to see what's going on.
@@ -144,8 +140,12 @@ const trace = curry((tag, x) => {
   return x;
 });
 
-const dasherize =
-  compose(join('-'), toLower, split(' '), replace(/\s{2,}/ig, ' '));
+const dasherize = compose(
+  join('-'),
+  toLower,
+  split(' '),
+  replace(/\s{2,}/ig, ' '),
+);
 
 dasherize('The world is a vampire');
 // TypeError: Cannot read property 'apply' of undefined
@@ -154,16 +154,27 @@ dasherize('The world is a vampire');
 Something is wrong here, let's `trace`
 
 ```js
-const dasherize =
-  compose(join('-'), toLower, trace("after split"), split(' '), replace(/\s{2,}/ig, ' '))
+const dasherize = compose(
+  join('-'),
+  toLower,
+  trace('after split'),
+  split(' '),
+  replace(/\s{2,}/ig, ' '),
+);
+
+dasherize('The world is a vampire');
 // after split [ 'The', 'world', 'is', 'a', 'vampire' ]
 ```
 
 Ah! We need to `map` this `toLower` since it's working on an array.
 
 ```js
-const dasherize =
-  compose(join('-'), map(toLower), split(' '), replace(/\s{2,}/ig, ' '));
+const dasherize = compose(
+  join('-'),
+  map(toLower),
+  split(' '),
+  replace(/\s{2,}/ig, ' '),
+);
 
 dasherize('The world is a vampire'); // 'the-world-is-a-vampire'
 ```
@@ -208,10 +219,9 @@ Here is an image demonstrating composition:
 Here is a concrete example in code:
 
 ```js
-const
-  g = x => x.length,
-  f = x => x === 4,
-  isFourLetterWord = compose(f, g);
+const g = x => x.length;
+const f = x => x === 4;
+const isFourLetterWord = compose(f, g);
 ```
 
 **A distinguished morphism called identity**
@@ -227,7 +237,7 @@ You might ask yourself "What in the bloody hell is that useful for?". We'll make
 
 ```js
 // identity
-compose(id, f) == compose(f, id) == f;
+compose(id, f) === compose(f, id) === f;
 // true
 ```
 

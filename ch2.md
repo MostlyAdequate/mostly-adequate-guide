@@ -6,16 +6,15 @@ When we say functions are "first class", we mean they are just like everyone els
 That is JavaScript 101, but worth mentioning since a quick code search on github will reveal the collective evasion, or perhaps widespread ignorance of this concept. Shall we go for a feigned example? We shall.
 
 ```js
-const
-  hi       = name => `Hi ${name}`,
-  greeting = name => hi(name);
+const hi = name => `Hi ${name}`;
+const greeting = name => hi(name);
 ```
 
 Here, the function wrapper around `hi` in `greeting` is completely redundant. Why? Because functions are *callable* in JavaScript. When `hi` has the `()` at the end it will run and return a value. When it does not, it simply returns the function stored in the variable. Just to be sure, have a look yourself:
 
 
 ```js
-hi;          // name => `Hi ${name}`
+hi; // name => `Hi ${name}`
 hi("jonas"); // "Hi jonas"
 ```
 
@@ -23,9 +22,7 @@ Since `greeting` is merely in turn calling `hi` with the very same argument, we 
 
 ```js
 const greeting = hi;
-
-greeting("times");
-// "Hi times"
+greeting("times"); // "Hi times"
 ```
 
 In other words, `hi` is already a function that expects one argument, why place another function around it that simply calls `hi` with the same bloody argument? It doesn't make any damn sense. It's like donning your heaviest parka in the dead of July just to blast the air and demand an ice lolly.
@@ -35,12 +32,11 @@ It is obnoxiously verbose and, as it happens, bad practice to surround a functio
 A solid understanding of this is critical before moving on, so let's examine a few more fun examples excavated from the library of npm packages.
 
 ```js
-const
-  // ignorant
-  getServerStuff = callback => ajaxCall(json => callback(json)),
+// ignorant
+const getServerStuff = callback => ajaxCall(json => callback(json));
 
-  // enlightened
-  getServerStuff = ajaxCall;
+// enlightened
+const getServerStuff = ajaxCall;
 ```
 
 The world is littered with ajax code exactly like this. Here is the reason both are equivalent:
@@ -63,11 +59,11 @@ And that, folks, is how it is done. Once more so that we understand why I'm bein
 
 ```js
 const BlogController = {
-  index(posts)       { return Views.index(posts);     },
-  show(post)         { return Views.show(post);       },
-  create(attrs)      { return Db.create(attrs);       },
-  update(post,attrs) { return Db.update(post, attrs); },
-  destroy(post)      { return Db.destroy(post);       }
+  index(posts) { return Views.index(posts); },
+  show(post) { return Views.show(post); },
+  create(attrs) { return Db.create(attrs); },
+  update(post, attrs) { return Db.update(post, attrs); },
+  destroy(post) { return Db.destroy(post); },
 };
 ```
 
@@ -75,11 +71,11 @@ This ridiculous controller is 99% fluff. We could either rewrite it as:
 
 ```js
 const BlogController = {
-  index:   Views.index,
-  show:    Views.show,
-  create:  Db.create,
-  update:  Db.update,
-  destroy: Db.destroy
+  index: Views.index,
+  show: Views.show,
+  create: Db.create,
+  update: Db.update,
+  destroy: Db.destroy,
 };
 ```
 
@@ -98,16 +94,14 @@ httpGet('/post/2', json => renderPost(json));
 If `httpGet` were to change to send a possible `err`, we would need to go back and change the "glue".
 
 ```js
-// go back to every httpGet call in the application and explicitly
-// pass err along.
+// go back to every httpGet call in the application and explicitly pass err along.
 httpGet('/post/2', (json, err) => renderPost(json, err));
 ```
 
 Had we written it as a first class function, much less would need to change:
 
 ```js
-// renderPost is called from within httpGet with however many
-// arguments it wants
+// renderPost is called from within httpGet with however many arguments it wants
 httpGet('/post/2', renderPost);
 ```
 
@@ -116,14 +110,12 @@ Besides the removal of unnecessary functions, we must name and reference argumen
 Having multiple names for the same concept is a common source of confusion in projects. There is also the issue of generic code. For instance, these two functions do exactly the same thing, but one feels infinitely more general and reusable:
 
 ```js
-const
-  // specific to our current blog
-  validArticles =
-    articles =>
-      articles.filter(article => article !== null && article !== undefined),
+// specific to our current blog
+const validArticles = articles =>
+  articles.filter(article => article !== null && article !== undefined),
 
-  // vastly more relevant for future projects
-  compact = xs => xs.filter(x => x !== null && x !== undefined);
+// vastly more relevant for future projects
+const compact = xs => xs.filter(x => x !== null && x !== undefined);
 ```
 
 By using specific naming, we've seemingly tied ourselves to specific data (in this case `articles`). This happens quite a bit and is a source of much reinvention.

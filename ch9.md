@@ -9,20 +9,17 @@ Before we go any further, I have a confession to make: I haven't been fully hone
 What's important here is the ability to drop any value in our type and start mapping away.
 
 ```js
-IO.of("tetris").map(concat(" master"));
-// IO("tetris master")
+IO.of('tetris').map(concat(' master'));
+// IO('tetris master')
 
 Maybe.of(1336).map(add(1));
 // Maybe(1337)
 
-Task.of([{id:2},{id:3}]).map(prop('id'));
+Task.of([{ id: 2 }, { id: 3 }]).map(prop('id'));
 // Task([2,3])
 
-Either
-  .of("The past, present and future walk into a bar...")
-  .map(concat("it was tense."));
-
-// Right("The past, present and future walk into a bar...it was tense.")
+Either.of('The past, present and future walk into a bar...').map(concat('it was tense.'));
+// Right('The past, present and future walk into a bar...it was tense.')
 ```
 
 If you recall, `IO` and `Task`'s constructors expect a function as their argument, but `Maybe` and `Either` do not. The motivation for this interface is a common, consistent way to place a value into our functor without the complexities and specific demands of constructors. The term "default minimal context" lacks precision, yet captures the idea well: we'd like to lift any value in our type and `map` away per usual with the expected behaviour of whichever functor.
@@ -41,59 +38,56 @@ To avoid the `new` keyword, there are several standard JavaScript tricks or libr
 You see, in addition to space burritos (if you've heard the rumors), monads are like onions. Allow me to demonstrate with a common situation:
 
 ```js
-// Support
-// ===========================
-const fs = require('fs')
+const fs = require('fs');
 
-//    readFile :: String -> IO String
+// readFile :: String -> IO String
 const readFile = filename => new IO(_ => fs.readFileSync(filename, 'utf-8'));
 
-//    print :: String -> IO String
-const print =
-  x => new IO(_ => {
-    console.log(x);
-    return x;
-  });
+// print :: String -> IO String
+const print = x => new IO((_) => {
+  console.log(x);
+  return x;
+});
 
-// Example
-// ===========================
-//  cat :: String -> IO (IO String)
-const cat = compose(map(print), readFile)
+// cat :: String -> IO (IO String)
+const cat = compose(map(print), readFile);
 
-cat(".git/config")
-// IO(IO("[core]\nrepositoryformatversion = 0\n"))
+cat('.git/config');
+// IO(IO('[core]\nrepositoryformatversion = 0\n'))
 ```
 
 What we've got here is an `IO` trapped inside another `IO` because `print` introduced a second `IO` during our `map`. To continue working with our string, we must `map(map(f))` and to observe the effect, we must `unsafePerformIO().unsafePerformIO()`.
 
 ```js
-//    cat :: String -> IO (IO String)
-const cat = compose(map(print), readFile)
+// cat :: String -> IO (IO String)
+const cat = compose(map(print), readFile);
 
-//    catFirstChar :: String -> IO (IO String)
-const catFirstChar = compose(map(map(head)), cat)
+// catFirstChar :: String -> IO (IO String)
+const catFirstChar = compose(map(map(head)), cat);
 
-catFirstChar(".git/config")
-// IO(IO("["))
+catFirstChar('.git/config');
+// IO(IO('['))
 ```
 
 While it is nice to see that we have two effects packaged up and ready to go in our application, it feels a bit like working in two hazmat suits and we end up with an uncomfortably awkward API. Let's look at another situation:
 
 ```js
-//    safeProp :: Key -> {Key: a} -> Maybe a
-const safeProp = curry((x, obj) => Maybe.of(obj[x]))
+// safeProp :: Key -> {Key: a} -> Maybe a
+const safeProp = curry((x, obj) => Maybe.of(obj[x]));
 
-//    safeHead :: [a] -> Maybe a
-const safeHead = safeProp(0)
+// safeHead :: [a] -> Maybe a
+const safeHead = safeProp(0);
 
-//    firstAddressStreet :: User -> Maybe (Maybe (Maybe Street) )
+// firstAddressStreet :: User -> Maybe (Maybe (Maybe Street))
 const firstAddressStreet = compose(
-  map(map(safeProp('street'))), map(safeHead), safeProp('addresses')
-)
-
-firstAddressStreet(
-  {addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N"}]}
+  map(map(safeProp('street'))),
+  map(safeHead),
+  safeProp('addresses'),
 );
+
+firstAddressStreet({
+  addresses: [{ street: { name: 'Mulburry', number: 8402 }, postcode: 'WC2N' }],
+});
 // Maybe(Maybe(Maybe({name: 'Mulburry', number: 8402})))
 ```
 
@@ -102,23 +96,23 @@ Again, we see this nested functor situation where it's neat to see there are thr
 I said monads are like onions because tears well up as we peel back layer of the nested functor with `map` to get at the inner value. We can dry our eyes, take a deep breath, and use a method called `join`.
 
 ```js
-const mmo = Maybe.of(Maybe.of("nunchucks"));
-// Maybe(Maybe("nunchucks"))
+const mmo = Maybe.of(Maybe.of('nunchucks'));
+// Maybe(Maybe('nunchucks'))
 
 mmo.join();
-// Maybe("nunchucks")
+// Maybe('nunchucks')
 
-const ioio = IO.of(_ => IO.of(_ => "pizza"));
-// IO(IO("pizza"))
+const ioio = IO.of(_ => IO.of(_ => 'pizza'));
+// IO(IO('pizza'))
 
 ioio.join();
-// IO("pizza")
+// IO('pizza')
 
-const ttt = Task.of(Task.of(Task.of("sewers")));
-// Task(Task(Task("sewers")));
+const ttt = Task.of(Task.of(Task.of('sewers')));
+// Task(Task(Task('sewers')));
 
 ttt.join();
-// Task(Task("sewers"))
+// Task(Task('sewers'))
 ```
 
 If we have two layers of the same type, we can smash them together with `join`. This ability to join together, this functor matrimony, is what makes a monad a monad. Let's inch toward the full definition with something a little more accurate:
@@ -128,27 +122,30 @@ If we have two layers of the same type, we can smash them together with `join`. 
 Any functor which defines a `join` method, has an `of` method, and obeys a few laws is a monad. Defining `join` is not too difficult so let's do so for `Maybe`:
 
 ```js
-Maybe.prototype.join = function() {
-  return this.isNothing() ? Maybe.of(null) : this.__value;
-}
+Maybe.prototype.join = function join() {
+  return this.isNothing() ? Maybe.of(null) : this.$value;
+};
 ```
 
-There, simple as consuming one's twin in the womb. If we have a `Maybe(Maybe(x))` then `.__value` will just remove the unnecessary extra layer and we can safely `map` from there. Otherwise, we'll just have the one `Maybe` as nothing would have been mapped in the first place.
+There, simple as consuming one's twin in the womb. If we have a `Maybe(Maybe(x))` then `.$value` will just remove the unnecessary extra layer and we can safely `map` from there. Otherwise, we'll just have the one `Maybe` as nothing would have been mapped in the first place.
 
 Now that we have a `join` method, let's sprinkle some magic monad dust over the `firstAddressStreet` example and see it in action:
 
 ```js
-//    join :: Monad m => m (m a) -> m a
+// join :: Monad m => m (m a) -> m a
 const join = mma => mma.join();
 
-//  firstAddressStreet :: User -> Maybe Street
+// firstAddressStreet :: User -> Maybe Street
 const firstAddressStreet = compose(
-  join, map(safeProp('street')), join, map(safeHead), safeProp('addresses')
+  join,
+  map(safeProp('street')),
+  join,
+  map(safeHead), safeProp('addresses'),
 );
 
-firstAddressStreet(
-  {addresses: [{street: {name: 'Mulburry', number: 8402}, postcode: "WC2N" }]}
-);
+firstAddressStreet({
+  addresses: [{ street: { name: 'Mulburry', number: 8402 }, postcode: 'WC2N' }],
+});
 // Maybe({name: 'Mulburry', number: 8402})
 ```
 
@@ -161,25 +158,28 @@ IO.prototype.join = _ => this.unsafePerformIO();
 Again, we simply remove one layer. Mind you, we have not thrown out purity, but merely removed one layer of excess shrink wrap.
 
 ```js
-//    log :: a -> IO a
-const log =
-  x => IO.of(_ => {
-    console.log(x);
-    return x;
-  });
+// log :: a -> IO a
+const log = x => IO.of((_) => {
+  console.log(x);
+  return x;
+});
 
-//    setStyle :: Selector -> CSSProps -> IO DOM
+// setStyle :: Selector -> CSSProps -> IO DOM
 const setStyle =
   curry((sel, props) => IO.of(_ => jQuery(sel).css(props)));
 
-//    getItem :: String -> IO String
+// getItem :: String -> IO String
 const getItem = key => IO.of(_ => localStorage.getItem(key));
 
-//    applyPreferences :: String -> IO DOM
+// applyPreferences :: String -> IO DOM
 const applyPreferences = compose(
-  join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem
+  join,
+  map(setStyle('#main')),
+  join,
+  map(log),
+  map(JSON.parse),
+  getItem,
 );
-
 
 applyPreferences('preferences').unsafePerformIO();
 // Object {backgroundColor: "green"}
@@ -195,10 +195,13 @@ applyPreferences('preferences').unsafePerformIO();
 You might have noticed a pattern. We often end up calling `join` right after a `map`. Let's abstract this into a function called `chain`.
 
 ```js
-//    chain :: Monad m => (a -> m b) -> m a -> m b
-const chain = curry((f, m) =>
-  m.map(f).join(); // or compose(join, map(f))(m)
-);
+// chain :: Monad m => (a -> m b) -> m a -> m b
+const chain = curry((f, m) => m.map(f).join());
+
+// or
+
+// chain :: Monad m => (a -> m b) -> m a -> m b
+const chain = f => compose(join, map(f));
 ```
 
 We'll just bundle up this map/join combo into a single function. If you've read about monads previously, you might have seen `chain` called `>>=` (pronounced bind) or `flatMap` which are all aliases for the same concept. I personally think `flatMap` is the most accurate name, but we'll stick with `chain` as it's the widely accepted name in JS. Let's refactor the two examples above with `chain`:
@@ -206,39 +209,52 @@ We'll just bundle up this map/join combo into a single function. If you've read 
 ```js
 // map/join
 const firstAddressStreet = compose(
-  join, map(safeProp('street')), join, map(safeHead), safeProp('addresses')
+  join,
+  map(safeProp('street')),
+  join,
+  map(safeHead),
+  safeProp('addresses'),
 );
 
 // chain
 const firstAddressStreet = compose(
-  chain(safeProp('street')), chain(safeHead), safeProp('addresses')
+  chain(safeProp('street')),
+  chain(safeHead),
+  safeProp('addresses'),
 );
 
 // map/join
 const applyPreferences = compose(
-  join, map(setStyle('#main')), join, map(log), map(JSON.parse), getItem
+  join,
+  map(setStyle('#main')),
+  join,
+  map(log),
+  map(JSON.parse),
+  getItem,
 );
 
 // chain
 const applyPreferences = compose(
-  chain(setStyle('#main')), chain(log), map(JSON.parse), getItem
+  chain(setStyle('#main')),
+  chain(log),
+  map(JSON.parse),
+  getItem,
 );
 ```
 
 I swapped out any `map/join` with our new `chain` function to tidy things up a bit. Cleanliness is nice and all, but there's more to `chain` than meets the eye - it's more of tornado than a vacuum. Because `chain` effortlessly nests effects, we can capture both *sequence* and *variable assignment* in a purely functional way.
 
 ```js
-// getJSON       :: Url -> Params -> Task JSON
-// querySelector :: Selector -> IO DOM
-
-getJSON('/authenticate', {username: 'stale', password: 'crackers'})
-  .chain(user => getJSON('/friends', {user_id: user.id}));
+// getJSON :: Url -> Params -> Task JSON
+getJSON('/authenticate', { username: 'stale', password: 'crackers' })
+  .chain(user => getJSON('/friends', { user_id: user.id }));
 // Task([{name: 'Seimith', id: 14}, {name: 'Ric', id: 39}]);
 
-querySelector("input.username")
-  .chain(({value: uname}) => querySelector("input.email")
-  .chain(({value: email}) => IO.of(`Welcome ${uname} prepare for spam at ${email}`)));
-// IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net");
+// querySelector :: Selector -> IO DOM
+querySelector('input.username')
+  .chain(({ value: uname }) => querySelector('input.email'))
+  .chain(({ value: email }) => IO.of(`Welcome ${uname} prepare for spam at ${email}`));
+// IO('Welcome Olivia prepare for spam at olivia@tremorcontrol.net');
 
 Maybe.of(3)
   .chain(three => Maybe.of(2).map(add(three)));
@@ -257,16 +273,15 @@ Anyways, let's get to the examples above. In the first example, we see two `Task
 Next, we use `querySelector` to find a few different inputs and create a welcoming message. Notice how we have access to both `uname` and `email` at the innermost function - this is functional variable assignment at its finest. Since `IO` is graciously lending us its value, we are in charge of putting it back how we found it - we wouldn't want to break its trust (and our program). `IO.of` is the perfect tool for the job and it's why Pointed is an important prerequisite to the Monad interface. However, we could choose to `map` as that would also return the correct type:
 
 ```js
-querySelector("input.username")
-  .chain(({value: uname}) =>
-    querySelector("input.email")
-      .map(({value: email}) => `Welcome ${uname} prepare for spam at ${uname}`)));
-// IO("Welcome Olivia prepare for spam at olivia@tremorcontrol.net");
+querySelector('input.username').chain(({ value: uname }) =>
+  querySelector('input.email').map(({ value: email }) =>
+    `Welcome ${uname} prepare for spam at ${uname}`));
+// IO('Welcome Olivia prepare for spam at olivia@tremorcontrol.net');
 ```
 
 Finally, we have two examples using `Maybe`. Since `chain` is mapping under the hood, if any value is `null`, we stop the computation dead in its tracks.
 
-Don't worry if these examples are hard to grasp at first. Play with them. Poke them with a stick. Smash them to bits and reassemble. Remember to `map` when returning a "normal" value and `chain` when we're returning another functor.
+Don't worry if these examples are hard to grasp at first. Play with them. Poke them with a stick. Smash them to bits and reassemble. Remember to `map` when returning a "normal" value and `chain` when we're returning another functor. In the next chapter, we'll approach `Applicatives` and see nice tricks to make this kind of expressions nicer and highly readable. 
 
 As a reminder, this does not work with two different nested types. Functor composition and later, monad transformers, can help us in that situation.
 
@@ -281,8 +296,7 @@ Let's read a file, then upload it directly afterward:
 ```js
 // readFile :: Filename -> Either String (Task Error String)
 // httpPost :: String -> Task Error JSON
-
-//    upload :: String -> Either String (Task Error JSON)
+// upload :: String -> Either String (Task Error JSON)
 const upload = compose(map(chain(httpPost('/uploads'))), readFile);
 ```
 
@@ -293,15 +307,15 @@ All of this is achieved in one linear left to right flow. This is all pure and d
 For contrast, let's look at the standard imperative way to pull this off:
 
 ```js
-//    upload :: String -> (String -> a) -> Void
+// upload :: String -> (String -> a) -> Void
 const upload = (filename, callback) => {
   if (!filename) {
-    throw "You need a filename!";
+    throw new Error('You need a filename!');
   } else {
-    readFile(filename, (err, contents) => {
-      if (err) throw err;
-      httpPost(contents, (err, json) => {
-        if (err) throw err;
+    readFile(filename, (errF, contents) => {
+      if (errF) throw err;
+      httpPost(contents, (errH, json) => {
+        if (errH) throw errH;
         callback(json);
       });
     });
@@ -317,7 +331,7 @@ The first law we'll look at is associativity, but perhaps not in the way you're 
 
 ```js
 // associativity
-compose(join, map(join)) == compose(join, join)
+compose(join, map(join)) === compose(join, join);
 ```
 
 These laws get at the nested nature of monads so associativity focuses on joining the inner or outer types first to achieve the same result. A picture might be more instructive:
@@ -330,7 +344,7 @@ The second law is similar:
 
 ```js
 // identity for all (M a)
-compose(join, of) == compose(join, map(of)) == id
+compose(join, of) === compose(join, map(of)) === id;
 ```
 
 It states that, for any monad `M`, `of` and `join` amounts to `id`. We can also `map(of)` and attack it from the inside out. We call this "triangle identity" because it makes such a shape when visualized:
@@ -347,13 +361,13 @@ Now, I've seen these laws, identity and associativity, somewhere before... Hold 
 const mcompose = (f, g) => compose(chain(f), g);
 
 // left identity
-mcompose(M, f) == f
+mcompose(M, f) === f;
 
 // right identity
-mcompose(f, M) == f
+mcompose(f, M) === f;
 
 // associativity
-mcompose(mcompose(f, g), h) == mcompose(f, mcompose(g, h))
+mcompose(mcompose(f, g), h) === mcompose(f, mcompose(g, h));
 ```
 
 They are the category laws after all. Monads form a category called the "Kleisli category" where all objects are monads and morphisms are chained functions. I don't mean to taunt you with bits and bobs of category theory without much explanation of how the jigsaw fits together. The intention is to scratch the surface enough to show the relevance and spark some interest while focusing on the practical properties we can use each day.

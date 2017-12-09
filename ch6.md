@@ -13,7 +13,7 @@ For some folks, myself included, it's hard to grasp the concept of declarative c
 ```js
 // imperative
 const makes = [];
-for (i = 0; i < cars.length; i++) {
+for (let i = 0; i < cars.length; i += 1) {
   makes.push(cars[i].make);
 }
 
@@ -33,10 +33,10 @@ Here is another example.
 
 ```js
 // imperative
-const authenticate = form => {
+const authenticate = (form) => {
   const user = toUser(form);
   return logIn(user);
-}
+};
 
 // declarative
 const authenticate = compose(logIn, toUser);
@@ -70,15 +70,14 @@ We will now build an example application in a declarative, composable way. We'll
 And here's the main.js skeleton:
 
 ```js
-const
-  CDN    = s => `https://cdnjs.cloudflare.com/ajax/libs/${s}`,
-  ramda  = CDN('ramda/0.21.0/ramda.min'),
-  jquery = CDN('jquery/3.0.0-rc1/jquery.min');
+const CDN = s => `https://cdnjs.cloudflare.com/ajax/libs/${s}`;
+const ramda = CDN('ramda/0.21.0/ramda.min');
+const jquery = CDN('jquery/3.0.0-rc1/jquery.min');
 
-requirejs.config({paths:{ramda,jquery}});
-require(['jquery','ramda'], ($,{compose,curry,map,prop}) => {
+requirejs.config({ paths: { ramda, jquery } });
+require(['jquery', 'ramda'], ($, { compose, curry, map, prop }) => {
   // app goes here
-};
+});
 ```
 
 We're pulling in [ramda](http://ramdajs.com) instead of lodash or some other utility library. It includes `compose`, `curry`, and more. I've used requirejs, which may seem like overkill, but we'll be using it throughout the book and consistency is key. Also, I've started us off with our nice `trace` function for easy debugging.
@@ -93,12 +92,11 @@ Now that that's out of the way, on to the spec. Our app will do 4 things.
 There are 2 impure actions mentioned above. Do you see them? Those bits about getting data from the flickr api and placing it on the screen. Let's define those first so we can quarantine them.
 
 ```js
-const
-  trace  = curry((tag, x) => { console.log(tag, x); return x; }),
-  Impure = {
-    getJSON: curry((callback,url) => $.getJSON(url, callback)),
-    setHtml: curry((sel,html)     => $(sel).html(html))
-  };
+const trace = curry((tag, x) => { console.log(tag, x); return x; });
+const Impure = {
+  getJSON: curry((callback, url) => $.getJSON(url, callback)),
+  setHtml: curry((sel, html) => $(sel).html(html)),
+};
 ```
 
 Here we've simply wrapped jQuery's methods to be curried and we've swapped the arguments to a more favorable position. I've namespaced them with `Impure` so we know these are dangerous functions. In a future example, we will make these two functions pure.
@@ -106,11 +104,10 @@ Here we've simply wrapped jQuery's methods to be curried and we've swapped the a
 Next we must construct a url to pass to our `Impure.getJSON` function.
 
 ```js
-const
-  host  = 'api.flickr.com',
-  path  = '/services/feeds/photos_public.gne',
-  query = t => `?tags=${t}&format=json&jsoncallback=?`,
-  url   = t => `https://${host+path+query(t)}`;
+const host = 'api.flickr.com';
+const path = '/services/feeds/photos_public.gne';
+const query = t => `?tags=${t}&format=json&jsoncallback=?`;
+const url = t => `https://${host}${path}${query(t)}`;
 ```
 
 There are fancy and overly complex ways of writing `url` pointfree using monoids(we'll learn about these later) or combinators. We've chosen to stick with a readable version and assemble this string in the normal pointful fashion.
@@ -118,9 +115,8 @@ There are fancy and overly complex ways of writing `url` pointfree using monoids
 Let's write an app function that makes the call and places the contents on the screen.
 
 ```js
-const app = compose(Impure.getJSON(trace("response")), url);
-
-app("cats");
+const app = compose(Impure.getJSON(trace('response')), url);
+app('cats');
 ```
 
 This calls our `url` function, then passes the string to our `getJSON` function, which has been partially applied with `trace`. Loading the app will show the response from the api call in the console.
@@ -132,23 +128,21 @@ We'd like to construct images out of this json. It looks like the `mediaUrls` ar
 Anyhow, to get at these nested properties we can use a nice universal getter function from ramda called `prop`. Here's a homegrown version so you can see what's happening:
 
 ```js
-const prop = curry((property, object) => object[property])
+const prop = curry((property, object) => object[property]);
 ```
 
 It's quite dull actually. We just use `[]` syntax to access a property on whatever object. Let's use this to get at our `mediaUrls`.
 
 ```js
-const
-  mediaUrl  = compose(prop('m'), prop('media')),
-  mediaUrls = compose(map(mediaUrl), prop('items'));
+const mediaUrl = compose(prop('m'), prop('media'));
+const mediaUrls = compose(map(mediaUrl), prop('items'));
 ```
 
 Once we gather the `items`, we must `map` over them to extract each media url. This results in a nice array of `mediaUrls`. Let's hook this up to our app and print them on the screen.
 
 ```js
-const
-  render = compose(Impure.setHtml("js-main"), mediaUrls),
-  app    = compose(Impure.getJSON(render), url);
+const render = compose(Impure.setHtml('js-main'), mediaUrls);
+const app = compose(Impure.getJSON(render), url);
 ```
 
 All we've done is make a new composition that will call our `mediaUrls` and set the body html with them. We've replaced the `trace` call with `render` now that we have something to render besides raw json. This will crudely display our `mediaUrls` directly in the body.
@@ -156,16 +150,15 @@ All we've done is make a new composition that will call our `mediaUrls` and set 
 Our final step is to turn these `mediaUrls` into bonafide `images`. In a bigger application, we'd use a template/dom library like Handlebars or React. For this application though, we only need an img tag so let's stick with jQuery.
 
 ```js
-const img = url => $('<img />', {src: url});
+const img = url => $('<img />', { src: url });
 ```
 
 jQuery's `html` method will accept an array of tags. We only have to transform our mediaUrls into images and send them along to `setHtml`.
 
 ```js
-const
-  images = compose(map(img), mediaUrls),
-  render = compose(Impure.setHtml("body"), images),
-  app    = compose(Impure.getJSON(render), url);
+const images = compose(map(img), mediaUrls);
+const render = compose(Impure.setHtml('body'), images);
+const app = compose(Impure.getJSON(render), url);
 ```
 
 And we're done!
@@ -184,47 +177,43 @@ There is an optimization available - we map over each item to turn it into a med
 
 ```js
 // map's composition law
-compose(map(f), map(g)) == map(compose(f, g))
+compose(map(f), map(g)) === map(compose(f, g));
 ```
 
 We can use this property to optimize our code. Let's have a principled refactor.
 
 ```js
 // original code
-const
-  mediaUrl  = compose(prop('m'), prop('media')),
-  mediaUrls = compose(map(mediaUrl), prop('items')),
-  images    = compose(map(img), mediaUrls);
+const mediaUrl = compose(prop('m'), prop('media'));
+const mediaUrls = compose(map(mediaUrl), prop('items'));
+const images = compose(map(img), mediaUrls);
 ```
 
 Let's line up our maps. We can inline the call to `mediaUrls` in `images` thanks to equational reasoning and purity.
 
 ```js
-const
-  mediaUrl = compose(prop('m'), prop('media')),
-  images   = compose(map(img), map(mediaUrl), prop('items'));
+const mediaUrl = compose(prop('m'), prop('media'));
+const images = compose(map(img), map(mediaUrl), prop('items'));
 ```
 
 Now that we've lined up our `map`'s we can apply the composition law.
 
 ```js
 /*
-  compose(map(f  ), map(g       )) = map(compose(f  , g       ))
-  compose(map(img), map(mediaUrl)) = map(compose(img, mediaUrl))
+compose(map(f), map(g)) === map(compose(f, g));
+compose(map(img), map(mediaUrl)) === map(compose(img, mediaUrl));
 */
 
-const
-  mediaUrl = compose(prop('m'), prop('media')),
-  images   = compose(map(compose(img, mediaUrl)), prop('items'));
+const mediaUrl = compose(prop('m'), prop('media'));
+const images = compose(map(compose(img, mediaUrl)), prop('items'));
 ```
 
 Now the bugger will only loop once while turning each item into an img. Let's just make it a little more readable by extracting the function out.
 
 ```js
-const
-  mediaUrl   = compose(prop('m'), prop('media')),
-  mediaToImg = compose(img, mediaUrl),
-  images     = compose(map(mediaToImg), prop('items'));
+const mediaUrl = compose(prop('m'), prop('media'));
+const mediaToImg = compose(img, mediaUrl);
+const images = compose(map(mediaToImg), prop('items'));
 ```
 
 ## In Summary
