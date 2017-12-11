@@ -38,7 +38,7 @@ function compose(...fns) {
 
     return $args[0];
   };
-};
+}
 ```
 
 ## curry

@@ -89,13 +89,60 @@ Let's acquire another essential tool called `compose`.
 
 ## Exercises
 
-A quick word before we start. We'll use a library called *ramda* which curries every function by default. Alternatively you may choose to use *lodash-fp* which does the same and is written/maintained by the creator of lodash. Both will work just fine and it is a matter of preference.
+The following exercises can be done directely in-browser if you're reading from
+[gitbook](https://drboolean.gitbooks.io/mostly-adequate-guide/in-summary). Should you prefer to
+do them directly in your JavaScript REPL, clone the repository and look into the `exercises`
+  folder. Each chapter is built as an `npm` module. There are unit tests to run against your
+  exercises as you code them (via `npm test`).
 
-[ramda](http://ramdajs.com)
-[lodash-fp](https://github.com/lodash/lodash-fp)
+Helper functions used within exercises can be found in the [Appendix A](./appendix_a.md) with
+their implementation. Note that you shouldn't need anything that isn't mentioned in the
+exercise prelude ;). 
 
-There are [unit tests](https://github.com/DrBoolean/mostly-adequate-guide/tree/master/code/part1_exercises) to run against your exercises as you code them, or you can just copy-paste into a JavaScript REPL for the early exercises if you wish.
+{% exercise %}  
+Refactor to remove all arguments by partially applying the function.  
 
-Answers are provided with the code in the [repository for this book](https://github.com/DrBoolean/mostly-adequate-guide/tree/master/code/part1_exercises/answers)
+{% initial src="./exercises/ch4/exercise_a.js" %}  
+```js  
+const words = str => split(' ', str);  
+```  
 
-[include](./code/curry/exercises.js)
+{% solution src="./exercises/ch4/solution_a.js" %}  
+{% validation src="./exercises/ch4/validation_a.js" %}  
+{% context src="./exercises/support.js" %}  
+{% endexercise %}  
+
+
+{% exercise %}  
+Refactor to remove all arguments by partially applying the functions.  
+
+{% initial src="./exercises/ch4/exercise_b.js" %}  
+```js  
+const filterQs = xs => filter(x => match(/q/i, x), xs);
+```  
+
+{% solution src="./exercises/ch4/solution_b.js" %}   
+{% validation src="./exercises/ch4/validation_b.js" %}  
+{% context src="./exercises/support.js" %}  
+{% endexercise %}  
+
+
+Considering the following function:
+
+```js  
+const keepHighest = (x, y) => (x >= y ? x : y);  
+```  
+
+{% exercise %}  
+Refactor `max` to not reference any arguments using the helper function `keepHighest`.  
+
+
+{% initial src="./exercises/ch4/exercise_c.js" %}  
+```js  
+const max = xs => reduce((acc, x) => (x >= acc ? x : acc), -Infinity, xs);  
+```  
+
+{% solution src="./exercises/ch4/solution_c.js" %}   
+{% validation src="./exercises/ch4/validation_c.js" %}  
+{% context src="./exercises/support.js" %}  
+{% endexercise %}  
