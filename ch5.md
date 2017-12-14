@@ -259,7 +259,75 @@ We are now at a point where it would serve us well to see some of this in practi
 
 ## Exercises
 
-[include](./code/compose/exercises.js)
+In each following exercise, we'll consider Car objects with the following shape:
+
+```js
+{
+  name: 'Aston Martin One-77',
+  horsepower: 750,
+  dollar_value: 1850000,
+  in_stock: true,
+}
+```
+
+
+{% exercise %}    
+Use `compose()` to rewrite the function below.   
+  
+{% initial src="./exercises/ch5/exercise_a.js" %}    
+```js    
+const isLastInStock = (cars) => {  
+  const lastCar = last(cars);  
+  return prop('in_stock', lastCar);  
+};  
+```    
+  
+{% solution src="./exercises/ch5/solution_a.js" %}    
+{% validation src="./exercises/ch5/validation_a.js" %}    
+{% context src="./exercises/support.js" %}    
+{% endexercise %}    
+
+
+Considering the following function:
+
+```js
+const average = xs => reduce(add, 0, xs) / xs.length;
+```
+
+{% exercise %}    
+Use the helper function `average` to refactor `averageDollarValue` as a composition.
+
+{% initial src="./exercises/ch5/exercise_b.js" %}    
+```js    
+const averageDollarValue = (cars) => {
+  const dollarValues = map(c => c.dollar_value, cars);
+  return average(dollarValues);
+};
+```
+  
+{% solution src="./exercises/ch5/solution_b.js" %}    
+{% validation src="./exercises/ch5/validation_b.js" %}    
+{% context src="./exercises/support.js" %}    
+{% endexercise %}    
+
+
+{% exercise %}  
+Refactor `fastestCar` using `compose()` and other functions in pointfree-style. Hint, the
+`flip` function may come in handy. 
+
+{% initial src="./exercises/ch5/exercise_c.js" %}
+```js
+const fastestCar = (cars) => {
+  const sorted = sortBy(car => car.horsepower);
+  const fastest = last(sorted);
+  return concat(fastest.name, ' is the fastest');
+};
+```
+
+{% solution src="./exercises/ch5/solution_c.js" %}    
+{% validation src="./exercises/ch5/validation_c.js" %}    
+{% context src="./exercises/support.js" %}    
+{% endexercise %}    
 
 [lodash-website]: https://lodash.com/
 [underscore-website]: http://underscorejs.org/
