@@ -6,6 +6,7 @@
   "dependencies": {
     "chai": "^3.5.0",
     "data.task": "^3.0.0",
+    "futurize": "^1.2.0",
     "immutable": "^3.8.2",
     "immutable-ext": "^1.1.2",
     "ramda": "^0.23.0"
