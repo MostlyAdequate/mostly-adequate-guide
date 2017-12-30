@@ -1,9 +1,6 @@
 'use strict'; // eslint-disable-line strict, lines-around-directive
 
-/* eslint-disable prefer-arrow-callback */
-
 /* ---------- General Purpose ---------- */
-
 
 function namedAs(value, fn) {
   Object.defineProperty(fn, 'name', { value });
@@ -11,6 +8,9 @@ function namedAs(value, fn) {
 }
 
 
+// NOTE A slightly pumped up version of `curry` which also keeps track of
+// whether a function was called partially or with all its arguments at once.
+// This is useful to provide insights during validation of exercises.
 function curry(fn) {
   const arity = fn.length;
 
@@ -26,6 +26,10 @@ function curry(fn) {
 }
 
 
+// NOTE Aslightly pumped up version of `compose` which also keeps track of the chain
+// of callees. In the end, a function created with `compose` holds a `callees` variable
+// with the list of all the callees' names.
+// This is useful to provide insights during validation of exercises
 function compose(...fns) {
   const n = fns.length;
 
@@ -45,6 +49,8 @@ function compose(...fns) {
 }
 
 
+// NOTE This file is loaded by gitbook's exercises plugin. When it does, there's an
+// `assert` function available in the global scope.
 if (typeof assert === 'function') {
   assert.arrayEqual = function assertArrayEqual(actual, expected, message = 'arrayEqual') {
     if (actual.length !== expected.length) {
@@ -58,6 +64,12 @@ if (typeof assert === 'function') {
     }
   };
 }
+
+
+// NOTE We keep named function here to leverage this in the `compose` function,
+// and later on in the validations scripts.
+
+/* eslint-disable prefer-arrow-callback */
 
 const add = curry(function add(a, b) { return a + b; });
 
@@ -93,6 +105,9 @@ const sortBy = curry(function sortBy(fn, xs) {
 });
 
 const split = curry(function split(s, str) { return str.split(s); });
+
+/* eslint-enable prefer-arrow-callback */
+
 
 /* ---------- Chapter 4 ---------- */
 
@@ -140,16 +155,18 @@ const average = function average(xs) {
   return xs.reduce(add, 0) / xs.length;
 };
 
+
 /* ---------- Exports ---------- */
 
 if (typeof module === 'object') {
   module.exports = {
+    // Essential FP helpers
     compose,
     curry,
 
+    // Currified version of 'standard' functions
     add,
     filter,
-    flip,
     flip,
     last,
     map,
@@ -159,8 +176,10 @@ if (typeof module === 'object') {
     sortBy,
     split,
 
+    // Chapter 04
     keepHighest,
 
+    // Chapter 05
     cars,
     average,
   };
