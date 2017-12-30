@@ -43,6 +43,14 @@ Maybe.prototype.map = function(f) {
   return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value));
 };
 
+Maybe.prototype.traverse = function(point, f) {
+  return this.isNothing() ? point(Maybe.of(null)) : f(this.__value).map(Maybe.of)
+};
+
+Maybe.prototype.sequence = function(point) {
+  return this.isNothing() ? point(Maybe.of(null)) : this.__value.map(Maybe.of)
+};
+
 Maybe.prototype.chain = function(f) {
   return this.map(f).join();
 };
