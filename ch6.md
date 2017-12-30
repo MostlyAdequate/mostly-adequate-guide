@@ -52,12 +52,11 @@ We will now build an example application in a declarative, composable way. We'll
 
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>Flickr Demo</title>
-    <style>/*...*/</style>
   </head>
   <body>
     <main id="js-main" class="main"></main>
@@ -92,8 +91,8 @@ Now that that's out of the way, on to the spec. Our app will do 4 things.
 There are 2 impure actions mentioned above. Do you see them? Those bits about getting data from the flickr api and placing it on the screen. Let's define those first so we can quarantine them.
 
 ```js
-const trace = curry((tag, x) => { console.log(tag, x); return x; });
 const Impure = {
+  trace: curry((tag, x) => { console.log(tag, x); return x; }),
   getJSON: curry((callback, url) => $.getJSON(url, callback)),
   setHtml: curry((sel, html) => $(sel).html(html)),
 };
@@ -115,7 +114,7 @@ There are fancy and overly complex ways of writing `url` pointfree using monoids
 Let's write an app function that makes the call and places the contents on the screen.
 
 ```js
-const app = compose(Impure.getJSON(trace('response')), url);
+const app = compose(Impure.getJSON(Impure.trace('response')), url);
 app('cats');
 ```
 
@@ -150,7 +149,7 @@ All we've done is make a new composition that will call our `mediaUrls` and set 
 Our final step is to turn these `mediaUrls` into bonafide `images`. In a bigger application, we'd use a template/dom library like Handlebars or React. For this application though, we only need an img tag so let's stick with jQuery.
 
 ```js
-const img = url => $('<img />', { src: url });
+const img = src => $('<img />', { src });
 ```
 
 jQuery's `html` method will accept an array of tags. We only have to transform our mediaUrls into images and send them along to `setHtml`.
@@ -166,7 +165,7 @@ And we're done!
 <img src="images/cats_ss.png" alt="cats grid" />
 
 Here is the finished script:
-[include](./code/app/main.js)
+[include](./exercises/ch6/main.js)
 
 Now look at that. A beautifully declarative specification of what things are, not how they come to be. We now view each line as an equation with properties that hold. We can use these properties to reason about our application and refactor.
 

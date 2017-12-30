@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Flickr App</title>
+    <style>
+      body {
+        margin: 0;
+      }
+
+      .main {
+        display: flex;
+        flex-flow: row wrap;
+      }
+
+      .main > img {
+        flex: 1 1 25vw;
+        object-fit: cover;
+        height: 25vh;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="js-main" class="main"></main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
