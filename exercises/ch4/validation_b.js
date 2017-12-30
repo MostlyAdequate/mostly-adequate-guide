@@ -1,3 +1,5 @@
+/* globals filterQs */
+
 filter.calledPartial = false;
 match.calledPartial = false;
 

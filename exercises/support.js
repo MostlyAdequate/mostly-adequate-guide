@@ -16,21 +16,24 @@ function namedAs(value, fn) {
 
 // NOTE This file is loaded by gitbook's exercises plugin. When it does, there's an
 // `assert` function available in the global scope.
-if (typeof assert === 'function') {
-  /* eslint-disable no-undef */
-  assert.arrayEqual = function assertArrayEqual(actual, expected, message = 'arrayEqual') {
-    if (actual.length !== expected.length) {
+
+/* eslint-disable no-undef, global-require */
+if (typeof assert !== 'function' && typeof require === 'function') {
+  global.assert = require('assert');
+}
+
+assert.arrayEqual = function assertArrayEqual(actual, expected, message = 'arrayEqual') {
+  if (actual.length !== expected.length) {
+    throw new Error(message);
+  }
+
+  for (let i = 0; i < expected.length; i += 1) {
+    if (expected[i] !== actual[i]) {
       throw new Error(message);
     }
-
-    for (let i = 0; i < expected.length; i += 1) {
-      if (expected[i] !== actual[i]) {
-        throw new Error(message);
-      }
-    }
-  };
-  /* eslint-enable no-undef */
-}
+  }
+};
+/* eslint-enable no-undef, global-require */
 
 
 function inspect(x) {
@@ -319,6 +322,8 @@ const filter = curry(function filter(fn, xs) { return xs.filter(fn); });
 
 const flip = curry(function flip(fn, a, b) { return fn(b, a); });
 
+const forEach = curry(function forEach(fn, xs) { xs.forEach(fn); });
+
 const head = function head(xs) { return xs[0]; };
 
 const last = function last(xs) { return xs[xs.length - 1]; };
@@ -356,7 +361,16 @@ const split = curry(function split(s, str) { return str.split(s); });
 /* ---------- Chapter 4 ---------- */
 
 const keepHighest = function keepHighest(x, y) {
-  keepHighest.calledBy = keepHighest.caller;
+  try {
+    keepHighest.calledBy = keepHighest.caller;
+  } catch (err) {
+    // NOTE node.js runs in strict mode and prohibit the usage of '.caller'
+    // There's a ugly hack to retrieve the caller from stack trace.
+    const [, caller] = /at (\S+)/.exec(err.stack.split('\n')[2]);
+
+    keepHighest.calledBy = namedAs(caller, () => {});
+  }
+
   return x >= y ? x : y;
 };
 
@@ -423,7 +437,7 @@ const save = function save(user) {
 };
 
 const validateUser = curry(function validateUser(validate, user) {
-  return validate(user).map(_ => user);
+  return validate(user).map(_ => user); // eslint-disable-line no-unused-vars
 });
 
 
@@ -448,8 +462,10 @@ if (typeof module === 'object') {
 
     // Currified version of 'standard' functions
     add,
+    concat,
     filter,
     flip,
+    forEach,
     head,
     last,
     map,

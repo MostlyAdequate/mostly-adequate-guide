@@ -1,7 +1,7 @@
 {
-  "name": "flickr-demo",
+  "name": "mostly-adequate",
   "version": "1.0.0",
-  "description": "Example support for the chapter 6 of the Mostly Adequate Guide to Functional Programming",
+  "description": "Exercises and examples for the Mostly Adequate Guide to Functional Programming",
   "devDependencies": {
     "eslint": "^4.12.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -11,7 +11,12 @@
     "live-server": "^1.2.0"
   },
   "scripts": {
-    "start": "live-server --ignore='./node_modules/*/**'",
+    "ch4": "mocha test/ch4.js",
+    "ch5": "mocha test/ch5.js",
+    "ch6": "live-server --ignore='node_modules/*/**' ch6",
+    "ch8": "mocha test/ch8.js",
+    "ch9": "mocha test/ch9.js",
+    "test": "mocha test/*.solutions.js",
     "lint": "eslint ."
   },
   "repository": {
@@ -23,5 +28,9 @@
   "bugs": {
     "url": "https://github.com/MostlyAdequate/mostly-adequate-guide/issues"
   },
-  "homepage": "https://github.com/MostlyAdequate/mostly-adequate-guide"
+  "homepage": "https://github.com/MostlyAdequate/mostly-adequate-guide",
+  "dependencies": {
+    "cli": "^1.0.1",
+    "mocha": "^4.1.0"
+  }
 }

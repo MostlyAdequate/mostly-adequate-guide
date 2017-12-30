@@ -1,3 +1,5 @@
+/* globals fastestCar */
+
 try {
   assert(
     fastestCar(cars) === 'Aston Martin One-77 is the fastest',

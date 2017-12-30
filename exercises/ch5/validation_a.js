@@ -1,3 +1,5 @@
+/* globals isLastInStock */
+
 const fixture01 = cars.slice(0, 3);
 const fixture02 = cars.slice(3);
 

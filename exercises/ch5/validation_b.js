@@ -1,3 +1,5 @@
+/* globals averageDollarValue */
+
 try {
   assert(
     averageDollarValue(cars) === 790700,

@@ -6,7 +6,7 @@ requirejs.config({ paths: { ramda, jquery } });
 require(['jquery', 'ramda'], ($, { compose, curry, map, prop }) => {
   // -- Utils ----------------------------------------------------------
   const Impure = {
-    trace: curry((tag, x) => { console.log(tag, x); return x; }),
+    trace: curry((tag, x) => { console.log(tag, x); return x; }), // eslint-disable-line no-console
     getJSON: curry((callback, url) => $.getJSON(url, callback)),
     setHtml: curry((sel, html) => $(sel).html(html)),
   };

@@ -1,3 +1,5 @@
+/* globals eitherWelcome */
+
 if (!(eitherWelcome(gary) instanceof Either) && eitherWelcome.callees && eitherWelcome.callees[0] === 'checkActive' && eitherWelcome.callees[1] === 'showWelcome') {
   throw new Error('The function gives incorrect results; hint: look carefully at the signatures of `checkActive` and `showWelcome`!');
 }

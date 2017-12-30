@@ -1,3 +1,5 @@
+/* globals incrF */
+
 assert(
   incrF(Identity.of(2)).$value === 3,
   'The function gives incorrect results.',

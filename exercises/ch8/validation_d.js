@@ -1,3 +1,5 @@
+/* globals validateName, register */
+
 const validateGary = validateName(gary);
 assert(
   validateGary instanceof Either && validateGary.isRight,

@@ -1,3 +1,5 @@
+/* globals words */
+
 assert.arrayEqual(
   words('Jingle bells Batman smells'),
   ['Jingle', 'bells', 'Batman', 'smells'],
