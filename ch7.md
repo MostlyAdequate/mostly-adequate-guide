@@ -15,10 +15,10 @@ There are type checking tools available for JavaScript such as [Flow](http://flo
 From the dusty pages of math books, across the vast sea of white papers, amongst casual Saturday morning blog posts, down into the source code itself, we find Hindley-Milner type signatures. The system is quite simple, but warrants a quick explanation and some practice to fully absorb the little language.
 
 ```js
-//    capitalize :: String -> String
+// capitalize :: String -> String
 const capitalize = s => toUpperCase(head(s)) + toLowerCase(tail(s));
 
-capitalize("smurf"); //=> "Smurf"
+capitalize('smurf'); // 'Smurf'
 ```
 
 Here, `capitalize` takes a `String` and returns a `String`. Never mind the implementation, it's the type signature we're interested in.
@@ -28,16 +28,16 @@ In HM, functions are written as `a -> b` where `a` and `b` are variables for any
 Let's look at some more function signatures:
 
 ```js
-//    strLength :: String -> Number
+// strLength :: String -> Number
 const strLength = s => s.length;
 
-//    join :: String -> [String] -> String
+// join :: String -> [String] -> String
 const join = curry((what, xs) => xs.join(what));
 
-//    match :: Regex -> String -> [String]
+// match :: Regex -> String -> [String]
 const match = curry((reg, s) => s.match(reg));
 
-//    replace :: Regex -> String -> String -> String
+// replace :: Regex -> String -> String -> String
 const replace = curry((reg, sub, s) => s.replace(reg, sub));
 ```
 
@@ -48,22 +48,22 @@ The others might perplex you at first glance. Without fully understanding the de
 For `match` we are free to group the signature like so:
 
 ```js
-//    match :: Regex -> (String -> [String])
+// match :: Regex -> (String -> [String])
 const match = curry((reg, s) => s.match(reg));
 ```
 
 Ah yes, grouping the last part in parenthesis reveals more information. Now it is seen as a function that takes a `Regex` and returns us a function from `String` to `[String]`. Because of currying, this is indeed the case: give it a `Regex` and we get a function back waiting for its `String` argument. Of course, we don't have to think of it this way, but it is good to understand why the last type is the one returned.
 
 ```js
-//    match     :: Regex -> (String -> [String])
-//    onHoliday ::           String -> [String]
+// match :: Regex -> (String -> [String])
+// onHoliday :: String -> [String]
 const onHoliday = match(/holiday/ig);
 ```
 
 Each argument pops one type off the front of the signature. `onHoliday` is `match` that already has a `Regex`.
 
 ```js
-//    replace :: Regex -> (String -> (String -> String))
+// replace :: Regex -> (String -> (String -> String))
 const replace = curry((reg, sub, s) => s.replace(reg, sub));
 ```
 
@@ -73,10 +73,10 @@ A few last things here:
 
 
 ```js
-//    id :: a -> a
+// id :: a -> a
 const id = x => x;
 
-//    map :: (a -> b) -> [a] -> [b]
+// map :: (a -> b) -> [a] -> [b]
 const map = curry((f, xs) => xs.map(f));
 ```
 
@@ -91,13 +91,13 @@ Being able to reason about types and their implications is a skill that will tak
 Here's a few more just to see if you can decipher them on your own.
 
 ```js
-//    head :: [a] -> a
+// head :: [a] -> a
 const head = xs => xs[0];
 
-//    filter :: (a -> Bool) -> [a] -> [a]
+// filter :: (a -> Bool) -> [a] -> [a]
 const filter = curry((f, xs) => xs.filter(f));
 
-//    reduce :: (b -> a -> b) -> b -> [a] -> b
+// reduce :: (b -> a -> b) -> b -> [a] -> b
 const reduce = curry((f, x, xs) => xs.reduce(f, x));
 ```
 
@@ -132,10 +132,10 @@ Besides deducing implementation possibilities, this sort of reasoning gains us *
 
 ```js
 // head :: [a] -> a
-compose(f, head) == compose(head, map(f));
+compose(f, head) === compose(head, map(f));
 
 // filter :: (a -> Bool) -> [a] -> [a]
-compose(map(f), filter(compose(p, f))) == compose(filter(p), map(f));
+compose(map(f), filter(compose(p, f))) === compose(filter(p), map(f));
 ```
 
 
