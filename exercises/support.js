@@ -1,12 +1,60 @@
 'use strict'; // eslint-disable-line strict, lines-around-directive
 
-/* ---------- General Purpose ---------- */
+// NOTE We keep named function here to leverage this in the `compose` function,
+// and later on in the validations scripts.
+
+/* eslint-disable prefer-arrow-callback */
+
+
+/* ---------- Internals ---------- */
 
 function namedAs(value, fn) {
   Object.defineProperty(fn, 'name', { value });
   return fn;
 }
 
+
+// NOTE This file is loaded by gitbook's exercises plugin. When it does, there's an
+// `assert` function available in the global scope.
+if (typeof assert === 'function') {
+  /* eslint-disable no-undef */
+  assert.arrayEqual = function assertArrayEqual(actual, expected, message = 'arrayEqual') {
+    if (actual.length !== expected.length) {
+      throw new Error(message);
+    }
+
+    for (let i = 0; i < expected.length; i += 1) {
+      if (expected[i] !== actual[i]) {
+        throw new Error(message);
+      }
+    }
+  };
+  /* eslint-enable no-undef */
+}
+
+
+function inspect(x) {
+  if (x && typeof x.inspect === 'function') {
+    return x.inspect();
+  }
+
+  function inspectFn(f) {
+    return f.name ? f.name : f.toString();
+  }
+
+  function inspectTerm(t) {
+    return typeof t === 'string' ? `'${t}'` : String(t);
+  }
+
+  function inspectArgs(args) {
+    return Array.isArray(args) ? `[${args.map(inspect).join(', ')}]` : inspectTerm(args);
+  }
+
+  return (typeof x === 'function') ? inspectFn(x) : inspectArgs(x);
+}
+
+
+/* ---------- Essential FP Functions ---------- */
 
 // NOTE A slightly pumped up version of `curry` which also keeps track of
 // whether a function was called partially or with all its arguments at once.
@@ -49,27 +97,219 @@ function compose(...fns) {
 }
 
 
-// NOTE This file is loaded by gitbook's exercises plugin. When it does, there's an
-// `assert` function available in the global scope.
-if (typeof assert === 'function') {
-  assert.arrayEqual = function assertArrayEqual(actual, expected, message = 'arrayEqual') {
-    if (actual.length !== expected.length) {
-      throw new Error(message);
-    }
+/* ---------- Algebraic Data Structures ---------- */
 
-    for (let i = 0; i < expected.length; i += 1) {
-      if (expected[i] !== actual[i]) {
-        throw new Error(message);
-      }
-    }
-  };
+class Either {
+  static of(x) {
+    return new Right(x); // eslint-disable-line no-use-before-define
+  }
+
+  constructor(x) {
+    this.$value = x;
+  }
 }
 
 
-// NOTE We keep named function here to leverage this in the `compose` function,
-// and later on in the validations scripts.
+class Left extends Either {
+  get isLeft() { // eslint-disable-line class-methods-use-this
+    return true;
+  }
 
-/* eslint-disable prefer-arrow-callback */
+  get isRight() { // eslint-disable-line class-methods-use-this
+    return false;
+  }
+
+  ap() {
+    return this;
+  }
+
+  chain() {
+    return this;
+  }
+
+  inspect() {
+    return `Left(${inspect(this.$value)})`;
+  }
+
+  join() {
+    return this;
+  }
+
+  map() {
+    return this;
+  }
+
+  sequence(of) {
+    return of(this);
+  }
+}
+
+
+class Right extends Either {
+  get isLeft() { // eslint-disable-line class-methods-use-this
+    return false;
+  }
+
+  get isRight() { // eslint-disable-line class-methods-use-this
+    return true;
+  }
+
+  ap(f) {
+    return f.map(this.$value);
+  }
+
+  chain(fn) {
+    return fn(this.$value);
+  }
+
+  inspect() {
+    return `Right(${inspect(this.$value)})`;
+  }
+
+  join() {
+    return this.$value;
+  }
+
+  map(fn) {
+    return Either.of(fn(this.$value));
+  }
+
+  sequence() {
+    return this.$value.map(Either.of);
+  }
+}
+
+
+class Identity {
+  static of(x) {
+    return new Identity(x);
+  }
+
+  constructor(x) {
+    this.$value = x;
+  }
+
+  ap(f) {
+    return f.map(this.$value);
+  }
+
+  chain(fn) {
+    return this.map(fn).join();
+  }
+
+  inspect() {
+    return `Identity(${inspect(this.$value)})`;
+  }
+
+  join() {
+    return this.$value;
+  }
+
+  map(fn) {
+    return Identity.of(fn(this.$value));
+  }
+
+  sequence() {
+    return this.$value.map(Identity.of);
+  }
+}
+
+class IO {
+  static of(x) {
+    return new IO(() => x);
+  }
+
+  constructor(io) {
+    if (typeof io !== 'function') {
+      throw new Error('invalid `io` operation given to IO constructor. Use `IO.of` if you want to lift a value in a default minimal IO context.');
+    }
+
+    this.unsafePerformIO = io;
+  }
+
+  ap(f) {
+    return this.chain(fn => f.map(fn));
+  }
+
+  chain(fn) {
+    return this.map(fn).join();
+  }
+
+  inspect() {
+    return `IO(${inspect(this.unsafePerformIO)})`;
+  }
+
+  join() {
+    return this.unsafePerformIO();
+  }
+
+  map(fn) {
+    return new IO(compose(fn, this.unsafePerformIO));
+  }
+}
+
+
+class Maybe {
+  static of(x) {
+    return new Maybe(x);
+  }
+
+  get isNothing() {
+    return this.$value === null || this.$value === undefined;
+  }
+
+  constructor(x) {
+    this.$value = x;
+  }
+
+  ap(f) {
+    return this.isNothing ? this : f.map(this.$value);
+  }
+
+  chain(fn) {
+    return this.map(fn).join();
+  }
+
+  inspect() {
+    return this.isNothing ? 'Nothing' : `Just(${inspect(this.$value)})`;
+  }
+
+  join() {
+    return this.isNothing ? this : this.$value;
+  }
+
+  map(fn) {
+    return this.isNothing ? this : Maybe.of(fn(this.$value));
+  }
+
+  sequence(of) {
+    return this.isNothing ? of(this) : this.$value.map(Maybe.of);
+  }
+}
+
+
+const either = curry(function either(f, g, e) {
+  if (e.isLeft) {
+    return f(e.$value);
+  }
+
+  return g(e.$value);
+});
+
+
+const left = function left(x) { return new Left(x); };
+
+
+const maybe = curry(function maybe(v, f, m) {
+  if (m.isNothing) {
+    return v;
+  }
+
+  return f(m.$value);
+});
+
+
+/* ---------- Pointfree Classic Utilities ---------- */
 
 const add = curry(function add(a, b) { return a + b; });
 
@@ -78,6 +318,8 @@ const concat = curry(function concat(a, b) { return a.concat(b); });
 const filter = curry(function filter(fn, xs) { return xs.filter(fn); });
 
 const flip = curry(function flip(fn, a, b) { return fn(b, a); });
+
+const head = function head(xs) { return xs[0]; };
 
 const last = function last(xs) { return xs[xs.length - 1]; };
 
@@ -94,6 +336,10 @@ const reduce = curry(function reduce(fn, acc, xs) {
   );
 });
 
+const safeHead = function safeHead(xs) { return Maybe.of(xs[0]); };
+
+const safeProp = curry(function safeProp(p, obj) { return Maybe.of(obj[p]); });
+
 const sortBy = curry(function sortBy(fn, xs) {
   return xs.sort((a, b) => {
     if (fn(a) === fn(b)) {
@@ -105,8 +351,6 @@ const sortBy = curry(function sortBy(fn, xs) {
 });
 
 const split = curry(function split(s, str) { return str.split(s); });
-
-/* eslint-enable prefer-arrow-callback */
 
 
 /* ---------- Chapter 4 ---------- */
@@ -156,6 +400,33 @@ const average = function average(xs) {
 };
 
 
+/* ---------- Chapter 8 ---------- */
+
+const albert = { id: 1, name: 'Albert', active: true };
+
+const gary = { id: 2, name: 'Gary', active: false };
+
+const theresa = { id: 3, name: 'Theresa', active: true };
+
+const yi = { id: 4, name: 'Yi', active: true };
+
+const showWelcome = namedAs('showWelcome', compose(concat('Welcome '), prop('name')));
+
+const checkActive = function checkActive(user) {
+  return user.active
+    ? Either.of(user)
+    : left('Your account is not active');
+};
+
+const save = function save(user) {
+  return new IO(() => Object.assign({}, user, { saved: true }));
+};
+
+const validateUser = curry(function validateUser(validate, user) {
+  return validate(user).map(_ => user);
+});
+
+
 /* ---------- Exports ---------- */
 
 if (typeof module === 'object') {
@@ -163,16 +434,30 @@ if (typeof module === 'object') {
     // Essential FP helpers
     compose,
     curry,
+    left,
+    either,
+    maybe,
+
+    // Algebraic Data Structures
+    Identity,
+    IO,
+    Maybe,
+    Either,
+    Right,
+    Left,
 
     // Currified version of 'standard' functions
     add,
     filter,
     flip,
+    head,
     last,
     map,
     match,
     prop,
     reduce,
+    safeHead,
+    safeProp,
     sortBy,
     split,
 
@@ -182,5 +467,15 @@ if (typeof module === 'object') {
     // Chapter 05
     cars,
     average,
+
+    // Chapter 08
+    albert,
+    gary,
+    theresa,
+    yi,
+    showWelcome,
+    checkActive,
+    save,
+    validateUser,
   };
 }

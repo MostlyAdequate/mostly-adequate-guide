@@ -713,4 +713,110 @@ What about calling a function with multiple functor arguments? How about working
 
 ## Exercises
 
-[include](./code/functors/exercises.js)
+{% exercise %}  
+Use `add` and `map` to make a function that increments a value inside a functor.  
+  
+{% initial src="./exercises/ch8/exercise_a.js" %}  
+```js  
+// incrF :: Functor f => f Int -> f Int  
+const incrF = undefined;  
+```  
+  
+{% solution src="./exercises/ch8/solution_a.js" %}      
+{% validation src="./exercises/ch8/validation_a.js" %}      
+{% context src="./exercises/support.js" %}      
+{% endexercise %}      
+
+
+---
+
+  
+Given the following user object:  
+  
+```js  
+const user = { id: 2, name: 'Albert', active: true };  
+```  
+  
+{% exercise %}  
+Use `safeProp` and `head` to find the first initial of the user.  
+  
+{% initial src="./exercises/ch8/exercise_b.js" %}  
+```js  
+// initial :: User -> Maybe String  
+const initial = undefined;  
+```  
+  
+{% solution src="./exercises/ch8/solution_b.js" %}      
+{% validation src="./exercises/ch8/validation_b.js" %}      
+{% context src="./exercises/support.js" %}      
+{% endexercise %}      
+
+
+---
+
+
+Given the following helper functions:
+
+
+```js
+// showWelcome :: User -> String
+const showWelcome = compose(concat('Welcome '), prop('name'));
+
+// checkActive :: User -> Either String User
+const checkActive = function checkActive(user) {
+  return user.active
+    ? Either.of(user)
+    : left('Your account is not active');
+};
+```
+
+{% exercise %}  
+Write a function that uses `checkActive` and `showWelcome` to grant access or return the error.
+
+{% initial src="./exercises/ch8/exercise_c.js" %}  
+```js
+// eitherWelcome :: User -> Either String String
+const eitherWelcome = undefined;
+```
+
+
+{% solution src="./exercises/ch8/solution_c.js" %}      
+{% validation src="./exercises/ch8/validation_c.js" %}      
+{% context src="./exercises/support.js" %}      
+{% endexercise %}      
+
+
+---
+
+
+We now consider the following functions:
+
+```js
+// validateUser :: (User -> Either String ()) -> User -> Either String User
+const validateUser = curry((validate, user) => validate(user).map(_ => user));
+
+// save :: User -> IO User
+const save = user => new IO(() => ({ ...user, saved: true }));
+```
+
+{% exercise %}  
+Write a function `validateName` which checks whether a user has a name longer than 3 characters
+or return an error message. Then use `either`, `showWelcome` and `save` to write a `register`
+function to signup and welcome a user when the validation is ok.
+
+Remember either's two arguments must return the same type.
+
+{% initial src="./exercises/ch8/exercise_d.js" %}  
+```js
+// validateName :: User -> Either String ()
+const validateName = undefined;
+
+// register :: User -> IO String
+const register = compose(undefined, validateUser(validateName));
+```
+
+
+{% solution src="./exercises/ch8/solution_d.js" %}      
+{% validation src="./exercises/ch8/validation_d.js" %}      
+{% context src="./exercises/support.js" %}      
+{% endexercise %}     
