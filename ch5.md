@@ -274,11 +274,11 @@ In each following exercise, we'll consider Car objects with the following shape:
 {% exercise %}    
 Use `compose()` to rewrite the function below.   
   
-{% initial src="./exercises/ch5/exercise_a.js#L3;" %}    
+{% initial src="./exercises/ch5/exercise_a.js#L12;" %}    
 ```js    
 const isLastInStock = (cars) => {  
   const lastCar = last(cars);  
-  return prop('in_stock', lastCar);  
+  return prop('in_stock', lastCar);    
 };  
 ```    
   
@@ -301,12 +301,12 @@ const average = xs => reduce(add, 0, xs) / xs.length;
 Use the helper function `average` to refactor `averageDollarValue` as a composition.
 
 {% initial src="./exercises/ch5/exercise_b.js#L7;" %}    
-```js    
-const averageDollarValue = (cars) => {
-  const dollarValues = map(c => c.dollar_value, cars);
-  return average(dollarValues);
-};
-```
+```js       
+const averageDollarValue = (cars) => {   
+  const dollarValues = map(c => c.dollar_value, cars);   
+  return average(dollarValues);   
+};   
+```   
   
 {% solution src="./exercises/ch5/solution_b.js" %}    
 {% validation src="./exercises/ch5/validation_b.js" %}    

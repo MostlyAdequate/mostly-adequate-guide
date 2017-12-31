@@ -386,4 +386,93 @@ In the next chapter, we'll see how applicative functors fit into the container w
 
 ## Exercises
 
-[include](./code/monads/exercises.js)
+
+Condering a User object as follow:
+
+```js  
+const user = {  
+  id: 1,  
+  name: 'Albert',  
+  address: {  
+    street: {  
+      number: 22,  
+      name: 'Walnut St',  
+    },  
+  },  
+};  
+```  
+  
+{% exercise %}    
+Use `safeProp` and `map/join` or `chain` to safely get the street name when given a user    
+  
+{% initial src="./exercises/ch9/exercise_a.js#L16;" %}    
+```js  
+// getStreetName :: User -> Maybe String  
+const getStreetName = undefined;  
+```  
+  
+  
+{% solution src="./exercises/ch9/solution_a.js" %}        
+{% validation src="./exercises/ch9/validation_a.js" %}        
+{% context src="./exercises/support.js" %}        
+{% endexercise %}        
+
+
+---
+
+
+We now consider the following functions
+
+```js
+// getFile :: () -> IO String
+const getFile = () => IO.of('/home/mostly-adequate/ch9.md');
+
+// pureLog :: String -> IO ()
+const pureLog = str => new IO(() => console.log(str));
+```
+
+{% exercise %}    
+Use getFile to get the filepath, remove the directory and keep only the basename,  
+then purely log it. Hint: you may want to use `split` and `last` to obtain the  
+basename from a filepath.  
+  
+{% initial src="./exercises/ch9/exercise_b.js#L13;" %}    
+```js  
+// logFilename :: IO ()  
+const logFilename = undefined;  
+  
+```  
+  
+  
+{% solution src="./exercises/ch9/solution_b.js" %}        
+{% validation src="./exercises/ch9/validation_b.js" %}        
+{% context src="./exercises/support.js" %}        
+{% endexercise %}        
+
+
+---
+
+For this exercise, we consider helpers with the following signatures:
+
+```hs
+validateEmail :: Email -> Either String Email
+addToMailingList :: Email -> IO([Email])
+emailBlast :: [Email] -> IO ()
+```
+
+{% exercise %}    
+Use `validateEmail`, `addToMailingList` and `emailBlast` to create a function  
+which adds a new email to the mailing list if valid, and then notify the whole  
+list.  
+  
+{% initial src="./exercises/ch9/exercise_c.js#L11;" %}    
+```js  
+// joinMailingList :: Email -> Either String (IO ())  
+const joinMailingList = undefined;  
+```  
+  
+  
+{% solution src="./exercises/ch9/solution_c.js" %}        
+{% validation src="./exercises/ch9/validation_c.js" %}        
+{% context src="./exercises/support.js" %}        
+{% endexercise %}        

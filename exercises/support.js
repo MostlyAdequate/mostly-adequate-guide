@@ -316,6 +316,8 @@ const maybe = curry(function maybe(v, f, m) {
 
 const add = curry(function add(a, b) { return a + b; });
 
+const chain = curry(function chain(fn, m) { return m.chain(fn); });
+
 const concat = curry(function concat(a, b) { return a.concat(b); });
 
 const filter = curry(function filter(fn, xs) { return xs.filter(fn); });
@@ -325,6 +327,10 @@ const flip = curry(function flip(fn, a, b) { return fn(b, a); });
 const forEach = curry(function forEach(fn, xs) { xs.forEach(fn); });
 
 const head = function head(xs) { return xs[0]; };
+
+const identity = function identity(x) { return x; };
+
+const join = function join(m) { return m.join(); };
 
 const last = function last(xs) { return xs[xs.length - 1]; };
 
@@ -356,6 +362,8 @@ const sortBy = curry(function sortBy(fn, xs) {
 });
 
 const split = curry(function split(s, str) { return str.split(s); });
+
+const unsafePerformIO = function unsafePerformIO(io) { return io.unsafePerformIO(); };
 
 
 /* ---------- Chapter 4 ---------- */
@@ -416,11 +424,34 @@ const average = function average(xs) {
 
 /* ---------- Chapter 8 ---------- */
 
-const albert = { id: 1, name: 'Albert', active: true };
+const albert = {
+  id: 1,
+  active: true,
+  name: 'Albert',
+  address: {
+    street: {
+      number: 22,
+      name: 'Walnut St',
+    },
+  },
+};
 
-const gary = { id: 2, name: 'Gary', active: false };
+const gary = {
+  id: 2,
+  active: false,
+  name: 'Gary',
+  address: {
+    street: {
+      number: 14,
+    },
+  },
+};
 
-const theresa = { id: 3, name: 'Theresa', active: true };
+const theresa = {
+  id: 3,
+  active: true,
+  name: 'Theresa',
+};
 
 const yi = { id: 4, name: 'Yi', active: true };
 
@@ -439,6 +470,23 @@ const save = function save(user) {
 const validateUser = curry(function validateUser(validate, user) {
   return validate(user).map(_ => user); // eslint-disable-line no-unused-vars
 });
+
+
+/* ---------- Chapter 9 ---------- */
+
+const getFile = function getFile() { return IO.of('/home/mostly-adequate/ch9.md'); };
+
+const pureLog = function pureLog(str) { return new IO(() => str); };
+
+const addToMailingList = function addToMailingList(email) { return IO.of([email]); };
+
+const emailBlast = function emailBlast(list) { return IO.of(list.join(',')); };
+
+const validateEmail = function validateEmail(x) {
+  return /\S+@\S+\.\S+/.test(x)
+    ? Either.of(x)
+    : left('invalid email');
+};
 
 
 /* ---------- Exports ---------- */
@@ -462,11 +510,14 @@ if (typeof module === 'object') {
 
     // Currified version of 'standard' functions
     add,
+    chain,
     concat,
     filter,
     flip,
     forEach,
     head,
+    identity,
+    join,
     last,
     map,
     match,
@@ -476,6 +527,7 @@ if (typeof module === 'object') {
     safeProp,
     sortBy,
     split,
+    unsafePerformIO,
 
     // Chapter 04
     keepHighest,
@@ -493,5 +545,12 @@ if (typeof module === 'object') {
     checkActive,
     save,
     validateUser,
+
+    // Chapter 09
+    getFile,
+    pureLog,
+    addToMailingList,
+    emailBlast,
+    validateEmail,
   };
 }
