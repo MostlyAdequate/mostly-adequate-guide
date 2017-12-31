@@ -716,7 +716,7 @@ What about calling a function with multiple functor arguments? How about working
 {% exercise %}  
 Use `add` and `map` to make a function that increments a value inside a functor.  
   
-{% initial src="./exercises/ch8/exercise_a.js" %}  
+{% initial src="./exercises/ch8/exercise_a.js#L3;" %}  
 ```js  
 // incrF :: Functor f => f Int -> f Int  
 const incrF = undefined;  
@@ -731,7 +731,7 @@ const incrF = undefined;
 ---
 
   
-Given the following user object:  
+Given the following User object:  
   
 ```js  
 const user = { id: 2, name: 'Albert', active: true };  
@@ -740,7 +740,7 @@ const user = { id: 2, name: 'Albert', active: true };
 {% exercise %}  
 Use `safeProp` and `head` to find the first initial of the user.  
   
-{% initial src="./exercises/ch8/exercise_b.js" %}  
+{% initial src="./exercises/ch8/exercise_b.js#L7;" %}  
 ```js  
 // initial :: User -> Maybe String  
 const initial = undefined;  
@@ -757,7 +757,6 @@ const initial = undefined;
 
 Given the following helper functions:
 
-
 ```js
 // showWelcome :: User -> String
 const showWelcome = compose(concat('Welcome '), prop('name'));
@@ -773,7 +772,7 @@ const checkActive = function checkActive(user) {
 {% exercise %}  
 Write a function that uses `checkActive` and `showWelcome` to grant access or return the error.
 
-{% initial src="./exercises/ch8/exercise_c.js" %}  
+{% initial src="./exercises/ch8/exercise_c.js#L15;" %}  
 ```js
 // eitherWelcome :: User -> Either String String
 const eitherWelcome = undefined;
@@ -806,7 +805,7 @@ function to signup and welcome a user when the validation is ok.
 
 Remember either's two arguments must return the same type.
 
-{% initial src="./exercises/ch8/exercise_d.js" %}  
+{% initial src="./exercises/ch8/exercise_d.js#L15;" %}  
 ```js
 // validateName :: User -> Either String ()
 const validateName = undefined;

@@ -102,7 +102,7 @@ exercise prelude ;).
 {% exercise %}  
 Refactor to remove all arguments by partially applying the function.  
 
-{% initial src="./exercises/ch4/exercise_a.js" %}  
+{% initial src="./exercises/ch4/exercise_a.js#L3;" %}  
 ```js  
 const words = str => split(' ', str);  
 ```  
@@ -113,10 +113,13 @@ const words = str => split(' ', str);
 {% endexercise %}  
 
 
+---
+
+
 {% exercise %}  
 Refactor to remove all arguments by partially applying the functions.  
 
-{% initial src="./exercises/ch4/exercise_b.js" %}  
+{% initial src="./exercises/ch4/exercise_b.js#L3;" %}  
 ```js  
 const filterQs = xs => filter(x => match(/q/i, x), xs);
 ```  
@@ -125,6 +128,9 @@ const filterQs = xs => filter(x => match(/q/i, x), xs);
 {% validation src="./exercises/ch4/validation_b.js" %}  
 {% context src="./exercises/support.js" %}  
 {% endexercise %}  
+
+
+---
 
 
 Considering the following function:
@@ -137,7 +143,7 @@ const keepHighest = (x, y) => (x >= y ? x : y);
 Refactor `max` to not reference any arguments using the helper function `keepHighest`.  
 
 
-{% initial src="./exercises/ch4/exercise_c.js" %}  
+{% initial src="./exercises/ch4/exercise_c.js#L7;" %}  
 ```js  
 const max = xs => reduce((acc, x) => (x >= acc ? x : acc), -Infinity, xs);  
 ```  

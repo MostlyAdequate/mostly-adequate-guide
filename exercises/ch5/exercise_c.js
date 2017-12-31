@@ -1,3 +1,6 @@
+// Refactor `fastestCar` using `compose()` and other functions in pointfree-style.
+// Hint, the `flip` function may come in handy.
+
 const fastestCar = (cars) => {
   const sorted = sortBy(car => car.horsepower, cars);
   const fastest = last(sorted);

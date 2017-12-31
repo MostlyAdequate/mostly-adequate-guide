@@ -274,7 +274,7 @@ In each following exercise, we'll consider Car objects with the following shape:
 {% exercise %}    
 Use `compose()` to rewrite the function below.   
   
-{% initial src="./exercises/ch5/exercise_a.js" %}    
+{% initial src="./exercises/ch5/exercise_a.js#L3;" %}    
 ```js    
 const isLastInStock = (cars) => {  
   const lastCar = last(cars);  
@@ -288,6 +288,9 @@ const isLastInStock = (cars) => {
 {% endexercise %}    
 
 
+---
+
+
 Considering the following function:
 
 ```js
@@ -297,7 +300,7 @@ const average = xs => reduce(add, 0, xs) / xs.length;
 {% exercise %}    
 Use the helper function `average` to refactor `averageDollarValue` as a composition.
 
-{% initial src="./exercises/ch5/exercise_b.js" %}    
+{% initial src="./exercises/ch5/exercise_b.js#L7;" %}    
 ```js    
 const averageDollarValue = (cars) => {
   const dollarValues = map(c => c.dollar_value, cars);
@@ -311,11 +314,14 @@ const averageDollarValue = (cars) => {
 {% endexercise %}    
 
 
+---
+
+
 {% exercise %}  
 Refactor `fastestCar` using `compose()` and other functions in pointfree-style. Hint, the
 `flip` function may come in handy. 
 
-{% initial src="./exercises/ch5/exercise_c.js" %}
+{% initial src="./exercises/ch5/exercise_c.js#L4;" %}
 ```js
 const fastestCar = (cars) => {
   const sorted = sortBy(car => car.horsepower);
