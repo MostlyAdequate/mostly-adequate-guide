@@ -57,6 +57,21 @@ function inspect(x) {
 }
 
 
+/* eslint-disable no-param-reassign */
+function withSpyOn(prop, obj, fn) {
+  const orig = obj[prop];
+  let called = false;
+  obj[prop] = function spy(...args) {
+    called = true;
+    return orig.call(this, ...args);
+  };
+  fn();
+  obj[prop] = orig;
+  return called;
+}
+/* eslint-enable no-param-reassign */
+
+
 /* ---------- Essential FP Functions ---------- */
 
 // NOTE A slightly pumped up version of `curry` which also keeps track of
@@ -334,6 +349,12 @@ const join = function join(m) { return m.join(); };
 
 const last = function last(xs) { return xs[xs.length - 1]; };
 
+const liftA2 = curry(function liftA2(f, a1, a2) { return a1.map(f).ap(a2); });
+
+const liftA3 = curry(function liftA3(f, a1, a2, a3) { return a1.map(f).ap(a2).ap(a3); });
+
+const liftA4 = curry(function liftA4(f, a1, a2, a3, a4) { return a1.map(f).ap(a2).ap(a3).ap(a4); });
+
 const map = curry(function map(fn, xs) { return xs.map(fn); });
 
 const match = curry(function match(re, str) { return str.match(re); });
@@ -489,10 +510,22 @@ const validateEmail = function validateEmail(x) {
 };
 
 
+/* ---------- Chapter 10 ---------- */
+
+const localStorage = { player1: albert, player2: theresa };
+
+const game = curry(function game(p1, p2) { return `${p1.name} vs ${p2.name}`; });
+
+const getFromCache = function getFromCache(x) { return new IO(() => localStorage[x]); };
+
+
 /* ---------- Exports ---------- */
 
 if (typeof module === 'object') {
   module.exports = {
+    // Utils
+    withSpyOn,
+
     // Essential FP helpers
     compose,
     curry,
@@ -519,6 +552,9 @@ if (typeof module === 'object') {
     identity,
     join,
     last,
+    liftA2,
+    liftA3,
+    liftA4,
     map,
     match,
     prop,
@@ -552,5 +588,10 @@ if (typeof module === 'object') {
     addToMailingList,
     emailBlast,
     validateEmail,
+
+    // Chapter 10
+    localStorage,
+    getFromCache,
+    game,
   };
 }

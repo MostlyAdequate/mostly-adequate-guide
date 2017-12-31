@@ -11,13 +11,14 @@
     "live-server": "^1.2.0"
   },
   "scripts": {
-    "ch4": "mocha test/ch4.js",
-    "ch5": "mocha test/ch5.js",
-    "ch6": "live-server --ignore='node_modules/*/**' ch6",
-    "ch8": "mocha test/ch8.js",
-    "ch9": "mocha test/ch9.js",
     "test": "mocha test/*.solutions.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "ch04": "mocha test/ch4.js",
+    "ch05": "mocha test/ch5.js",
+    "ch06": "live-server --ignore='node_modules/*/**' ch6",
+    "ch08": "mocha test/ch8.js",
+    "ch09": "mocha test/ch9.js",
+    "ch10": "mocha test/ch10.js"
   },
   "repository": {
     "type": "git",
