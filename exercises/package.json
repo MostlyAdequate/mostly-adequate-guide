@@ -1,14 +1,16 @@
 {
-  "name": "mostly-adequate",
+  "name": "mostly-adequate-exercises",
   "version": "1.0.0",
   "description": "Exercises and examples for the Mostly Adequate Guide to Functional Programming",
   "devDependencies": {
+    "cli": "^1.0.1",
     "eslint": "^4.12.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.5.1",
-    "live-server": "^1.2.0"
+    "live-server": "^1.2.0",
+    "mocha": "^4.1.0"
   },
   "scripts": {
     "test": "mocha test/*.solutions.js",
@@ -30,8 +32,5 @@
     "url": "https://github.com/MostlyAdequate/mostly-adequate-guide/issues"
   },
   "homepage": "https://github.com/MostlyAdequate/mostly-adequate-guide",
-  "dependencies": {
-    "cli": "^1.0.1",
-    "mocha": "^4.1.0"
-  }
+  "dependencies": {}
 }
