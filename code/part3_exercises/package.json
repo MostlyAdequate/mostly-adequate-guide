@@ -1,0 +1,30 @@
+{
+  "name": "MAG_Part2_Exercises",
+  "version": "0.0.1",
+  "description": "Exercises for Part 2 of the Book",
+  "main": "index.js",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "data.task": "^3.0.0",
+    "futurize": "^1.2.0",
+    "immutable": "^3.8.2",
+    "immutable-ext": "^1.1.2",
+    "ramda": "^0.23.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha exercises/**/*_spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DrBoolean/mostly-adequate-guide"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DrBoolean/mostly-adequate-guide/issues"
+  },
+  "homepage": "https://github.com/DrBoolean/mostly-adequate-guide"
+}
