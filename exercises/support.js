@@ -238,9 +238,10 @@ class IO {
   }
 
   constructor(io) {
-    if (typeof io !== 'function') {
-      throw new Error('invalid `io` operation given to IO constructor. Use `IO.of` if you want to lift a value in a default minimal IO context.');
-    }
+    assert(
+      typeof io === 'function',
+      'invalid `io` operation given to IO constructor. Use `IO.of` if you want to lift a value in a default minimal IO context.',
+    );
 
     this.unsafePerformIO = io;
   }
@@ -276,6 +277,10 @@ class Maybe {
     return this.$value === null || this.$value === undefined;
   }
 
+  get isJust() {
+    return !this.isNothing;
+  }
+
   constructor(x) {
     this.$value = x;
   }
@@ -306,6 +311,47 @@ class Maybe {
 }
 
 
+class Task {
+  constructor(fork) {
+    assert(
+      typeof fork === 'function',
+      'invalid `fork` operation given to Task constructor. Use `Task.of` if you want to lift a value in a default minimal Task context.',
+    );
+
+    this.fork = fork;
+  }
+
+  static of(x) {
+    return new Task((_, resolve) => resolve(x));
+  }
+
+  static rejected(x) {
+    return new Task((reject, _) => reject(x));
+  }
+
+  ap(f) {
+    return this.chain(fn => f.map(fn));
+  }
+
+  chain(fn) {
+    return new Task((reject, resolve) => this.fork(reject, x => fn(x).fork(reject, resolve)));
+  }
+
+  inspect() { // eslint-disable-line class-methods-use-this
+    return 'Task(?)';
+  }
+
+  join() {
+    return this.chain(x => x);
+  }
+
+  map(fn) {
+    return new Task((reject, resolve) => this.fork(reject, compose(resolve, fn)));
+  }
+}
+
+const identity = function identity(x) { return x; };
+
 const either = curry(function either(f, g, e) {
   if (e.isLeft) {
     return f(e.$value);
@@ -314,9 +360,7 @@ const either = curry(function either(f, g, e) {
   return g(e.$value);
 });
 
-
 const left = function left(x) { return new Left(x); };
-
 
 const maybe = curry(function maybe(v, f, m) {
   if (m.isNothing) {
@@ -326,12 +370,30 @@ const maybe = curry(function maybe(v, f, m) {
   return f(m.$value);
 });
 
+const nothing = function nothing() { return Maybe.of(null); };
+
+const reject = function reject(x) { return Task.rejected(x); };
+
+const chain = curry(function chain(fn, m) { return m.chain(fn); });
+
+const join = function join(m) { return m.join(); };
+
+const map = curry(function map(fn, xs) { return xs.map(fn); });
+
+const sequence = curry(function sequence(of, x) { return x.sequence(of); });
+
+const unsafePerformIO = function unsafePerformIO(io) { return io.unsafePerformIO(); };
+
+const liftA2 = curry(function liftA2(f, a1, a2) { return a1.map(f).ap(a2); });
+
+const liftA3 = curry(function liftA3(f, a1, a2, a3) { return a1.map(f).ap(a2).ap(a3); });
+
+const liftA4 = curry(function liftA4(f, a1, a2, a3, a4) { return a1.map(f).ap(a2).ap(a3).ap(a4); });
+
 
 /* ---------- Pointfree Classic Utilities ---------- */
 
 const add = curry(function add(a, b) { return a + b; });
-
-const chain = curry(function chain(fn, m) { return m.chain(fn); });
 
 const concat = curry(function concat(a, b) { return a.concat(b); });
 
@@ -341,21 +403,11 @@ const flip = curry(function flip(fn, a, b) { return fn(b, a); });
 
 const forEach = curry(function forEach(fn, xs) { xs.forEach(fn); });
 
+const intercalate = curry(function intercalate(str, xs) { return xs.join(str); });
+
 const head = function head(xs) { return xs[0]; };
 
-const identity = function identity(x) { return x; };
-
-const join = function join(m) { return m.join(); };
-
 const last = function last(xs) { return xs[xs.length - 1]; };
-
-const liftA2 = curry(function liftA2(f, a1, a2) { return a1.map(f).ap(a2); });
-
-const liftA3 = curry(function liftA3(f, a1, a2, a3) { return a1.map(f).ap(a2).ap(a3); });
-
-const liftA4 = curry(function liftA4(f, a1, a2, a3, a4) { return a1.map(f).ap(a2).ap(a3).ap(a4); });
-
-const map = curry(function map(fn, xs) { return xs.map(fn); });
 
 const match = curry(function match(re, str) { return str.match(re); });
 
@@ -384,7 +436,7 @@ const sortBy = curry(function sortBy(fn, xs) {
 
 const split = curry(function split(s, str) { return str.split(s); });
 
-const unsafePerformIO = function unsafePerformIO(io) { return io.unsafePerformIO(); };
+const take = curry(function take(n, xs) { return xs.slice(0, n); });
 
 
 /* ---------- Chapter 4 ---------- */
@@ -519,6 +571,27 @@ const game = curry(function game(p1, p2) { return `${p1.name} vs ${p2.name}`; })
 const getFromCache = function getFromCache(x) { return new IO(() => localStorage[x]); };
 
 
+/* ---------- Chapter 11 ---------- */
+
+const findUserById = function findUserById(id) {
+  switch (id) {
+    case 1:
+      return Task.of(Either.of(albert));
+
+    case 2:
+      return Task.of(Either.of(gary));
+
+    case 3:
+      return Task.of(Either.of(theresa));
+
+    default:
+      return Task.of(left('not found'));
+  }
+};
+
+const eitherToTask = namedAs('eitherToTask', either(Task.rejected, Task.of));
+
+
 /* ---------- Exports ---------- */
 
 if (typeof module === 'object') {
@@ -527,35 +600,40 @@ if (typeof module === 'object') {
     withSpyOn,
 
     // Essential FP helpers
+    chain,
     compose,
     curry,
-    left,
     either,
+    identity,
+    join,
+    left,
+    liftA2,
+    liftA3,
+    liftA4,
+    map,
     maybe,
+    nothing,
+    reject,
+    unsafePerformIO,
 
     // Algebraic Data Structures
-    Identity,
-    IO,
-    Maybe,
     Either,
-    Right,
+    IO,
+    Identity,
     Left,
+    Maybe,
+    Right,
+    Task,
 
     // Currified version of 'standard' functions
     add,
-    chain,
     concat,
     filter,
     flip,
     forEach,
     head,
-    identity,
-    join,
+    intercalate,
     last,
-    liftA2,
-    liftA3,
-    liftA4,
-    map,
     match,
     prop,
     reduce,
@@ -563,7 +641,7 @@ if (typeof module === 'object') {
     safeProp,
     sortBy,
     split,
-    unsafePerformIO,
+    take,
 
     // Chapter 04
     keepHighest,
@@ -593,5 +671,9 @@ if (typeof module === 'object') {
     localStorage,
     getFromCache,
     game,
+
+    // Chapter 11
+    findUserById,
+    eitherToTask,
   };
 }
