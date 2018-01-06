@@ -22,7 +22,7 @@ describe("Traversable Exercises", function(){
   });
 
   it('Exercise 3', function(done) {
-    E.ex3('.').fork(e => { throw 'failed ex3'}, result => {
+    E.ex3(__dirname).fork(e => { throw new Error('failed ex3')}, result => {
       assert.equal(typeof result.__value, 'string', 'return a maybe, not a task')
       assert(result.__value.match(/traverse/))
       done()
