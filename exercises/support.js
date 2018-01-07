@@ -46,7 +46,16 @@ function inspect(x) {
   }
 
   function inspectTerm(t) {
-    return typeof t === 'string' ? `'${t}'` : String(t);
+    switch (typeof t) {
+      case 'string':
+        return `'${t}'`;
+      case 'object': {
+        const ts = Object.keys(t).map(k => [k, inspect(t[k])]);
+        return `{${ts.map(kv => kv.join(': ')).join(', ')}}`;
+      }
+      default:
+        return String(t);
+    }
   }
 
   function inspectArgs(args) {
@@ -160,6 +169,10 @@ class Left extends Either {
   sequence(of) {
     return of(this);
   }
+
+  traverse(of, fn) {
+    return of(this);
+  }
 }
 
 
@@ -192,8 +205,12 @@ class Right extends Either {
     return Either.of(fn(this.$value));
   }
 
-  sequence() {
-    return this.$value.map(Either.of);
+  sequence(of) {
+    return this.traverse(of, x => x);
+  }
+
+  traverse(of, fn) {
+    fn(this.$value).map(Either.of);
   }
 }
 
@@ -227,8 +244,12 @@ class Identity {
     return Identity.of(fn(this.$value));
   }
 
-  sequence() {
-    return this.$value.map(Identity.of);
+  sequence(of) {
+    return this.traverse(of, x => x);
+  }
+
+  traverse(of, fn) {
+    return fn(this.$value).map(Identity.of);
   }
 }
 
@@ -264,6 +285,88 @@ class IO {
 
   map(fn) {
     return new IO(compose(fn, this.unsafePerformIO));
+  }
+}
+
+
+class Map {
+  static of(x) {
+    return new Map(x);
+  }
+
+  constructor(x) {
+    this.$value = x;
+  }
+
+  inspect() {
+    return `Map(${inspect(this.$value)})`;
+  }
+
+  insert(k, v) {
+    const singleton = {};
+    singleton[k] = v;
+    return Map.of(Object.assign({}, this.$value, singleton));
+  }
+
+  reduce(fn, zero) {
+    return this.reduceWithKeys((acc, _, k) => fn(acc, k), zero);
+  }
+
+  reduceWithKeys(fn, zero) {
+    return Object.keys(this.$value)
+      .reduce((acc, k) => fn(acc, this.$value[k], k), zero);
+  }
+
+  map(fn) {
+    return new Map(this.reduceWithKeys((obj, v, k) => {
+      obj[k] = fn(v); // eslint-disable-line no-param-reassign
+      return obj;
+    }, {}));
+  }
+
+  sequence(of) {
+    return this.traverse(of, x => x);
+  }
+
+  traverse(of, fn) {
+    return this.reduceWithKeys(
+      (f, a, k) => fn(a).map(b => m => m.insert(k, b)).ap(f),
+      of(Map.of({})),
+    );
+  }
+}
+
+
+class List {
+  static of(xs) {
+    return new List(xs);
+  }
+
+  constructor(xs) {
+    this.$value = xs;
+  }
+
+  concat(x) {
+    return List.of(this.$value.concat(x));
+  }
+
+  inspect() {
+    return `List(${inspect(this.$value)})`;
+  }
+
+  map(fn) {
+    return List.of(this.$value.map(fn));
+  }
+
+  sequence(of) {
+    return this.traverse(of, x => x);
+  }
+
+  traverse(of, fn) {
+    return this.$value.reduce(
+      (f, a) => fn(a).map(b => bs => bs.concat(b)).ap(f),
+      of(List.of([])),
+    );
   }
 }
 
@@ -306,7 +409,11 @@ class Maybe {
   }
 
   sequence(of) {
-    return this.isNothing ? of(this) : this.$value.map(Maybe.of);
+    this.traverse(of, x => x);
+  }
+
+  traverse(of, fn) {
+    return this.isNothing ? of(this) : fn(this.$value).map(Maybe.of);
   }
 }
 
@@ -382,6 +489,8 @@ const map = curry(function map(fn, xs) { return xs.map(fn); });
 
 const sequence = curry(function sequence(of, x) { return x.sequence(of); });
 
+const traverse = curry(function traverse(of, fn, x) { return x.traverse(of, fn); });
+
 const unsafePerformIO = function unsafePerformIO(io) { return io.unsafePerformIO(); };
 
 const liftA2 = curry(function liftA2(f, a1, a2) { return a1.map(f).ap(a2); });
@@ -389,6 +498,8 @@ const liftA2 = curry(function liftA2(f, a1, a2) { return a1.map(f).ap(a2); });
 const liftA3 = curry(function liftA3(f, a1, a2, a3) { return a1.map(f).ap(a2).ap(a3); });
 
 const liftA4 = curry(function liftA4(f, a1, a2, a3, a4) { return a1.map(f).ap(a2).ap(a3).ap(a4); });
+
+const always = curry(function always(a, b) { return a; });
 
 
 /* ---------- Pointfree Classic Utilities ---------- */
@@ -420,9 +531,9 @@ const reduce = curry(function reduce(fn, acc, xs) {
   );
 });
 
-const safeHead = function safeHead(xs) { return Maybe.of(xs[0]); };
+const safeHead = namedAs('safeHead', compose(Maybe.of, head));
 
-const safeProp = curry(function safeProp(p, obj) { return Maybe.of(obj[p]); });
+const safeProp = curry(function safeProp(p, obj) { return Maybe.of(prop(p, obj)); });
 
 const sortBy = curry(function sortBy(fn, xs) {
   return xs.sort((a, b) => {
@@ -592,6 +703,30 @@ const findUserById = function findUserById(id) {
 const eitherToTask = namedAs('eitherToTask', either(Task.rejected, Task.of));
 
 
+/* ---------- Chapter 12 ---------- */
+
+const httpGet = function httpGet(route) { return Task.of(`json for ${route}`); };
+
+const routes = Map.of({
+  '/': '/',
+  '/about': '/about',
+});
+
+const validate = function validate(player) {
+  return player.name
+    ? Either.of(player)
+    : left('must have name');
+};
+
+const readdir = function readdir(dir) {
+  return Task.of(['file1', 'file2', 'file3']);
+};
+
+const readfile = curry(function readfile(encoding, file) {
+  return Task.of(`content of ${file} (${encoding})`);
+});
+
+
 /* ---------- Exports ---------- */
 
 if (typeof module === 'object') {
@@ -600,6 +735,7 @@ if (typeof module === 'object') {
     withSpyOn,
 
     // Essential FP helpers
+    always,
     chain,
     compose,
     curry,
@@ -614,6 +750,8 @@ if (typeof module === 'object') {
     maybe,
     nothing,
     reject,
+    sequence,
+    traverse,
     unsafePerformIO,
 
     // Algebraic Data Structures
@@ -621,6 +759,8 @@ if (typeof module === 'object') {
     IO,
     Identity,
     Left,
+    List,
+    Map,
     Maybe,
     Right,
     Task,
@@ -675,5 +815,12 @@ if (typeof module === 'object') {
     // Chapter 11
     findUserById,
     eitherToTask,
+
+    // Chapter 12
+    httpGet,
+    routes,
+    validate,
+    readdir,
+    readfile,
   };
 }

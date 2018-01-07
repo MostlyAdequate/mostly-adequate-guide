@@ -21,7 +21,8 @@
     "ch08": "mocha test/ch08.js",
     "ch09": "mocha test/ch09.js",
     "ch10": "mocha test/ch10.js",
-    "ch11": "mocha test/ch11.js"
+    "ch11": "mocha test/ch11.js",
+    "ch12": "mocha test/ch12.js"
   },
   "repository": {
     "type": "git",
