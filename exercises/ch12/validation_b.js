@@ -1,6 +1,6 @@
 /* globals startGame */
 
-const res = startGame(List.of([albert, theresa]));
+const res = startGame(new List([albert, theresa]));
 
 assert(
   res instanceof Either,
@@ -12,7 +12,7 @@ assert(
   'The function gives incorrect results; a game should have started for a list of valid players!',
 );
 
-const rej = startGame(List.of([gary, { what: 14 }]));
+const rej = startGame(new List([gary, { what: 14 }]));
 assert(
   rej.isLeft && rej.$value === 'must have name',
   'The function gives incorrect results; a game shouldn\'t be started if the list contains invalid players!',

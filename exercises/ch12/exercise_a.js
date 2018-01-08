@@ -2,7 +2,7 @@
 //
 //   // httpGet :: Route -> Task Error JSON
 //   // routes :: Map Route Route
-//   const routes = Map.of({ '/': '/', '/about': '/about' });
+//   const routes = new Map({ '/': '/', '/about': '/about' });
 //
 // Use the traversable interface to change the type signature of `getJsons`.
 //

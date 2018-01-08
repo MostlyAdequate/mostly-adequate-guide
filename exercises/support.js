@@ -266,7 +266,6 @@ class Right extends Either {
     return `(Either ? ${getType(this.$value)})`;
   }
 
-
   join() {
     return this.$value;
   }
@@ -369,10 +368,6 @@ class IO {
 
 
 class Map {
-  static of(x) {
-    return new Map(x);
-  }
-
   constructor(x) {
     assert(
       typeof x === 'object' && x !== null,
@@ -395,7 +390,7 @@ class Map {
   insert(k, v) {
     const singleton = {};
     singleton[k] = v;
-    return Map.of(Object.assign({}, this.$value, singleton));
+    return new Map(Object.assign({}, this.$value, singleton));
   }
 
   reduce(fn, zero) {
@@ -421,15 +416,15 @@ class Map {
   traverse(of, fn) {
     return this.reduceWithKeys(
       (f, a, k) => fn(a).map(b => m => m.insert(k, b)).ap(f),
-      of(Map.of({})),
+      of(new Map({})),
     );
   }
 }
 
 
 class List {
-  static of(xs) {
-    return new List(xs);
+  static of(x) {
+    return new List([x]);
   }
 
   constructor(xs) {
@@ -442,7 +437,7 @@ class List {
   }
 
   concat(x) {
-    return List.of(this.$value.concat(x));
+    return new List(this.$value.concat(x));
   }
 
   inspect() {
@@ -456,7 +451,7 @@ class List {
   }
 
   map(fn) {
-    return List.of(this.$value.map(fn));
+    return new List(this.$value.map(fn));
   }
 
   sequence(of) {
@@ -466,7 +461,7 @@ class List {
   traverse(of, fn) {
     return this.$value.reduce(
       (f, a) => fn(a).map(b => bs => bs.concat(b)).ap(f),
-      of(List.of([])),
+      of(new List([])),
     );
   }
 }
@@ -620,7 +615,7 @@ const map = curry(function map(fn, f) {
 const sequence = curry(function sequence(of, x) {
   assert(
     typeof of === 'function' && typeof x.sequence === 'function',
-    typeMismatch('(Applicative x, Traversable t) => (a -> f a) -> t (f a) -> f (t a)', [getType(of), getType(x), 'f (t a)'].join(' -> '), 'sequence'),
+    typeMismatch('(Applicative f, Traversable t) => (a -> f a) -> t (f a) -> f (t a)', [getType(of), getType(x), 'f (t a)'].join(' -> '), 'sequence'),
   );
 
   return x.sequence(of);
@@ -630,7 +625,7 @@ const traverse = curry(function traverse(of, fn, x) {
   assert(
     typeof of === 'function' && typeof fn === 'function' && typeof x.traverse === 'function',
     typeMismatch(
-      '(Applicative x, Traversable t) => (a -> f a) -> (a -> f b) -> t (f a) -> f (t b)',
+      '(Applicative f, Traversable t) => (a -> f a) -> (a -> f b) -> t a -> f (t b)',
       [getType(of), getType(fn), getType(x), 'f (t b)'].join(' -> '),
       'traverse',
     ),
@@ -959,7 +954,7 @@ const eitherToTask = namedAs('eitherToTask', either(Task.rejected, Task.of));
 
 const httpGet = function httpGet(route) { return Task.of(`json for ${route}`); };
 
-const routes = Map.of({
+const routes = new Map({
   '/': '/',
   '/about': '/about',
 });

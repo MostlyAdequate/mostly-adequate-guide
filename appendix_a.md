@@ -1,4 +1,4 @@
-# Appendix A: Functions Support
+# Appendix A: Essential Functions Support
 
 In this appendix, you'll find some basic JavaScript implementations of various functions
 described in the book. Keep in mind that these implementations may not be the fastest or the
@@ -9,23 +9,18 @@ In order to find functions that are more production-ready, have a peak at
 
 Note that some functions also refer to algebraic structures defined in the [Appendix B](./appendix_b.md)
 
-## chain
-
-```hs
-chain :: Monad m => (a -> m b) -> m a -> m b
-```
+## always
 
 ```js
-const chain = f => compose(join, map(f))
+// always :: a -> b -> a
+const always = curry((a, b) => a);
 ```
+
 
 ## compose
 
-```hs
-compose :: ((a -> b), (b -> c),  ..., (y -> z)) -> a -> z
-```
-
 ```js
+// compose :: ((a -> b), (b -> c),  ..., (y -> z)) -> a -> z
 function compose(...fns) {
   const n = fns.length;
 
@@ -41,13 +36,11 @@ function compose(...fns) {
 }
 ```
 
+
 ## curry
 
-```hs
-curry :: ((a, b, ...) -> c) -> a -> b -> ... -> c
-```
-
 ```js
+// curry :: ((a, b, ...) -> c) -> a -> b -> ... -> c
 function curry(fn) {
   const arity = fn.length;
 
@@ -61,13 +54,11 @@ function curry(fn) {
 }
 ```
 
+
 ## either
 
-```hs
-either :: (a -> c) -> (b -> c) -> Either a b -> c
-```
-
 ```js
+// either :: (a -> c) -> (b -> c) -> Either a b -> c
 const either = curry((f, g, e) => {
   if (e.isLeft) {
     return f(e.$value);
@@ -77,13 +68,19 @@ const either = curry((f, g, e) => {
 });
 ```
 
-## inspect
 
-```hs
-inspect :: a -> String
-```
+## identity
 
 ```js
+// identity :: x -> x
+const identity = x => x;
+```
+
+
+## inspect
+
+```js
+// inspect :: a -> String
 function inspect(x) {
   if (x && typeof x.inspect === 'function') {
     return x.inspect();
@@ -93,52 +90,53 @@ function inspect(x) {
     return f.name ? f.name : f.toString();
   }
 
+  function inspectTerm(t) {
+    switch (typeof t) {
+      case 'string':
+        return `'${t}'`;
+      case 'object': {
+        const ts = Object.keys(t).map(k => [k, inspect(t[k])]);
+        return `{${ts.map(kv => kv.join(': ')).join(', ')}}`;
+      }
+      default:
+        return String(t);
+    }
+  }
+
   function inspectArgs(args) {
-    const str = args.reduce((acc, x) => `${acc}, ${inspect(x)}`, '');
-    return `(${str})`;
+    return Array.isArray(args) ? `[${args.map(inspect).join(', ')}]` : inspectTerm(args);
   }
 
   return (typeof x === 'function') ? inspectFn(x) : inspectArgs(x);
 }
 ```
 
-## join
 
-```hs
-join :: Monad m => m (m a) -> m a
-```
+## left
 
 ```js
-const join = m => m.join();
+// left :: a -> Either a b
+const left = a => new Left(a);
 ```
 
-## liftA2
 
-```hs
-liftA2 :: (Applicative f) => (a1 -> a2 -> b) -> f a1 -> f a2 -> f b
-```
+## liftA\*
 
 ```js
+// liftA2 :: (Applicative f) => (a1 -> a2 -> b) -> f a1 -> f a2 -> f b
 const liftA2 = curry((fn, a1, a2) => a1.map(fn).ap(a2));
 ```
 
-## liftA3
-
-```hs
-liftA3 :: (Applicative f) => (a1 -> a2 -> a3 -> b) -> f a1 -> f a2 -> f a3 -> f b
-```
-
 ```js
-const liftA3 = curry((fn, a1, a2, a3) => a1.map(fn).ap(a2).ap(a3))
+// liftA3 :: (Applicative f) => (a1 -> a2 -> a3 -> b) -> f a1 -> f a2 -> f a3 -> f b
+const liftA3 = curry((fn, a1, a2, a3) => a1.map(fn).ap(a2).ap(a3));
 ```
+
 
 ## maybe
 
-```hs
-maybe :: b -> (a -> b) -> Maybe a -> b
-```
-
 ```js
+// maybe :: b -> (a -> b) -> Maybe a -> b
 const maybe = curry((v, f, m) => {
   if (m.isNothing) {
     return v;
@@ -146,4 +144,19 @@ const maybe = curry((v, f, m) => {
 
   return f(m.$value);
 });
+```
+
+
+## nothing
+
+```js
+// nothing :: () -> Maybe a
+const nothing = () => Maybe.of(null);
+```
+
+## reject 
+
+```js
+// reject :: a -> Task a b
+const reject = a => Task.rejected(a);
 ```
