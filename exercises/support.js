@@ -1,5 +1,3 @@
-'use strict'; // eslint-disable-line strict, lines-around-directive
-
 // NOTE We keep named function here to leverage this in the `compose` function,
 // and later on in the validations scripts.
 
