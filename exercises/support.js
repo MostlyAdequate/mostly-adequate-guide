@@ -81,12 +81,67 @@ function withSpyOn(prop, obj, fn) {
 /* eslint-enable no-param-reassign */
 
 
+const typeMismatch = (src, got, fn) => `Type Mismatch in function '${fn}'
+
+        ${fn} :: ${got}
+
+      instead of
+
+        ${fn} :: ${src}`;
+
+
+const capitalize = s => `${s[0].toUpperCase()}${s.substring(1)}`;
+
+
+const ordinal = (i) => {
+  switch (i) {
+    case 1:
+      return '1st';
+    case 2:
+      return '2nd';
+    case 3:
+      return '3rd';
+    default:
+      return `${i}th`; // NOTE won't get any much bigger ...
+  }
+};
+
+const getType = (x) => {
+  if (x === null) {
+    return 'Null';
+  }
+
+  if (typeof x === 'undefined') {
+    return '()';
+  }
+
+  if (Array.isArray(x)) {
+    return `[${x[0] ? getType(x[0]) : '?'}]`;
+  }
+
+  if (typeof x.getType === 'function') {
+    return x.getType();
+  }
+
+  if (x.constructor && x.constructor.name) {
+    return x.constructor.name;
+  }
+
+  return capitalize(typeof x);
+};
+
+
 /* ---------- Essential FP Functions ---------- */
 
 // NOTE A slightly pumped up version of `curry` which also keeps track of
 // whether a function was called partially or with all its arguments at once.
 // This is useful to provide insights during validation of exercises.
 function curry(fn) {
+  assert(
+    typeof fn === 'function',
+    typeMismatch('function -> ?', [getType(fn), '?'].join(' -> '), 'curry'),
+  );
+
   const arity = fn.length;
 
   return namedAs(fn.name, function $curry(...args) {
@@ -115,6 +170,12 @@ function compose(...fns) {
 
     for (let i = n - 1; i >= 0; i -= 1) {
       const fn = fns[i];
+
+      assert(
+        typeof fn === 'function',
+        `Invalid Composition: ${ordinal(n - i)} element in a composition isn't a function`,
+      );
+
       $compose.callees.push(fn.name);
       $args = [fn.call(null, ...$args)];
     }
@@ -158,6 +219,10 @@ class Left extends Either {
     return `Left(${inspect(this.$value)})`;
   }
 
+  getType() {
+    return `(Either ${getType(this.$value)} ?)`;
+  }
+
   join() {
     return this;
   }
@@ -197,6 +262,11 @@ class Right extends Either {
     return `Right(${inspect(this.$value)})`;
   }
 
+  getType() {
+    return `(Either ? ${getType(this.$value)})`;
+  }
+
+
   join() {
     return this.$value;
   }
@@ -234,6 +304,10 @@ class Identity {
 
   inspect() {
     return `Identity(${inspect(this.$value)})`;
+  }
+
+  getType() {
+    return `(Identity ${getType(this.$value)})`;
   }
 
   join() {
@@ -276,8 +350,13 @@ class IO {
   }
 
   inspect() {
-    return `IO(${inspect(this.unsafePerformIO)})`;
+    return `IO(${inspect(this.unsafePerformIO())})`;
   }
+
+  getType() {
+    return `(IO ${getType(this.unsafePerformIO())})`;
+  }
+
 
   join() {
     return this.unsafePerformIO();
@@ -295,11 +374,22 @@ class Map {
   }
 
   constructor(x) {
+    assert(
+      typeof x === 'object' && x !== null,
+      'tried to create `Map` with non object-like',
+    );
+
     this.$value = x;
   }
 
   inspect() {
     return `Map(${inspect(this.$value)})`;
+  }
+
+  getType() {
+    const sample = this.$value[Object.keys(this.$value)[0]];
+
+    return `(Map String ${sample ? getType(sample) : '?'})`;
   }
 
   insert(k, v) {
@@ -343,6 +433,11 @@ class List {
   }
 
   constructor(xs) {
+    assert(
+      Array.isArray(xs),
+      'tried to create `List` from non-array',
+    );
+
     this.$value = xs;
   }
 
@@ -352,6 +447,12 @@ class List {
 
   inspect() {
     return `List(${inspect(this.$value)})`;
+  }
+
+  getType() {
+    const sample = this.$value[0];
+
+    return `(List ${sample ? getType(sample) : '?'})`;
   }
 
   map(fn) {
@@ -398,6 +499,10 @@ class Maybe {
 
   inspect() {
     return this.isNothing ? 'Nothing' : `Just(${inspect(this.$value)})`;
+  }
+
+  getType() {
+    return `(Maybe ${this.isJust ? getType(this.$value) : '?'})`;
   }
 
   join() {
@@ -448,6 +553,10 @@ class Task {
     return 'Task(?)';
   }
 
+  getType() { // eslint-disable-line class-methods-use-this
+    return '(Task ? ?)';
+  }
+
   join() {
     return this.chain(x => x);
   }
@@ -481,53 +590,177 @@ const nothing = function nothing() { return Maybe.of(null); };
 
 const reject = function reject(x) { return Task.rejected(x); };
 
-const chain = curry(function chain(fn, m) { return m.chain(fn); });
+const chain = curry(function chain(fn, m) {
+  assert(
+    typeof fn === 'function' && typeof m.chain === 'function',
+    typeMismatch('Monad m => (a -> m b) -> m a -> m a', [getType(fn), getType(m), 'm a'].join(' -> '), 'chain'),
+  );
 
-const join = function join(m) { return m.join(); };
+  return m.chain(fn);
+});
 
-const map = curry(function map(fn, xs) { return xs.map(fn); });
+const join = function join(m) {
+  assert(
+    typeof m.chain === 'function',
+    typeMismatch('Monad m => m (m a) -> m a', [getType(m), 'm a'].join(' -> '), 'join'),
+  );
 
-const sequence = curry(function sequence(of, x) { return x.sequence(of); });
+  return m.join();
+};
 
-const traverse = curry(function traverse(of, fn, x) { return x.traverse(of, fn); });
+const map = curry(function map(fn, f) {
+  assert(
+    typeof fn === 'function' && typeof f.map === 'function',
+    typeMismatch('Functor f => (a -> b) -> f a -> f b', [getType(fn), getType(f), 'f b'].join(' -> '), 'map'),
+  );
 
-const unsafePerformIO = function unsafePerformIO(io) { return io.unsafePerformIO(); };
+  return f.map(fn);
+});
 
-const liftA2 = curry(function liftA2(f, a1, a2) { return a1.map(f).ap(a2); });
+const sequence = curry(function sequence(of, x) {
+  assert(
+    typeof of === 'function' && typeof x.sequence === 'function',
+    typeMismatch('(Applicative x, Traversable t) => (a -> f a) -> t (f a) -> f (t a)', [getType(of), getType(x), 'f (t a)'].join(' -> '), 'sequence'),
+  );
 
-const liftA3 = curry(function liftA3(f, a1, a2, a3) { return a1.map(f).ap(a2).ap(a3); });
+  return x.sequence(of);
+});
 
-const liftA4 = curry(function liftA4(f, a1, a2, a3, a4) { return a1.map(f).ap(a2).ap(a3).ap(a4); });
+const traverse = curry(function traverse(of, fn, x) {
+  assert(
+    typeof of === 'function' && typeof fn === 'function' && typeof x.traverse === 'function',
+    typeMismatch(
+      '(Applicative x, Traversable t) => (a -> f a) -> (a -> f b) -> t (f a) -> f (t b)',
+      [getType(of), getType(fn), getType(x), 'f (t b)'].join(' -> '),
+      'traverse',
+    ),
+  );
+
+  return x.traverse(of, fn);
+});
+
+const unsafePerformIO = function unsafePerformIO(io) {
+  assert(
+    io instanceof IO,
+    typeMismatch('IO a', getType(io), 'unsafePerformIO'),
+  );
+
+  return io.unsafePerformIO();
+};
+
+const liftA2 = curry(function liftA2(fn, a1, a2) {
+  assert(
+    typeof fn === 'function' && typeof a1.map === 'function' && typeof a1.ap === 'function' && typeof a2.map === 'function',
+    typeMismatch('Applicative f => (a -> b -> c) -> f a -> f b -> f c', [getType(fn), getType(a1), getType(a2)].join(' -> '), 'liftA2'),
+  );
+
+  return a1.map(fn).ap(a2);
+});
 
 const always = curry(function always(a, b) { return a; });
 
 
 /* ---------- Pointfree Classic Utilities ---------- */
 
-const add = curry(function add(a, b) { return a + b; });
+const add = curry(function add(a, b) {
+  assert(
+    typeof a === 'number' && typeof b === 'number',
+    typeMismatch('Number -> Number -> Number', [getType(a), getType(b), 'Number'].join(' -> '), 'add'),
+  );
 
-const concat = curry(function concat(a, b) { return a.concat(b); });
+  return a + b;
+});
 
-const filter = curry(function filter(fn, xs) { return xs.filter(fn); });
+const concat = curry(function concat(a, b) {
+  assert(
+    typeof a === 'string' && typeof b === 'string',
+    typeMismatch('String -> String -> String', [getType(a), getType(b), 'String'].join(' -> '), 'concat'),
+  );
 
-const flip = curry(function flip(fn, a, b) { return fn(b, a); });
+  return a.concat(b);
+});
 
-const forEach = curry(function forEach(fn, xs) { xs.forEach(fn); });
+const filter = curry(function filter(fn, xs) {
+  assert(
+    typeof fn === 'function' && Array.isArray(xs),
+    typeMismatch('(a -> Boolean) -> [a] -> [a]', [getType(fn), getType(xs), getType(xs)].join(' -> '), 'filter'),
+  );
 
-const intercalate = curry(function intercalate(str, xs) { return xs.join(str); });
+  return xs.filter(fn);
+});
 
-const head = function head(xs) { return xs[0]; };
+const flip = curry(function flip(fn, a, b) {
+  assert(
+    typeof fn === 'function',
+    typeMismatch('(a -> b) -> (b -> a)', [getType(fn), '(b -> a)'].join(' -> '), 'flip'),
+  );
 
-const last = function last(xs) { return xs[xs.length - 1]; };
+  return fn(b, a);
+});
 
-const match = curry(function match(re, str) { return str.match(re); });
+const forEach = curry(function forEach(fn, xs) {
+  assert(
+    typeof fn === 'function' && Array.isArray(xs),
+    typeMismatch('(a -> ()) -> [a] -> ()', [getType(fn), getType(xs), '()'].join(' -> '), 'forEach'),
+  );
 
-const prop = curry(function prop(p, obj) { return obj[p]; });
+  xs.forEach(fn);
+});
 
-const reduce = curry(function reduce(fn, acc, xs) {
+const intercalate = curry(function intercalate(str, xs) {
+  assert(
+    typeof str === 'string' && Array.isArray(xs) && (xs.length === 0 || typeof xs[0] === 'string'),
+    typeMismatch('String -> [String] -> String', [getType(str), getType(xs), 'String'].join(' -> '), 'intercalate'),
+  );
+
+  return xs.join(str);
+});
+
+const head = function head(xs) {
+  assert(
+    Array.isArray(xs) || typeof xs === 'string',
+    typeMismatch('[a] -> a', [getType(xs), 'a'].join(' -> '), 'head'),
+  );
+
+  return xs[0];
+};
+
+const last = function last(xs) {
+  assert(
+    Array.isArray(xs) || typeof xs === 'string',
+    typeMismatch('[a] -> a', [getType(xs), 'a'].join(' -> '), 'last'),
+  );
+
+  return xs[xs.length - 1];
+};
+
+const match = curry(function match(re, str) {
+  assert(
+    re instanceof RegExp && typeof str === 'string',
+    typeMismatch('RegExp -> String -> Boolean', [getType(re), getType(str), 'Boolean'].join(' -> '), 'match'),
+  );
+
+  return re.test(str);
+});
+
+const prop = curry(function prop(p, obj) {
+  assert(
+    typeof p === 'string' && typeof obj === 'object' && obj !== null,
+    typeMismatch('String -> Object -> a', [getType(p), getType(obj), 'a'].join(' -> '), 'prop'),
+  );
+
+  return obj[p];
+});
+
+const reduce = curry(function reduce(fn, zero, xs) {
+  assert(
+    typeof fn === 'function' && Array.isArray(xs),
+    typeMismatch('(b -> a -> b) -> b -> [a] -> b', [getType(fn), getType(zero), getType(xs), 'b'].join(' -> '), 'reduce'),
+  );
+
   return xs.reduce(
     function $reduceIterator($acc, $x) { return fn($acc, $x); },
-    acc,
+    zero,
   );
 });
 
@@ -536,6 +769,11 @@ const safeHead = namedAs('safeHead', compose(Maybe.of, head));
 const safeProp = curry(function safeProp(p, obj) { return Maybe.of(prop(p, obj)); });
 
 const sortBy = curry(function sortBy(fn, xs) {
+  assert(
+    typeof fn === 'function' && Array.isArray(xs),
+    typeMismatch('Ord b => (a -> b) -> [a] -> [a]', [getType(fn), getType(xs), '[a]'].join(' -> '), 'sortBy'),
+  );
+
   return xs.sort((a, b) => {
     if (fn(a) === fn(b)) {
       return 0;
@@ -545,9 +783,23 @@ const sortBy = curry(function sortBy(fn, xs) {
   });
 });
 
-const split = curry(function split(s, str) { return str.split(s); });
+const split = curry(function split(s, str) {
+  assert(
+    typeof s === 'string' && typeof str === 'string',
+    typeMismatch('String -> String -> [String]', [getType(s), getType(str), '[String]'].join(' -> '), 'split'),
+  );
 
-const take = curry(function take(n, xs) { return xs.slice(0, n); });
+  return str.split(s);
+});
+
+const take = curry(function take(n, xs) {
+  assert(
+    typeof n === 'number' && (Array.isArray(xs) || typeof xs === 'string'),
+    typeMismatch('Number -> [a] -> [a]', [getType(n), getType(xs), getType(xs)].join(' -> '), 'take'),
+  );
+
+  return xs.slice(0, n);
+});
 
 
 /* ---------- Chapter 4 ---------- */
@@ -744,8 +996,6 @@ if (typeof module === 'object') {
     join,
     left,
     liftA2,
-    liftA3,
-    liftA4,
     map,
     maybe,
     nothing,
