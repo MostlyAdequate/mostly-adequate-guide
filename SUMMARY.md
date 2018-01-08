@@ -44,7 +44,7 @@
   * [Asynchronous Tasks](ch08.md#asynchronous-tasks)
   * [A Spot of Theory](ch08.md#a-spot-of-theory)
   * [In Summary](ch08.md#in-summary)
-  * [Exercises](ch09.md#exercises)
+  * [Exercises](ch08.md#exercises)
 * [Chapter 09: Monadic Onions](ch09.md)
   * [Pointy Functor Factory](ch09.md#pointy-functor-factory)
   * [Mixing Metaphors](ch09.md#mixing-metaphors)
