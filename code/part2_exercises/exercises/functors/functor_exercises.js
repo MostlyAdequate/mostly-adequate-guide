@@ -35,7 +35,7 @@ var ex3 = undefined;
 // Use Maybe to rewrite ex4 without an if statement
 
 var ex4 = function (n) {
-  if (n) { return parseInt(n); }
+  if (n !== null && n !== undefined) { return parseInt(n); }
 };
 
 var ex4 = undefined;
