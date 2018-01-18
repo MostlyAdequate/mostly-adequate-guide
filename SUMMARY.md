@@ -34,6 +34,7 @@
   * [Tales from the cryptic](ch07.md#tales-from-the-cryptic)
   * [Narrowing the possibility](ch07.md#narrowing-the-possibility)
   * [Free as in theorem](ch07.md#free-as-in-theorem)
+  * [Constraints](ch07.md#constraints)
   * [In Summary](ch07.md#in-summary)
 * [Chapter 08: Tupperware](ch08.md)
   * [The Mighty Container](ch08.md#the-mighty-container)
