@@ -1,0 +1,38 @@
+{
+  "name": "mostly-adequate-exercises",
+  "version": "1.0.0",
+  "description": "Exercises and examples for the Mostly Adequate Guide to Functional Programming",
+  "devDependencies": {
+    "cli": "^1.0.1",
+    "eslint": "^4.12.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.5.1",
+    "live-server": "^1.2.0",
+    "mocha": "^4.1.0"
+  },
+  "scripts": {
+    "test": "mocha test/*.solutions.js",
+    "lint": "eslint .",
+    "ch04": "mocha test/ch04.js",
+    "ch05": "mocha test/ch05.js",
+    "ch06": "live-server --ignore='node_modules/*/**' ch06",
+    "ch08": "mocha test/ch08.js",
+    "ch09": "mocha test/ch09.js",
+    "ch10": "mocha test/ch10.js",
+    "ch11": "mocha test/ch11.js",
+    "ch12": "mocha test/ch12.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MostlyAdequate/mostly-adequate-guide"
+  },
+  "author": "Mostly Adequate Core Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MostlyAdequate/mostly-adequate-guide/issues"
+  },
+  "homepage": "https://github.com/MostlyAdequate/mostly-adequate-guide",
+  "dependencies": {}
+}

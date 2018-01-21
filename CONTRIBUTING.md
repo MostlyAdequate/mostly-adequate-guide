@@ -27,7 +27,7 @@ In order to create a new translation, you need to follow these steps:
 * Fork the [main repo](https://github.com/MostlyAdequate/mostly-adequate-guide).
 * Add yourself to the watch list of the main repo, to keep up with changes.
 * When translating chapters, **create NEW files with suffix of your language**.
-  * For example, Spanish tranlation for `ch1.md` will be on `ch1-es.md`.
+  * For example, Spanish tranlation for `ch01.md` will be on `ch01-es.md`.
 * Open a [new issue](https://github.com/MostlyAdequate/mostly-adequate-guide/issues/new) and ask to be part of the organization.
 * Transfer the repo to the organization.
 * Merge new content from the main repo.
