@@ -3,7 +3,7 @@
   "root": ".",
   "plugins":
     [
-      "exercises@3.0.0",
+      "exercises@git+https://github.com/MostlyAdequate/plugin-exercises.git",
       "include-codeblock@3.1.2"
     ]
 }
