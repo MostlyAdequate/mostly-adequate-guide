@@ -23,28 +23,28 @@ That said, typed functional languages will, without a doubt, be the best place t
 
 ## Read it Online
 
-For a best reading experience, [read it online via Gitbook](https://drboolean.gitbooks.io/mostly-adequate-guide/content/). 
+For a best reading experience, [read it online via Gitbook](https://mostly-adequate.gitbooks.io/mostly-adequate-guide/).
 
-- Quick-access side-bar 
+- Quick-access side-bar
 - In-browser exercises
 - In-depth examples
 
 
 ## Download it
 
-* [Download PDF](https://www.gitbook.com/download/pdf/book/drboolean/mostly-adequate-guide)
-* [Download EPUB](https://www.gitbook.com/download/epub/book/drboolean/mostly-adequate-guide)
-* [Download Mobi (Kindle)](https://www.gitbook.com/download/mobi/book/drboolean/mostly-adequate-guide)
+* [Download PDF](https://www.gitbook.com/download/pdf/book/mostly-adequate/mostly-adequate-guide)
+* [Download EPUB](https://www.gitbook.com/download/epub/book/mostly-adequate/mostly-adequate-guide)
+* [Download Mobi (Kindle)](https://www.gitbook.com/download/mobi/book/mostly-adequate/mostly-adequate-guide)
 
 
 ## Do it yourself
 
 ```
-git clone https://github.com/DrBoolean/mostly-adequate-guide.git
+git clone https://github.com/MostlyAdequate/mostly-adequate-guide.git
 cd mostly-adequate-guide/
 npm install
 npm run setup
-gitbook pdf 
+gitbook pdf
 ```
 
 
