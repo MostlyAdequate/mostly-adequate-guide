@@ -673,6 +673,15 @@ const concat = curry(function concat(a, b) {
   return a.concat(b);
 });
 
+const eq = curry(function eq(a, b) {
+  assert(
+    getType(a) === getType(b),
+    typeMismatch('a -> a -> Boolean', [getType(a), getType(b), 'Boolean'].join(' -> '), eq),
+  )
+
+  return a === b;
+});
+
 const filter = curry(function filter(fn, xs) {
   assert(
     typeof fn === 'function' && Array.isArray(xs),
@@ -978,6 +987,7 @@ if (typeof module === 'object') {
   module.exports = {
     // Utils
     withSpyOn,
+    inspect,
 
     // Essential FP helpers
     always,
@@ -1011,6 +1021,7 @@ if (typeof module === 'object') {
     // Currified version of 'standard' functions
     add,
     concat,
+    eq,
     filter,
     flip,
     forEach,
