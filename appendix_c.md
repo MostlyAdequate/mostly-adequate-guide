@@ -31,6 +31,13 @@ const chain = curry((fn, m) => m.chain(fn));
 const concat = curry((a, b) => a.concat(b));
 ```
 
+## eq
+
+```js
+// eq :: Eq a => a -> a -> Boolean
+const eq = curry((a, b) => a === b);
+```
+
 ## filter
 
 ```js
@@ -163,6 +170,20 @@ const split = curry((sep, str) => str.split(sep));
 ```js
 // take :: Number -> [a] -> [a]
 const take = curry((n, xs) => xs.slice(0, n));
+```
+
+## toLowerCase
+
+```js
+// toLowerCase :: String -> String
+const toLowerCase = s => s.toLowerCase();
+```
+
+## toUpperCase
+
+```js
+// toUpperCase :: String -> String
+const toUpperCase = s => s.toUpperCase();
 ```
 
 ## traverse

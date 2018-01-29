@@ -803,6 +803,24 @@ const take = curry(function take(n, xs) {
   return xs.slice(0, n);
 });
 
+const toLowerCase = function toLowerCase(s) {
+  assert(
+    typeof s === 'string',
+    typeMismatch('String -> String', [getType(s), '?'].join(' -> '), 'toLowerCase'),
+  );
+
+  return s.toLowerCase();
+};
+
+const toUpperCase = function toUpperCase(s) {
+  assert(
+    typeof s === 'string',
+    typeMismatch('String -> String', [getType(s), '?'].join(' -> '), 'toLowerCase'),
+  );
+
+  return s.toUpperCase();
+};
+
 
 /* ---------- Chapter 4 ---------- */
 
@@ -1036,6 +1054,8 @@ if (typeof module === 'object') {
     sortBy,
     split,
     take,
+    toLowerCase,
+    toUpperCase,
 
     // Chapter 04
     keepHighest,
