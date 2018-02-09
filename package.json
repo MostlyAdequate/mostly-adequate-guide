@@ -11,7 +11,8 @@
   },
   "scripts": {
     "setup": "$(npm bin)/gitbook install",
-    "start": "$(npm bin)/gitbook serve"
+    "start": "$(npm bin)/gitbook serve",
+    "generate-summary": "./generate-summary.pl ch*.md appendix_*.md > SUMMARY.md"
   },
   "repository": {
     "type": "git",
