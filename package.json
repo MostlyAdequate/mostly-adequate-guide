@@ -12,7 +12,7 @@
   "scripts": {
     "setup": "$(npm bin)/gitbook install",
     "start": "$(npm bin)/gitbook serve",
-    "generate-summary": "./generate-summary.pl ch*.md appendix_*.md > SUMMARY.md"
+    "generate-summary": "perl -n .generate-summary.pl ch*.md appendix_*.md > SUMMARY.md"
   },
   "repository": {
     "type": "git",
