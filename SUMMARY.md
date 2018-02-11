@@ -52,6 +52,8 @@
   * [Pointy Functor Factory](ch09.md#pointy-functor-factory)
   * [Mixing Metaphors](ch09.md#mixing-metaphors)
   * [My chain hits my chest](ch09.md#my-chain-hits-my-chest)
+  * [Power trip](ch09.md#power-trip)
+  * [Theory](ch09.md#theory)
   * [In Summary](ch09.md#in-summary)
   * [Exercises](ch09.md#exercises)
 * [Chapter 10: Applicative Functors](ch10.md)
