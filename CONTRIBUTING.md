@@ -20,7 +20,7 @@ explain yourself.
 Translations to other languages are highly encouraged. Each official translation will be held as a separate repository in the [MostlyAdequate organization](https://github.com/MostlyAdequate) and linked from the English version book.
 Since each translation is a different repository, we can also have different maintainers for each project.
 
-### Creating a new translation repo
+### Creating a New Translation Repo
 
 In order to create a new translation, you need to follow these steps:
 
