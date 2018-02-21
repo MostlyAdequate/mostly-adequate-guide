@@ -179,6 +179,13 @@ const take = curry((n, xs) => xs.slice(0, n));
 const toLowerCase = s => s.toLowerCase();
 ```
 
+## toString
+
+```js
+// toString :: Number -> String
+const toString = n => n.toString();
+```
+
 ## toUpperCase
 
 ```js
