@@ -62,6 +62,10 @@ class Left extends Either {
     return false;
   }
 
+  static of(x) {
+    throw new Error('`of` called on class Left (value) instead of Either (type)');
+  }
+
   inspect() {
     return `Left(${inspect(this.$value)})`;
   }
@@ -102,6 +106,10 @@ class Right extends Either {
 
   get isRight() {
     return true;
+  }
+
+  static of(x) {
+    throw new Error('`of` called on class Right (value) instead of Either (type)');
   }
 
   inspect() {
