@@ -115,6 +115,13 @@ const prop = curry((p, obj) => obj[p]);
 const reduce = curry((fn, zero, xs) => xs.reduce(fn, zero));
 ```
 
+## replace
+
+```js
+// replace :: RegExp -> String -> String -> String
+const replace = curry((re, rpl, str) => str.replace(re, rpl));
+```
+
 ## safeHead
 
 ```js
