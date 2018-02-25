@@ -183,7 +183,7 @@ const toLowerCase = s => s.toLowerCase();
 
 ```js
 // toString :: a -> String
-const toString = x => x.toString();
+const toString = String;
 ```
 
 ## toUpperCase
