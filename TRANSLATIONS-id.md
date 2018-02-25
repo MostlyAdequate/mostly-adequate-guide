@@ -8,7 +8,6 @@
 * [Español (Spanish)](https://github.com/MostlyAdequate/mostly-adequate-guide-es) oleh Gustavo Marin @guumaster
 * [Italiano (Italian)](https://github.com/MostlyAdequate/mostly-adequate-guide-it) oleh Elia Gentili @eliagentili
 * [한국어 (Korean)](https://github.com/enshahar/mostly-adequate-guide-kr) oleh Frank Hyunsok Oh @enshahar
-* [Bahasa Indonesia (Indonesian)](https://github.com/anaufalm/mostly-adequate-guide-id) oleh Ahmad Naufal Mukhtar @anaufalm
 
 ## Membuat Terjemahan baru
 
