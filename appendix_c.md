@@ -122,6 +122,16 @@ const reduce = curry((fn, zero, xs) => xs.reduce(fn, zero));
 const replace = curry((re, rpl, str) => str.replace(re, rpl));
 ```
 
+## reverse
+
+```js
+// reverse :: [a] -> [a], String -> String
+const reverse = x => 
+  Array.isArray(x)
+    ? x.reverse()
+    : x.split().reverse().join('')
+```
+
 ## safeHead
 
 ```js
