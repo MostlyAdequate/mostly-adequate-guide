@@ -129,7 +129,7 @@ const replace = curry((re, rpl, str) => str.replace(re, rpl));
 const reverse = x => 
   Array.isArray(x)
     ? x.reverse()
-    : x.split().reverse().join('')
+    : x.split('').reverse().join('')
 ```
 
 ## safeHead
