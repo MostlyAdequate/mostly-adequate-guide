@@ -154,7 +154,7 @@ function curry(fn) {
 }
 
 
-// NOTE Aslightly pumped up version of `compose` which also keeps track of the chain
+// NOTE A slightly pumped up version of `compose` which also keeps track of the chain
 // of callees. In the end, a function created with `compose` holds a `callees` variable
 // with the list of all the callees' names.
 // This is useful to provide insights during validation of exercises
