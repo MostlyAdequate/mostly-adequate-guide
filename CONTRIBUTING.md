@@ -32,4 +32,4 @@ In order to create a new translation, you need to follow these steps:
 * Transfer the repo to the organization.
 * Merge new content from the main repo.
 * keep translating...
-* Rinse/repeat last too steps until the book is done.
+* Rinse/repeat last two steps until the book is done.
