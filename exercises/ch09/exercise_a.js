@@ -1,4 +1,4 @@
-// Condering a User object as follow:
+// Considering a User object as follow:
 //
 //   const user = {
 //     id: 1,
