@@ -3,7 +3,7 @@
 
 ## Licensing
 
-By opening a pull request to this repository, you agree to provide your work under the [project license](LICENSE.md). Also, you agree to grant such license of your work as is required for the purposes of future print editions to @DrBoolean. Should your changes appear in a printed edition, you'll be included in the contributors list.
+By opening a pull request to this repository, you agree to provide your work under the [project license](LICENSE). Also, you agree to grant such license of your work as is required for the purposes of future print editions to @DrBoolean. Should your changes appear in a printed edition, you'll be included in the contributors list.
 
 ## Small Corrections
 
