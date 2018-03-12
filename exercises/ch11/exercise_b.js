@@ -1,4 +1,4 @@
-// Using `eitherToTask`, simplify `getUserName` to remove the nested `Either`.
+// Using `eitherToTask`, simplify `findNameById` to remove the nested `Either`.
 //
 //   // eitherToTask :: Either a b -> Task a b
 //   const eitherToTask = either(Task.rejected, Task.of);
