@@ -90,7 +90,7 @@ const last = xs => xs[xs.length - 1];
 ## map
 
 ```js
-// map :: Functor f => (a -> f b) -> f a -> f b
+// map :: Functor f => (a -> b) -> f a -> f b
 const map = curry((fn, f) => f.map(fn));
 ```
 
