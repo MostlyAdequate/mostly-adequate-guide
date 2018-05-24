@@ -21,19 +21,7 @@ const always = curry((a, b) => a);
 
 ```js
 // compose :: ((a -> b), (b -> c),  ..., (y -> z)) -> a -> z
-function compose(...fns) {
-  const n = fns.length;
-
-  return function $compose(...args) {
-    let $args = args;
-
-    for (let i = n - 1; i >= 0; i -= 1) {
-      $args = [fns[i].call(null, ...$args)];
-    }
-
-    return $args[0];
-  };
-}
+const compose = (...fns) => (...args) => fns.reduceRight((accum, val) => [val.call(null, ...accum)], args)[0]
 ```
 
 
