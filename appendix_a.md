@@ -21,7 +21,7 @@ const always = curry((a, b) => a);
 
 ```js
 // compose :: ((a -> b), (b -> c),  ..., (y -> z)) -> a -> z
-const compose = (...fns) => (...args) => fns.reduceRight((accum, val) => [val.call(null, ...accum)], args)[0]
+const compose = (...fns) => (...args) => fns.reduceRight((res, fn) => [fn.call(null, ...res)], args)[0];
 ```
 
 
@@ -29,7 +29,7 @@ const compose = (...fns) => (...args) => fns.reduceRight((accum, val) => [val.ca
 
 ```js
 // curry :: ((a, b, ...) -> c) -> a -> b -> ... -> c
-function curry(fn) {
+const curry = (fn) => {
   const arity = fn.length;
 
   return function $curry(...args) {
@@ -39,7 +39,7 @@ function curry(fn) {
 
     return fn.call(null, ...args);
   };
-}
+};
 ```
 
 
@@ -69,7 +69,7 @@ const identity = x => x;
 
 ```js
 // inspect :: a -> String
-function inspect(x) {
+const inspect = (x) => {
   if (x && typeof x.inspect === 'function') {
     return x.inspect();
   }
@@ -96,7 +96,7 @@ function inspect(x) {
   }
 
   return (typeof x === 'function') ? inspectFn(x) : inspectArgs(x);
-}
+};
 ```
 
 
