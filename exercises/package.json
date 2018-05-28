@@ -1,7 +1,25 @@
 {
-  "name": "mostly-adequate-exercises",
+  "name": "@mostly-adequate/support",
   "version": "1.0.0",
-  "description": "Exercises and examples for the Mostly Adequate Guide to Functional Programming",
+  "description": "Support functions and data-structures from the Mostly Adequate Guide to Functional Programming",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MostlyAdequate/mostly-adequate-guide"
+  },
+  "author": "@mostly-adequate",
+  "bugs": {
+    "url": "https://github.com/MostlyAdequate/mostly-adequate-guide/issues"
+  },
+  "homepage": "https://github.com/MostlyAdequate/mostly-adequate-guide",
+  "keywords": [
+    "functional programming",
+    "mostly adequate",
+    "guide",
+    "fp"
+  ],
+  "dependencies": {},
   "devDependencies": {
     "cli": "^1.0.1",
     "eslint": "^4.12.1",
@@ -23,16 +41,5 @@
     "ch10": "mocha test/ch10.js",
     "ch11": "mocha test/ch11.js",
     "ch12": "mocha test/ch12.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/MostlyAdequate/mostly-adequate-guide"
-  },
-  "author": "Mostly Adequate Core Team",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/MostlyAdequate/mostly-adequate-guide/issues"
-  },
-  "homepage": "https://github.com/MostlyAdequate/mostly-adequate-guide",
-  "dependencies": {}
+  }
 }

@@ -142,6 +142,7 @@ const maybe = curry((v, f, m) => {
 const nothing = () => Maybe.of(null);
 ```
 
+
 ## reject 
 
 ```js
