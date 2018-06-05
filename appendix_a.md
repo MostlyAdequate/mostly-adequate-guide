@@ -4,7 +4,7 @@ In this appendix, you'll find some basic JavaScript implementations of various f
 described in the book. Keep in mind that these implementations may not be the fastest or the
 most efficient implementation out there; they *solely serve an educational purpose*.
 
-In order to find functions that are more production-ready, have a peak at
+In order to find functions that are more production-ready, have a peek at
 [ramda](http://ramdajs.com/), [lodash](https://lodash.com/), or [folktale](http://folktale.github.io/).
 
 Note that some functions also refer to algebraic structures defined in the [Appendix B](./appendix_b.md)
