@@ -1,5 +1,3 @@
-# Professor Frisby's Mostly Adequate Guide to Functional Programming
-
 [![cover](images/cover.png)](SUMMARY.md)
 
 ## About this book
