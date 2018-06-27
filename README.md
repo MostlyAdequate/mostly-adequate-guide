@@ -44,7 +44,8 @@ git clone https://github.com/MostlyAdequate/mostly-adequate-guide.git
 cd mostly-adequate-guide/
 npm install
 npm run setup
-gitbook pdf
+npm run generate-pdf
+npm run generate-epub
 ```
 
 
