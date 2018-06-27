@@ -48,6 +48,7 @@ npm run generate-pdf
 npm run generate-epub
 ```
 
+> Note! To generate the ebook version you will need to install `ebook-convert`. [Installation instructions](https://toolchain.gitbook.com/ebook.html#installing-ebook-convert).
 
 # Table of Contents
 
