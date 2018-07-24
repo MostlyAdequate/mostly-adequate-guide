@@ -6,3 +6,5 @@ npm-debug.log
 .DS_Store
 *.md#*
 _book
+/book.pdf
+/book.epub
