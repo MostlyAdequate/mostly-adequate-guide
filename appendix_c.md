@@ -48,7 +48,7 @@ const filter = curry((fn, xs) => xs.filter(fn));
 ## flip
 
 ```js
-// flip :: (a -> b) -> (b -> a)
+// flip :: (a -> b -> c) -> b -> a -> c
 const flip = curry((fn, a, b) => fn(b, a));
 ```
 
