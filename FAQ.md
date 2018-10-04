@@ -104,7 +104,7 @@ A glossary/vade mecum will come at the end to synthesize all these notions.
 
 Most of the time, those methods are defined in specific vendor libraries such as `ramda` or
 `underscore`. You should also have a look at
-[support.js](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/code%2Fpart1_exercises%2Fsupport.js)
+[support.js](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/exercises/support.js)
 in which we define several implementations used for the exercises. Those functions are really
 common in functional programming and even though their implementations may vary a bit, their
 meanings remain fairly consistent between libraries.
