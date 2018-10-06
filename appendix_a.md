@@ -112,12 +112,12 @@ const left = a => new Left(a);
 
 ```js
 // liftA2 :: (Applicative f) => (a1 -> a2 -> b) -> f a1 -> f a2 -> f b
-const liftA2 = curry((fn, a1, a2) => a1.map(fn).ap(a2));
+const liftA2 = curry((fn, a1, a2) => a1.map(fn).map(a2));
 ```
 
 ```js
 // liftA3 :: (Applicative f) => (a1 -> a2 -> a3 -> b) -> f a1 -> f a2 -> f a3 -> f b
-const liftA3 = curry((fn, a1, a2, a3) => a1.map(fn).ap(a2).ap(a3));
+const liftA3 = curry((fn, a1, a2, a3) => a1.map(fn).map(a2).map(a3));
 ```
 
 
