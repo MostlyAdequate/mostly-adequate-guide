@@ -669,6 +669,15 @@ const always = curry(function always(a, b) { return a; });
 
 /* ---------- Pointfree Classic Utilities ---------- */
 
+const append = curry(function append(a, b) {
+  assert(
+    typeof a === 'string' && typeof b === 'string',
+    typeMismatch('String -> String -> String', [getType(a), getType(b), 'String'].join(' -> '), 'concat'),
+  );
+
+  return b.concat(a);
+});
+
 const add = curry(function add(a, b) {
   assert(
     typeof a === 'number' && typeof b === 'number',
@@ -691,7 +700,7 @@ const eq = curry(function eq(a, b) {
   assert(
     getType(a) === getType(b),
     typeMismatch('a -> a -> Boolean', [getType(a), getType(b), 'Boolean'].join(' -> '), eq),
-  )
+  );
 
   return a === b;
 });
@@ -1046,6 +1055,7 @@ if (typeof module === 'object') {
     Task,
 
     // Currified version of 'standard' functions
+    append,
     add,
     chain,
     concat,
