@@ -17,6 +17,13 @@ Note that functions refer to the `curry` & `compose` functions defined in [Appen
 const add = curry((a, b) => a + b);
 ```
 
+## append
+
+```js
+// append :: String -> String -> String
+const append = flip(concat);
+```
+
 ## chain
 
 ```js
