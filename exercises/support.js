@@ -643,11 +643,25 @@ const unsafePerformIO = function unsafePerformIO(io) {
 
 const liftA2 = curry(function liftA2(fn, a1, a2) {
   assert(
-    typeof fn === 'function' && typeof a1.map === 'function' && typeof a1.ap === 'function' && typeof a2.map === 'function',
+    typeof fn === 'function'
+      && typeof a1.map === 'function'
+      && typeof a2.ap === 'function',
     typeMismatch('Applicative f => (a -> b -> c) -> f a -> f b -> f c', [getType(fn), getType(a1), getType(a2)].join(' -> '), 'liftA2'),
   );
 
   return a1.map(fn).ap(a2);
+});
+
+const liftA3 = curry(function liftA3(fn, a1, a2, a3) {
+  assert(
+    typeof fn === 'function'
+      && typeof a1.map === 'function'
+      && typeof a2.ap === 'function'
+      && typeof a3.ap === 'function',
+    typeMismatch('Applicative f => (a -> b -> c -> d) -> f a -> f b -> f c -> f d', [getType(fn), getType(a1), getType(a2)].join(' -> '), 'liftA2'),
+  );
+
+  return a1.map(fn).ap(a2).ap(a3);
 });
 
 const always = curry(function always(a, b) { return a; });
@@ -1005,25 +1019,20 @@ if (typeof module === 'object') {
   module.exports = {
     // Utils
     withSpyOn,
-    inspect,
 
     // Essential FP helpers
     always,
-    chain,
     compose,
     curry,
     either,
     identity,
-    join,
+    inspect,
     left,
     liftA2,
-    map,
+    liftA3,
     maybe,
     nothing,
     reject,
-    sequence,
-    traverse,
-    unsafePerformIO,
 
     // Algebraic Data Structures
     Either,
@@ -1038,6 +1047,7 @@ if (typeof module === 'object') {
 
     // Currified version of 'standard' functions
     add,
+    chain,
     concat,
     eq,
     filter,
@@ -1045,17 +1055,22 @@ if (typeof module === 'object') {
     forEach,
     head,
     intercalate,
+    join,
     last,
+    map,
     match,
     prop,
     reduce,
     safeHead,
     safeProp,
+    sequence,
     sortBy,
     split,
     take,
     toLowerCase,
     toUpperCase,
+    traverse,
+    unsafePerformIO,
 
     // Chapter 04
     keepHighest,
