@@ -52,7 +52,11 @@ class Either {
     return new Right(x);
   }
 }
+```
 
+#### Left
+
+```js
 class Left extends Either {
   get isLeft() {
     return true;
@@ -98,7 +102,11 @@ class Left extends Either {
     return of(this);
   }
 }
+```
 
+#### Right
+
+```js
 class Right extends Either {
   get isLeft() {
     return false;
@@ -338,7 +346,7 @@ class Maybe {
   }
 
   inspect() {
-    return `Maybe(${inspect(this.$value)})`;
+    return this.isNothing ? 'Nothing' : `Just(${inspect(this.$value)})`;
   }
 
   // ----- Pointed Maybe

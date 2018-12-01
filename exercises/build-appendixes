@@ -1,0 +1,56 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+const { promisify } = require('util');
+
+/* Input / Output Configuration */
+const OUTPUT = path.join(__dirname, 'index.js');
+const INPUTDIR = path.join(__dirname, '..');
+
+
+/* Helpers */
+Function.prototype.compose = function (f) { return x => f(this(x)); }
+
+function readFileP(filename, inDir = INPUTDIR) {
+  return promisify(fs.readFile)(path.join(inDir, filename));
+}
+
+function toString(x) {
+  return x.toString();
+}
+
+function parseDefinitions(data) {
+  const re = new RegExp('```js(.*)```', 'sm');
+  const paragraphs = data.split(/###?#?/);
+  return paragraphs
+    .map(x => re.exec(x))
+    .filter(x => x != null)
+    .map(x => x[1]);
+}
+
+function flatten(xss) {
+  return xss.reduce((acc, xs) => acc.concat(xs), []);
+}
+
+const header = `/* LICENSE MIT-2.0 - @MostlyAdequate */
+/* eslint-disable no-use-before-define, max-len, class-methods-use-this */
+`;
+
+
+/* Actual function */
+Promise
+  .all([
+    readFileP('appendix_a.md').then(toString.compose(parseDefinitions)),
+    readFileP('appendix_b.md').then(toString.compose(parseDefinitions)),
+    readFileP('appendix_c.md').then(toString.compose(parseDefinitions)),
+  ])
+  .then((definitions) => {
+    definitions = flatten(definitions);
+    const exports_ = definitions
+      .map(x => x.match(/(const|class|function) ([a-zA-Z0-9]+)( |\()/)[2])
+      .map(x => `exports.${x} = ${x};`);
+    const output = header + definitions.join('\n') + '\n\n' + exports_.join('\n');
+    return promisify(fs.writeFile)(OUTPUT, output);
+  })
+  .catch(console.error);

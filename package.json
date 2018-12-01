@@ -1,7 +1,7 @@
 {
   "name": "mostly-adequate-guide",
   "version": "1.0.0",
-  "description": "The Mostly Adequate Guide to functional Programming",
+  "description": "The Mostly Adequate Guide to Functional Programming",
   "dependencies": {
     "gitbook-plugin-include-codeblock": "^3.1.2",
     "gitbook-plugin-exercises": "MostlyAdequate/plugin-exercises"

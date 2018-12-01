@@ -29,7 +29,7 @@ const compose = (...fns) => (...args) => fns.reduceRight((res, fn) => [fn.call(n
 
 ```js
 // curry :: ((a, b, ...) -> c) -> a -> b -> ... -> c
-const curry = (fn) => {
+function curry(fn) {
   const arity = fn.length;
 
   return function $curry(...args) {
@@ -108,12 +108,15 @@ const left = a => new Left(a);
 ```
 
 
-## liftA\*
+## liftA2
 
 ```js
 // liftA2 :: (Applicative f) => (a1 -> a2 -> b) -> f a1 -> f a2 -> f b
 const liftA2 = curry((fn, a1, a2) => a1.map(fn).ap(a2));
 ```
+
+
+## liftA3
 
 ```js
 // liftA3 :: (Applicative f) => (a1 -> a2 -> a3 -> b) -> f a1 -> f a2 -> f a3 -> f b
