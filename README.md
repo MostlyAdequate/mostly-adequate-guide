@@ -30,6 +30,21 @@ For a best reading experience, [read it online via Gitbook](https://mostly-adequ
 - In-depth examples
 
 
+## Play Around with Code
+
+To make the training efficient and not get too bored while I am telling you another story, make sure to play around with the concepts introduced in this book. Some can be tricky to catch at first and are better understood by getting your hand dirty. 
+All functions and algebraic data-structures presented in the book are gathered in the appendixes. The corresponding code is also available as an npm module:
+
+```bash
+$ npm i @mostly-adequate/support
+```
+
+Alternatively, exercises of each chapter are runnable and can be completed in your editor! For example, complete the `exercise_*.js` in `exercises/ch04` and then run:
+
+```bash
+$ npm run ch04
+```
+
 ## Download it
 
 * [Download PDF](https://www.gitbook.com/download/pdf/book/mostly-adequate/mostly-adequate-guide)
