@@ -559,6 +559,16 @@ class Task {
   }
 }
 
+// In nodejs the existance of a class method named `inspect` will trigger a deprecation warning
+// when passing an instance to `console.log`:
+// `(node:3845) [DEP0079] DeprecationWarning: Custom inspection function on Objects via .inspect() is deprecated`
+// The solution is to alias the existing inspect method with the special inspect symbol exported by node
+if (typeof module !== 'undefined' && typeof this !== 'undefined' && this.module !== module) {
+  const customInspect = require('util').inspect.custom;
+  const assignCustomInspect = it => it.prototype[customInspect] = it.prototype.inspect;
+  [Left, Right, Identity, IO, Map, List, Maybe, Task].forEach(assignCustomInspect);
+}
+
 const identity = function identity(x) { return x; };
 
 const either = curry(function either(f, g, e) {
