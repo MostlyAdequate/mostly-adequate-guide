@@ -1,7 +1,7 @@
 // We now consider the following functions
 //
 //   // getFile :: () -> IO String
-//   const getFile = () => IO.of('/home/mostly-adequate/ch9.md');
+//   const getFile = () => IO.of('/home/mostly-adequate/ch09.md');
 //
 //   // pureLog :: String -> IO ()
 //   const pureLog = str => new IO(() => console.log(str));

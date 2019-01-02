@@ -10,6 +10,6 @@ if (logFilename().unsafePerformIO() instanceof IO) {
 }
 
 assert(
-  logFilename().unsafePerformIO() === 'ch9.md',
+  logFilename().unsafePerformIO() === 'ch09.md',
   'The function gives incorrect results; hint: did you retrieve the file\'s basename ?',
 );
