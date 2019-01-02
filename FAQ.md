@@ -56,7 +56,7 @@ let maybeNumber = map(f, maybeString) // Maybe(6)
 > see [#77], [#192]
 
 Should you haven't reached it yet, you may have a look at the [Chapter
-6](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch6.md) which presents a
+6](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/ch06.md) which presents a
 simple flickr application.
 Other examples are likely to come later on. By the way, feel free to share with us your
 experience!
@@ -103,9 +103,9 @@ A glossary/vade mecum will come at the end to synthesize all these notions.
 > see [#198]
 
 Most of the time, those methods are defined in specific vendor libraries such as `ramda` or
-`underscore`. You should also have a look at
-[support.js](https://github.com/MostlyAdequate/mostly-adequate-guide/blob/master/code%2Fpart1_exercises%2Fsupport.js)
-in which we define several implementations used for the exercises. Those functions are really
+`underscore`. You should also have a look at [Appendix A](./appendix_a.md), 
+[Appendix B](./appendix_b.md) and [Appendix C](./appendix_c.md) in which we define
+several implementations used for the exercises. Those functions are really
 common in functional programming and even though their implementations may vary a bit, their
 meanings remain fairly consistent between libraries.
 

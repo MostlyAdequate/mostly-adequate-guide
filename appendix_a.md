@@ -5,7 +5,7 @@ described in the book. Keep in mind that these implementations may not be the fa
 most efficient implementation out there; they *solely serve an educational purpose*.
 
 In order to find functions that are more production-ready, have a peek at
-[ramda](http://ramdajs.com/), [lodash](https://lodash.com/), or [folktale](http://folktale.github.io/).
+[ramda](https://ramdajs.com/), [lodash](https://lodash.com/), or [folktale](http://folktale.origamitower.com/).
 
 Note that some functions also refer to algebraic structures defined in the [Appendix B](./appendix_b.md)
 

@@ -43,9 +43,9 @@ const checkAge = (age) => {
 };
 ```
 
-In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the [cognitive load](http://en.wikipedia.org/wiki/Cognitive_load) by introducing an external environment.
+In the impure portion, `checkAge` depends on the mutable variable `minimum` to determine the result. In other words, it depends on system state which is disappointing because it increases the [cognitive load](https://en.wikipedia.org/wiki/Cognitive_load) by introducing an external environment.
 
-It might not seem like a lot in this example, but this reliance upon state is one of the largest contributors to system complexity (http://www.curtclifton.net/storage/papers/MoseleyMarks06a.pdf). This `checkAge` may return different results depending on factors external to input, which not only disqualifies it from being pure, but also puts our minds through the ringer each time we're reasoning about the software.
+It might not seem like a lot in this example, but this reliance upon state is one of the largest contributors to system complexity (http://curtclifton.net/papers/MoseleyMarks06a.pdf). This `checkAge` may return different results depending on factors external to input, which not only disqualifies it from being pure, but also puts our minds through the ringer each time we're reasoning about the software.
 
 Its pure form, on the other hand, is completely self sufficient. We can  also make `minimum` immutable, which preserves the purity as the state will never change. To do this, we must create an object to freeze.
 
@@ -89,11 +89,11 @@ From mathisfun.com:
 
 In other words, it's just a relation between two values: the input and the output. Though each input has exactly one output, that output doesn't necessarily have to be unique per input. Below shows a diagram of a perfectly valid function from `x` to `y`;
 
-<img src="images/function-sets.gif" alt="function sets" />(http://www.mathsisfun.com/sets/function.html)
+<img src="images/function-sets.gif" alt="function sets" />(https://www.mathsisfun.com/sets/function.html)
 
 To contrast, the following diagram shows a relation that is *not* a function since the input value `5` points to several outputs:
 
-<img src="images/relation-not-function.gif" alt="relation not function" />(http://www.mathsisfun.com/sets/function.html)
+<img src="images/relation-not-function.gif" alt="relation not function" />(https://www.mathsisfun.com/sets/function.html)
 
 Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]` (It appears this function doubles its input).
 
