@@ -10,5 +10,5 @@
 // then purely log it. Hint: you may want to use `split` and `last` to obtain the
 // basename from a filepath.
 
-// logFilename :: IO ()
+// logFilename :: () -> IO ()
 const logFilename = undefined;
