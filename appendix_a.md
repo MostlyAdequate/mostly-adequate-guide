@@ -141,8 +141,8 @@ const maybe = curry((v, f, m) => {
 ## nothing
 
 ```js
-// nothing :: () -> Maybe a
-const nothing = () => Maybe.of(null);
+// nothing :: Maybe a
+const nothing = Maybe.of(null);
 ```
 
 

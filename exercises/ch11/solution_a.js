@@ -1,1 +1,1 @@
-const eitherToMaybe = either(_ => nothing(), Maybe.of);
+const eitherToMaybe = either(always(nothing), Maybe.of);
