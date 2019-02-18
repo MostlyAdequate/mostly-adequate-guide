@@ -8,5 +8,5 @@
 //
 //   getJsons :: Map Route Route -> Task Error (Map Route JSON)
 
-// getRoutes :: Map Route Route -> Map Route (Task Error JSON)
+// getJsons :: Map Route Route -> Map Route (Task Error JSON)
 const getJsons = map(httpGet);
