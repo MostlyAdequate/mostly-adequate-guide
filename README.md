@@ -39,7 +39,14 @@ All functions and algebraic data-structures presented in the book are gathered i
 $ npm i @mostly-adequate/support
 ```
 
-Alternatively, exercises of each chapter are runnable and can be completed in your editor! For example, complete the `exercise_*.js` in `exercises/ch04` and then run:
+Alternatively, exercises of each chapter are runnable and can be completed in your editor! Firs change into the `exercises` directory and install the packages necessary run the tests against your answers.
+
+```bash
+cd exercises
+npm install
+```
+
+Then write a solution for an exercise and run the tests on it to see if you got it right. For example, complete the `exercise_*.js` in `exercises/ch04` and then run:
 
 ```bash
 $ npm run ch04
