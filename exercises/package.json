@@ -1,9 +1,8 @@
 {
-  "name": "@mostly-adequate/support",
-  "version": "1.1.0",
-  "description": "Support functions and data-structures from the Mostly Adequate Guide to Functional Programming",
+  "name": "@mostly-adequate/exercises",
+  "version": "1.0.0",
+  "description": "Exercises coming with the Mostly Adequate Guide to Functional Programming",
   "license": "MIT",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/MostlyAdequate/mostly-adequate-guide"
@@ -13,12 +12,6 @@
     "url": "https://github.com/MostlyAdequate/mostly-adequate-guide/issues"
   },
   "homepage": "https://github.com/MostlyAdequate/mostly-adequate-guide",
-  "keywords": [
-    "functional programming",
-    "mostly adequate",
-    "guide",
-    "fp"
-  ],
   "dependencies": {},
   "devDependencies": {
     "cli": "^1.0.1",
