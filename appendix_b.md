@@ -17,7 +17,7 @@ const createCompose = curry((F, G) => class Compose {
     this.$value = x;
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `Compose(${inspect(this.$value)})`;
   }
 
@@ -70,7 +70,7 @@ class Left extends Either {
     throw new Error('`of` called on class Left (value) instead of Either (type)');
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `Left(${inspect(this.$value)})`;
   }
 
@@ -120,7 +120,7 @@ class Right extends Either {
     throw new Error('`of` called on class Right (value) instead of Either (type)');
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `Right(${inspect(this.$value)})`;
   }
 
@@ -162,7 +162,7 @@ class Identity {
     this.$value = x;
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `Identity(${inspect(this.$value)})`;
   }
 
@@ -209,8 +209,8 @@ class IO {
     this.unsafePerformIO = fn;
   }
 
-  inspect() {
-    return `IO(?)`;
+  [util.inspect.custom]() {
+    return 'IO(?)';
   }
 
   // ----- Pointed IO
@@ -234,9 +234,7 @@ class IO {
   }
 
   join() {
-    return new IO(() => {
-      return this.unsafePerformIO().unsafePerformIO();
-    });
+    return new IO(() => this.unsafePerformIO().unsafePerformIO());
   }
 }
 ```
@@ -249,7 +247,7 @@ class List {
     this.$value = xs;
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `List(${inspect(this.$value)})`;
   }
 
@@ -290,7 +288,7 @@ class Map {
     this.$value = x;
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `Map(${inspect(this.$value)})`;
   }
 
@@ -347,7 +345,7 @@ class Maybe {
     this.$value = x;
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return this.isNothing ? 'Nothing' : `Just(${inspect(this.$value)})`;
   }
 
@@ -394,7 +392,7 @@ class Task {
     this.fork = fork;
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return 'Task(?)';
   }
 

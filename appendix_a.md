@@ -39,7 +39,7 @@ function curry(fn) {
 
     return fn.call(null, ...args);
   };
-};
+}
 ```
 
 

@@ -133,7 +133,7 @@ const replace = curry((re, rpl, str) => str.replace(re, rpl));
 
 ```js
 // reverse :: [a] -> [a]
-const reverse = x => Array.isArray(x) ? x.reverse() : x.split('').reverse().join('');
+const reverse = x => (Array.isArray(x) ? x.reverse() : x.split('').reverse().join(''));
 ```
 
 ## safeHead
@@ -168,15 +168,13 @@ const sequence = curry((of, f) => f.sequence(of));
 
 ```js
 // sortBy :: Ord b => (a -> b) -> [a] -> [a]
-const sortBy = curry((fn, xs) => {
-  return xs.sort((a, b) => {
-    if (fn(a) === fn(b)) {
-      return 0;
-    }
+const sortBy = curry((fn, xs) => xs.sort((a, b) => {
+  if (fn(a) === fn(b)) {
+    return 0;
+  }
 
-    return fn(a) > fn(b) ? 1 : -1;
-  });
-});
+  return fn(a) > fn(b) ? 1 : -1;
+}));
 ```
 
 ## split

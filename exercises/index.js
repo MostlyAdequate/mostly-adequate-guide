@@ -22,7 +22,7 @@ function curry(fn) {
 
     return fn.call(null, ...args);
   };
-};
+}
 
 
 // either :: (a -> c) -> (b -> c) -> Either a b -> c
@@ -282,7 +282,7 @@ class IO {
   }
 
   [util.inspect.custom]() {
-    return `IO(?)`;
+    return 'IO(?)';
   }
 
   // ----- Pointed IO
@@ -306,9 +306,7 @@ class IO {
   }
 
   join() {
-    return new IO(() => {
-      return this.unsafePerformIO().unsafePerformIO();
-    });
+    return new IO(() => this.unsafePerformIO().unsafePerformIO());
   }
 }
 
@@ -454,7 +452,7 @@ class Task {
   }
 
   static rejected(x) {
-    return new Task((reject, _) => reject(x));
+    return new Task((reject_, _) => reject_(x));
   }
 
   // ----- Pointed (Task a)
@@ -464,7 +462,7 @@ class Task {
 
   // ----- Functor (Task a)
   map(fn) {
-    return new Task((reject, resolve) => this.fork(reject, compose(resolve, fn)));
+    return new Task((reject_, resolve) => this.fork(reject_, compose(resolve, fn)));
   }
 
   // ----- Applicative (Task a)
@@ -474,7 +472,7 @@ class Task {
 
   // ----- Monad (Task a)
   chain(fn) {
-    return new Task((reject, resolve) => this.fork(reject, x => fn(x).fork(reject, resolve)));
+    return new Task((reject_, resolve) => this.fork(reject_, x => fn(x).fork(reject_, resolve)));
   }
 
   join() {
@@ -552,7 +550,7 @@ const replace = curry((re, rpl, str) => str.replace(re, rpl));
 
 
 // reverse :: [a] -> [a]
-const reverse = x => Array.isArray(x) ? x.reverse() : x.split('').reverse().join('');
+const reverse = x => (Array.isArray(x) ? x.reverse() : x.split('').reverse().join(''));
 
 
 // safeHead :: [a] -> Maybe a
@@ -572,15 +570,13 @@ const sequence = curry((of, f) => f.sequence(of));
 
 
 // sortBy :: Ord b => (a -> b) -> [a] -> [a]
-const sortBy = curry((fn, xs) => {
-  return xs.sort((a, b) => {
-    if (fn(a) === fn(b)) {
-      return 0;
-    }
+const sortBy = curry((fn, xs) => xs.sort((a, b) => {
+  if (fn(a) === fn(b)) {
+    return 0;
+  }
 
-    return fn(a) > fn(b) ? 1 : -1;
-  });
-});
+  return fn(a) > fn(b) ? 1 : -1;
+}));
 
 
 // split :: String -> String -> [String]
