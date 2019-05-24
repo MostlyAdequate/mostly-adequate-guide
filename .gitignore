@@ -9,3 +9,4 @@ _book
 /book.pdf
 /book.epub
 exercises/index.js
+package-lock.json
