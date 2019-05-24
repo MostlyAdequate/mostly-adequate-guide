@@ -92,8 +92,8 @@ const maybe = curry((v, f, m) => {
 });
 
 
-// nothing :: () -> Maybe a
-const nothing = () => Maybe.of(null);
+// nothing :: Maybe a
+const nothing = Maybe.of(null);
 
 
 // reject :: a -> Task a b
