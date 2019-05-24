@@ -963,7 +963,7 @@ const validateUser = curry(function validateUser(validate, user) {
 
 /* ---------- Chapter 9 ---------- */
 
-const getFile = function getFile() { return IO.of('/home/mostly-adequate/ch09.md'); };
+const getFile = IO.of('/home/mostly-adequate/ch09.md');
 
 const pureLog = function pureLog(str) { return new IO(() => str); };
 
