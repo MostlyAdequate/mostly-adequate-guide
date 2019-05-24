@@ -589,7 +589,7 @@ const maybe = curry(function maybe(v, f, m) {
   return f(m.$value);
 });
 
-const nothing = function nothing() { return Maybe.of(null); };
+const nothing = Maybe.of(null);
 
 const reject = function reject(x) { return Task.rejected(x); };
 
