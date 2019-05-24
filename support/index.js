@@ -92,14 +92,6 @@ const maybe = curry((v, f, m) => {
 });
 
 
-// nothing :: Maybe a
-const nothing = Maybe.of(null);
-
-
-// reject :: a -> Task a b
-const reject = a => Task.rejected(a);
-
-
 const createCompose = curry((F, G) => class Compose {
   constructor(x) {
     this.$value = x;
@@ -479,6 +471,14 @@ class Task {
     return this.chain(identity);
   }
 }
+
+
+// nothing :: Maybe a
+const nothing = Maybe.of(null);
+
+
+// reject :: a -> Task a b
+const reject = a => Task.rejected(a);
 
 
 // flip :: (a -> b -> c) -> b -> a -> c
