@@ -1,6 +1,6 @@
 {
   "name": "@mostly-adequate/support",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Support functions and data-structures from the Mostly Adequate Guide to Functional Programming",
   "license": "MIT",
   "main": "index.js",
