@@ -507,7 +507,7 @@ class Maybe {
   }
 
   sequence(of) {
-    this.traverse(of, x => x);
+    return this.traverse(of, x => x);
   }
 
   traverse(of, fn) {
