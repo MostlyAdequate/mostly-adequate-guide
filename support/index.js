@@ -425,7 +425,7 @@ class Maybe {
 
   // ----- Traversable Maybe
   sequence(of) {
-    this.traverse(of, identity);
+    return this.traverse(of, identity);
   }
 
   traverse(of, fn) {
