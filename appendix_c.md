@@ -6,7 +6,7 @@ part of the global context. Keep in mind that these implementations may not be t
 the most efficient implementation out there; they *solely serve an educational purpose*.
 
 In order to find functions that are more production-ready, have a peek at
-[ramda](http://ramdajs.com/), [lodash](https://lodash.com/), or [folktale](http://folktale.origamitower.com/).
+[ramda](https://ramdajs.com/), [lodash](https://lodash.com/), or [folktale](http://folktale.origamitower.com/).
 
 Note that functions refer to the `curry` & `compose` functions defined in [Appendix A](./appendix_a.md)
 
@@ -15,6 +15,13 @@ Note that functions refer to the `curry` & `compose` functions defined in [Appen
 ```js
 // add :: Number -> Number -> Number
 const add = curry((a, b) => a + b);
+```
+
+## append
+
+```js
+// append :: String -> String -> String
+const append = flip(concat);
 ```
 
 ## chain
@@ -126,7 +133,7 @@ const replace = curry((re, rpl, str) => str.replace(re, rpl));
 
 ```js
 // reverse :: [a] -> [a]
-const reverse = x => Array.isArray(x) ? x.reverse() : x.split('').reverse().join('');
+const reverse = x => (Array.isArray(x) ? x.reverse() : x.split('').reverse().join(''));
 ```
 
 ## safeHead
@@ -161,15 +168,13 @@ const sequence = curry((of, f) => f.sequence(of));
 
 ```js
 // sortBy :: Ord b => (a -> b) -> [a] -> [a]
-const sortBy = curry((fn, xs) => {
-  return xs.sort((a, b) => {
-    if (fn(a) === fn(b)) {
-      return 0;
-    }
+const sortBy = curry((fn, xs) => xs.sort((a, b) => {
+  if (fn(a) === fn(b)) {
+    return 0;
+  }
 
-    return fn(a) > fn(b) ? 1 : -1;
-  });
-});
+  return fn(a) > fn(b) ? 1 : -1;
+}));
 ```
 
 ## split

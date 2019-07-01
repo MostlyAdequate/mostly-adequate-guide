@@ -5,7 +5,7 @@ described in the book. Keep in mind that these implementations may not be the fa
 most efficient implementation out there; they *solely serve an educational purpose*.
 
 In order to find functions that are more production-ready, have a peek at
-[ramda](http://ramdajs.com/), [lodash](https://lodash.com/), or [folktale](http://folktale.github.io/).
+[ramda](https://ramdajs.com/), [lodash](https://lodash.com/), or [folktale](http://folktale.origamitower.com/).
 
 Note that some functions also refer to algebraic structures defined in the [Appendix B](./appendix_b.md)
 
@@ -29,7 +29,7 @@ const compose = (...fns) => (...args) => fns.reduceRight((res, fn) => [fn.call(n
 
 ```js
 // curry :: ((a, b, ...) -> c) -> a -> b -> ... -> c
-const curry = (fn) => {
+function curry(fn) {
   const arity = fn.length;
 
   return function $curry(...args) {
@@ -39,7 +39,7 @@ const curry = (fn) => {
 
     return fn.call(null, ...args);
   };
-};
+}
 ```
 
 
@@ -108,12 +108,15 @@ const left = a => new Left(a);
 ```
 
 
-## liftA\*
+## liftA2
 
 ```js
 // liftA2 :: (Applicative f) => (a1 -> a2 -> b) -> f a1 -> f a2 -> f b
 const liftA2 = curry((fn, a1, a2) => a1.map(fn).ap(a2));
 ```
+
+
+## liftA3
 
 ```js
 // liftA3 :: (Applicative f) => (a1 -> a2 -> a3 -> b) -> f a1 -> f a2 -> f a3 -> f b
@@ -138,9 +141,10 @@ const maybe = curry((v, f, m) => {
 ## nothing
 
 ```js
-// nothing :: () -> Maybe a
-const nothing = () => Maybe.of(null);
+// nothing :: Maybe a
+const nothing = Maybe.of(null);
 ```
+
 
 ## reject 
 

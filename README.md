@@ -16,7 +16,7 @@ This is a book on the functional paradigm in general. We'll use the world's most
 
  * **The language is fully capable of writing top notch functional code.**
 
-    We have all the features we need to mimic a language like Scala or Haskell with the help of a tiny library or two. Object-oriented programming currently dominates the industry, but it's clearly awkward in JavaScript. It's akin to camping off of a highway or tap dancing in galoshes. We have to `bind` all over the place lest `this` change out from under us, we don't have classes (yet), we have various work arounds for the quirky behavior when the `new` keyword is forgotten, private members are only available via closures. To a lot of us, FP feels more natural anyways.
+    We have all the features we need to mimic a language like Scala or Haskell with the help of a tiny library or two. Object-oriented programming currently dominates the industry, but it's clearly awkward in JavaScript. It's akin to camping off of a highway or tap dancing in galoshes. We have to `bind` all over the place lest `this` change out from under us, we have various work arounds for the quirky behavior when the `new` keyword is forgotten, private members are only available via closures. To a lot of us, FP feels more natural anyways.
 
 That said, typed functional languages will, without a doubt, be the best place to code in the style presented by this book. JavaScript will be our means of learning a paradigm, where you apply it is up to you. Luckily, the interfaces are mathematical and, as such, ubiquitous. You'll find yourself at home with Swiftz, Scalaz, Haskell, PureScript, and other mathematically inclined environments.
 
@@ -29,6 +29,21 @@ For a best reading experience, [read it online via Gitbook](https://mostly-adequ
 - In-browser exercises
 - In-depth examples
 
+
+## Play Around with Code
+
+To make the training efficient and not get too bored while I am telling you another story, make sure to play around with the concepts introduced in this book. Some can be tricky to catch at first and are better understood by getting your hand dirty. 
+All functions and algebraic data-structures presented in the book are gathered in the appendixes. The corresponding code is also available as an npm module:
+
+```bash
+$ npm i @mostly-adequate/support
+```
+
+Alternatively, exercises of each chapter are runnable and can be completed in your editor! For example, complete the `exercise_*.js` in `exercises/ch04` and then run:
+
+```bash
+$ npm run ch04
+```
 
 ## Download it
 

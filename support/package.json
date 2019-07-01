@@ -1,0 +1,33 @@
+{
+  "name": "@mostly-adequate/support",
+  "version": "2.0.1",
+  "description": "Support functions and data-structures from the Mostly Adequate Guide to Functional Programming",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MostlyAdequate/mostly-adequate-guide"
+  },
+  "author": "@mostly-adequate",
+  "bugs": {
+    "url": "https://github.com/MostlyAdequate/mostly-adequate-guide/issues"
+  },
+  "homepage": "https://github.com/MostlyAdequate/mostly-adequate-guide/support",
+  "keywords": [
+    "functional programming",
+    "mostly adequate",
+    "guide",
+    "fp"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.5.1"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  }
+}

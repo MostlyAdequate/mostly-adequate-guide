@@ -4,7 +4,7 @@ In this appendix, you'll find some basic JavaScript implementations of various a
 structures described in the book. Keep in mind that these implementations may not be the fastest or the
 most efficient implementation out there; they *solely serve an educational purpose*.
 
-In order to find structures that are more production-ready, have a peek at [folktale](http://folktale.github.io/)
+In order to find structures that are more production-ready, have a peek at [folktale](http://folktale.origamitower.com/)
 or [fantasy-land](https://github.com/fantasyland).
 
 Note that some methods also refer to functions defined in the [Appendix A](./appendix_a.md)
@@ -17,7 +17,7 @@ const createCompose = curry((F, G) => class Compose {
     this.$value = x;
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `Compose(${inspect(this.$value)})`;
   }
 
@@ -52,7 +52,11 @@ class Either {
     return new Right(x);
   }
 }
+```
 
+#### Left
+
+```js
 class Left extends Either {
   get isLeft() {
     return true;
@@ -66,7 +70,7 @@ class Left extends Either {
     throw new Error('`of` called on class Left (value) instead of Either (type)');
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `Left(${inspect(this.$value)})`;
   }
 
@@ -98,7 +102,11 @@ class Left extends Either {
     return of(this);
   }
 }
+```
 
+#### Right
+
+```js
 class Right extends Either {
   get isLeft() {
     return false;
@@ -112,7 +120,7 @@ class Right extends Either {
     throw new Error('`of` called on class Right (value) instead of Either (type)');
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `Right(${inspect(this.$value)})`;
   }
 
@@ -154,7 +162,7 @@ class Identity {
     this.$value = x;
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `Identity(${inspect(this.$value)})`;
   }
 
@@ -201,8 +209,8 @@ class IO {
     this.unsafePerformIO = fn;
   }
 
-  inspect() {
-    return `IO(?)`;
+  [util.inspect.custom]() {
+    return 'IO(?)';
   }
 
   // ----- Pointed IO
@@ -226,7 +234,7 @@ class IO {
   }
 
   join() {
-    return this.unsafePerformIO();
+    return new IO(() => this.unsafePerformIO().unsafePerformIO());
   }
 }
 ```
@@ -239,7 +247,7 @@ class List {
     this.$value = xs;
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `List(${inspect(this.$value)})`;
   }
 
@@ -280,7 +288,7 @@ class Map {
     this.$value = x;
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return `Map(${inspect(this.$value)})`;
   }
 
@@ -337,8 +345,8 @@ class Maybe {
     this.$value = x;
   }
 
-  inspect() {
-    return `Maybe(${inspect(this.$value)})`;
+  [util.inspect.custom]() {
+    return this.isNothing ? 'Nothing' : `Just(${inspect(this.$value)})`;
   }
 
   // ----- Pointed Maybe
@@ -367,7 +375,7 @@ class Maybe {
 
   // ----- Traversable Maybe
   sequence(of) {
-    this.traverse(of, identity);
+    return this.traverse(of, identity);
   }
 
   traverse(of, fn) {
@@ -384,7 +392,7 @@ class Task {
     this.fork = fork;
   }
 
-  inspect() {
+  [util.inspect.custom]() {
     return 'Task(?)';
   }
 

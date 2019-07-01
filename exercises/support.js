@@ -507,7 +507,7 @@ class Maybe {
   }
 
   sequence(of) {
-    this.traverse(of, x => x);
+    return this.traverse(of, x => x);
   }
 
   traverse(of, fn) {
@@ -559,6 +559,16 @@ class Task {
   }
 }
 
+// In nodejs the existance of a class method named `inspect` will trigger a deprecation warning
+// when passing an instance to `console.log`:
+// `(node:3845) [DEP0079] DeprecationWarning: Custom inspection function on Objects via .inspect() is deprecated`
+// The solution is to alias the existing inspect method with the special inspect symbol exported by node
+if (typeof module !== 'undefined' && typeof this !== 'undefined' && this.module !== module) {
+  const customInspect = require('util').inspect.custom;
+  const assignCustomInspect = it => it.prototype[customInspect] = it.prototype.inspect;
+  [Left, Right, Identity, IO, Map, List, Maybe, Task].forEach(assignCustomInspect);
+}
+
 const identity = function identity(x) { return x; };
 
 const either = curry(function either(f, g, e) {
@@ -579,7 +589,7 @@ const maybe = curry(function maybe(v, f, m) {
   return f(m.$value);
 });
 
-const nothing = function nothing() { return Maybe.of(null); };
+const nothing = Maybe.of(null);
 
 const reject = function reject(x) { return Task.rejected(x); };
 
@@ -643,17 +653,40 @@ const unsafePerformIO = function unsafePerformIO(io) {
 
 const liftA2 = curry(function liftA2(fn, a1, a2) {
   assert(
-    typeof fn === 'function' && typeof a1.map === 'function' && typeof a1.ap === 'function' && typeof a2.map === 'function',
+    typeof fn === 'function'
+      && typeof a1.map === 'function'
+      && typeof a2.ap === 'function',
     typeMismatch('Applicative f => (a -> b -> c) -> f a -> f b -> f c', [getType(fn), getType(a1), getType(a2)].join(' -> '), 'liftA2'),
   );
 
   return a1.map(fn).ap(a2);
 });
 
+const liftA3 = curry(function liftA3(fn, a1, a2, a3) {
+  assert(
+    typeof fn === 'function'
+      && typeof a1.map === 'function'
+      && typeof a2.ap === 'function'
+      && typeof a3.ap === 'function',
+    typeMismatch('Applicative f => (a -> b -> c -> d) -> f a -> f b -> f c -> f d', [getType(fn), getType(a1), getType(a2)].join(' -> '), 'liftA2'),
+  );
+
+  return a1.map(fn).ap(a2).ap(a3);
+});
+
 const always = curry(function always(a, b) { return a; });
 
 
 /* ---------- Pointfree Classic Utilities ---------- */
+
+const append = curry(function append(a, b) {
+  assert(
+    typeof a === 'string' && typeof b === 'string',
+    typeMismatch('String -> String -> String', [getType(a), getType(b), 'String'].join(' -> '), 'concat'),
+  );
+
+  return b.concat(a);
+});
 
 const add = curry(function add(a, b) {
   assert(
@@ -677,7 +710,7 @@ const eq = curry(function eq(a, b) {
   assert(
     getType(a) === getType(b),
     typeMismatch('a -> a -> Boolean', [getType(a), getType(b), 'Boolean'].join(' -> '), eq),
-  )
+  );
 
   return a === b;
 });
@@ -930,7 +963,7 @@ const validateUser = curry(function validateUser(validate, user) {
 
 /* ---------- Chapter 9 ---------- */
 
-const getFile = function getFile() { return IO.of('/home/mostly-adequate/ch9.md'); };
+const getFile = IO.of('/home/mostly-adequate/ch09.md');
 
 const pureLog = function pureLog(str) { return new IO(() => str); };
 
@@ -1005,25 +1038,20 @@ if (typeof module === 'object') {
   module.exports = {
     // Utils
     withSpyOn,
-    inspect,
 
     // Essential FP helpers
     always,
-    chain,
     compose,
     curry,
     either,
     identity,
-    join,
+    inspect,
     left,
     liftA2,
-    map,
+    liftA3,
     maybe,
     nothing,
     reject,
-    sequence,
-    traverse,
-    unsafePerformIO,
 
     // Algebraic Data Structures
     Either,
@@ -1037,7 +1065,9 @@ if (typeof module === 'object') {
     Task,
 
     // Currified version of 'standard' functions
+    append,
     add,
+    chain,
     concat,
     eq,
     filter,
@@ -1045,17 +1075,22 @@ if (typeof module === 'object') {
     forEach,
     head,
     intercalate,
+    join,
     last,
+    map,
     match,
     prop,
     reduce,
     safeHead,
     safeProp,
+    sequence,
     sortBy,
     split,
     take,
     toLowerCase,
     toUpperCase,
+    traverse,
+    unsafePerformIO,
 
     // Chapter 04
     keepHighest,

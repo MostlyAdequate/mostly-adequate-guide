@@ -5,4 +5,4 @@
 //   validate = player => (player.name ? Either.of(player) : left('must have name'));
 
 // startGame :: [Player] -> [Either Error String]
-const startGame = compose(map(always('game started!')), map(validate));
+const startGame = compose(map(map(always('game started!'))), map(validate));
