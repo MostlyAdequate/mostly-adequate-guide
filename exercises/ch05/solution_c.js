@@ -1,5 +1,5 @@
 const fastestCar = compose(
-  append(' is the fastest'),
+  flip(concat, ' is the fastest'),
   prop('name'),
   last,
   sortBy(prop('horsepower')),
