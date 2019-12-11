@@ -108,6 +108,7 @@
   * [Task](appendix_b.md#task)
 * [Appendix C: Pointfree Utilities](appendix_c.md)
   * [add](appendix_c.md#add)
+  * [append](appendix_c.md#append)
   * [chain](appendix_c.md#chain)
   * [concat](appendix_c.md#concat)
   * [eq](appendix_c.md#eq)
