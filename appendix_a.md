@@ -20,7 +20,7 @@ const always = curry((a, b) => a);
 ## compose
 
 ```js
-// compose :: ((a -> b), (b -> c),  ..., (y -> z)) -> a -> z
+// compose :: ((y -> z), (x -> y),  ..., (a -> b)) -> a -> z
 const compose = (...fns) => (...args) => fns.reduceRight((res, fn) => [fn.call(null, ...res)], args)[0];
 ```
 
