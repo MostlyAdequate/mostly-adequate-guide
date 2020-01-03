@@ -965,7 +965,7 @@ const validateUser = curry(function validateUser(validate, user) {
 
 const getFile = IO.of('/home/mostly-adequate/ch09.md');
 
-const pureLog = function pureLog(str) { return new IO(() => str); };
+const pureLog = function pureLog(str) { return new IO(() => { console.log(str); return str; }); };
 
 const addToMailingList = function addToMailingList(email) { return IO.of([email]); };
 
