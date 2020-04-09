@@ -32,7 +32,7 @@ For a best reading experience, [read it online via Gitbook](https://mostly-adequ
 
 ## Play Around with Code
 
-To make the training efficient and not get too bored while I am telling you another story, make sure to play around with the concepts introduced in this book. Some can be tricky to catch at first and are better understood by getting your hand dirty. 
+To make the training efficient and not get too bored while I am telling you another story, make sure to play around with the concepts introduced in this book. Some can be tricky to catch at first and are better understood by getting your hands dirty. 
 All functions and algebraic data-structures presented in the book are gathered in the appendixes. The corresponding code is also available as an npm module:
 
 ```bash
