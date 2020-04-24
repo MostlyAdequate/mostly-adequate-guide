@@ -149,7 +149,7 @@ class Right extends Either {
   }
 
   traverse(of, fn) {
-    fn(this.$value).map(Either.of);
+    return fn(this.$value).map(of);
   }
 }
 ```
