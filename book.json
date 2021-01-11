@@ -6,5 +6,17 @@
   "plugins": [
     "exercises@git+https://github.com/MostlyAdequate/plugin-exercises.git",
     "include-codeblock@3.1.2"
-  ]
+  ],
+  "pdf": {
+    "pageNumbers": true,
+    "fontFamily": "Arial",
+    "fontSize": 20,
+    "paperSize": "a4",
+    "margin": {
+      "right": 62,
+      "left": 62,
+      "top": 56,
+      "bottom": 56
+    }
+  }
 }
