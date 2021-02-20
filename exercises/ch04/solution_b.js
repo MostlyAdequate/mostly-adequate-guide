@@ -1,1 +1,1 @@
-const filterQs = filter(match(/q/i));
+const filterQs = filter(test(/q/i));

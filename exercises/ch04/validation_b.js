@@ -1,7 +1,7 @@
 /* globals filterQs */
 
 filter.calledPartial = false;
-match.calledPartial = false;
+test.calledPartial = false;
 
 assert.arrayEqual(
   filterQs(['quick', 'camels', 'quarry', 'over', 'quails']),
@@ -15,6 +15,6 @@ assert(
 );
 
 assert(
-  match.partially,
+  test.partially,
   'The answer is incorrect; hint: look at the arguments for `match`.',
 );
