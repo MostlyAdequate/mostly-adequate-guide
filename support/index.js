@@ -53,10 +53,21 @@ const inspect = (x) => {
     switch (typeof t) {
       case 'string':
         return `'${t}'`;
-      case 'object': {
-        const ts = Object.keys(t).map(k => [k, inspect(t[k])]);
-        return `{${ts.map(kv => kv.join(': ')).join(', ')}}`;
-      }
+      case 'object':
+        switch (t.constructor) {
+          case Identity:
+          case IO:
+          case Left:
+          case List:
+          case Map:
+          case Maybe:
+          case Right:
+          case Task:
+            return t[util.inspect.custom]()
+          default:
+            const ts = Object.keys(t).map(k => [k, inspect(t[k])]);
+            return `{${ts.map(kv => kv.join(': ')).join(', ')}}`;
+        }
       default:
         return String(t);
     }
