@@ -47,12 +47,11 @@ $ npm run ch04
 
 ## Download it
 
-* [Download PDF](https://www.gitbook.com/download/pdf/book/mostly-adequate/mostly-adequate-guide)
-* [Download EPUB](https://www.gitbook.com/download/epub/book/mostly-adequate/mostly-adequate-guide)
-* [Download Mobi (Kindle)](https://www.gitbook.com/download/mobi/book/mostly-adequate/mostly-adequate-guide)
-
+Find pre-generated **PDF** and **EPUB** as [build artifacts of the latest Github Workflows](https://github.com/MostlyAdequate/mostly-adequate-guide/actions/workflows/build.yml).
 
 ## Do it yourself
+
+> ⚠️ This project setup is now a bit old and thus, you may run into various issues when building this locally. We recommend to use node v10.22.1 and the latest version of Calibre if possible. 
 
 ```
 git clone https://github.com/MostlyAdequate/mostly-adequate-guide.git
