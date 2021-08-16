@@ -47,7 +47,7 @@ $ npm run ch04
 
 ## Download it
 
-Find pre-generated **PDF** and **EPUB** as [build artifacts of the latest Github Workflows](https://github.com/MostlyAdequate/mostly-adequate-guide/actions/workflows/build.yml).
+Find pre-generated **PDF** and **EPUB** as [build artifacts of the latest release](https://github.com/MostlyAdequate/mostly-adequate-guide/releases/latest).
 
 ## Do it yourself
 

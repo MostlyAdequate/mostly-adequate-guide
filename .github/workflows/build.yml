@@ -48,3 +48,13 @@ jobs:
         with:
           name: EPUB
           path: mostly-adequate-guide-to-functional-programming.epub
+
+      - run: echo "::set-output name=ID::$(git describe --tags --always)"
+        id: release-id
+
+      - uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.release-id.outputs.ID }}
+          files: |
+            mostly-adequate-guide-to-functional-programming.pdf
+            mostly-adequate-guide-to-functional-programming.epub
