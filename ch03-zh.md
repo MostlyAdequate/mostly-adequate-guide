@@ -12,9 +12,9 @@
 > - side effect 副作用
 
 比如 `slice` 還有 `splice`，
-這兩個函式想達成的目的是一樣的，但用了完全不同的做法。
-我們會說 `slice` 是 _純_ 的，因為我們可以保證拋入同樣的輸入值一定是回傳同樣的結果。
-但是 `splice` 卻是直接將原陣列切掉後再吐回結果，而這個過程永遠的改變了原本的陣列，這就是個可被觀測的 side effect。
+這兩個函式想達成的目的是一樣的，但用了完全不同的做法。  
+我們會說 `slice` 是 _純_ 的，因為我們可以保證拋入同樣的輸入值一定是回傳同樣的結果。  
+但是 `splice` 卻是直接將原陣列切掉後再吐回結果，而這個過程永遠的改變了原本的陣列，這就是個可被觀測的 side effect。  
 
 ```js
 const xs = [1, 2, 3, 4, 5];
@@ -34,11 +34,11 @@ xs.splice(0, 3); // [4,5]
 xs.splice(0, 3); // []
 ```
 
-在函式編程中，我們討厭像是 `splice` 這種會改變資料的函式。
-我們追求的是 可靠 且 每次都能回傳相同結果 的函式，
-絕對不是像 `splice` 那類每次執行都把資料搞得一團糟的類型。
-
-我們來看看另一個例子。
+在函式編程中，我們討厭像是 `splice` 這種會改變資料的函式。   
+我們追求的是 可靠 且 每次都能回傳相同結果 的函式，   
+絕對不會是像 `splice` 那類每次執行都把資料搞得一團糟的類型。   
+  
+我們來看看另一個例子。   
 
 ```js
 // impure 不純的
@@ -52,39 +52,39 @@ const checkAge = (age) => {
 };
 ```
 
-在不純的版本中， `checkAge` 的結果取決於 `minimum` 這個可被異動的變數。
-換句話說，他取決於系統狀態。
-而這一點令人失望，因為它引入了外部的環境從而增加了[認知負荷](https://en.wikipedia.org/wiki/Cognitive_load)。
+在不純的版本中， `checkAge` 的結果取決於 `minimum` 這個可被異動的變數。  
+換句話說，他取決於系統狀態。  
+而這一點令人失望，因為它引入了外部的環境從而增加了[認知負荷](https://en.wikipedia.org/wiki/Cognitive_load)。  
 
-這個例子可能還不是這麼嚴重，
-但這個依賴關係就是導致系統複雜度的罪魁禍首(http://curtclifton.net/papers/MoseleyMarks06a.pdf)。
+這個例子可能還不是這麼嚴重，  
+但這個依賴關係就是導致系統複雜度的罪魁禍首(http://curtclifton.net/papers/MoseleyMarks06a.pdf)。   
 
-`checkAge` 可能會因為輸入值以外的因素導致回傳結果大不相同，
-這不僅僅是不符合純函式的規範，
-更是使我們每次在通靈時弄的我們苦不堪言。
-但是另一邊，純函式的版本，他自己就能達到自給自足。
+`checkAge` 可能會因為輸入值以外的因素導致回傳結果大不相同，  
+這不僅僅是不符合純函式的規範，  
+更是使我們每次在通靈時弄的我們苦不堪言。  
+但是另一邊，純函式的版本，他自己就能達到自給自足。  
 
-當然我們也可以將 `minimum` 做成不可變物件，
-這樣做可以保證純粹性，因為他的狀態永遠不會改變。
-為了實現這個，我們必須建立一個物件並將它凍結起來。
+當然我們也可以將 `minimum` 做成不可變物件，  
+這樣做可以保證純粹性，因為他的狀態永遠不會改變。  
+為了實現這個，我們必須建立一個物件並將它凍結起來。  
 
 ```js
 const immutableState = Object.freeze({ minimum: 21 });
 ```
 
-## side effects 可能包括...
+## side effects 可能包括...  
 
-為了更清楚的理解，我們在深入討論下 "side effects"。
-所以我們在*純函式*的定義中提到的 萬惡 _side effects_ 到底是什麼？
+為了更清楚的理解，我們在深入討論下 "side effects"。  
+所以我們在*純函式*的定義中提到的 萬惡 _side effects_ 到底是什麼？  
+  
+我們可以理解 "effect 作用" 就是 所有除了計算結果之外，額外發生的其他事。  
 
-我們可以理解 "effect 作用" 就是 所有除了計算結果之外，額外發生的其他事。
-
-其實 "effects" 本身並沒有什麼不好，而且在之後的章節隨處可見。
-問題在於 _side_ 這個字，
-水本身並不是滋生蚊蟲的原因，問題是在於他不流動。
-同樣，_side_ effects 中的 _side_ 才是真正滋生 bug 的溫床。
-
-> _side effect_ 是在計算結果的過程中連帶導致系統狀態改變或是跟外部世界進行可被觀測的互動
+其實 "effects" 本身並沒有什麼不好，而且在之後的章節隨處可見。   
+問題在於 _side_ 這個字，   
+水本身並不是滋生蚊蟲的原因，問題是在於他不流動。   
+同樣，_side_ effects 中的 _side_ 才是真正滋生 bug 的溫床。   
+   
+> _side effect_ 是在計算結果的過程中連帶導致系統狀態改變，或是跟外部世界進行可被觀測的互動. 
 
 > **哈囉註解**
 > 何謂跟外部世界進行可被觀測的互動，請看下面這段
@@ -100,39 +100,40 @@ Side effects 可能包括，但不限於：
 - 搜尋 DOM 元素
 - 訪問系統狀態
 
-這個列表當然可以繼續增加下去。
-任何的對於函式外部的交互都是 side effect，
-關於這點你可能會疑惑毫無 side effect 的程式是有什麼用。
+這個列表當然可以繼續增加下去。  
+任何的對於函式外部的交互都是 side effect，  
+關於這點你可能會疑惑毫無 side effect 的程式是有什麼用。  
 
-函式編程的哲學就是假定這些 side effects 就是造成不當行為的主因。
-但這並不是說我們要禁用它，
-而是說，我們要掌握他們並要在我們的控制之下。
-在之後的章節，我們將會學到使用 functors 跟 monads 來辦到這些，
-但是現在，先讓我們試著避開這些危險的函式。
+函式編程的哲學就是假定這些 side effects 就是造成不當行為的主因。  
+但這並不是說我們要禁用它，  
+而是說，我們要掌握他們並要在我們的控制之下。  
+在之後的章節，我們將會學到使用 functors 跟 monads 來辦到這些，  
+但是現在，先讓我們試著避開這些危險的函式。  
 
-Side effects 不符合 _純函式_ 的定義，
-如果一個函式的結果必須仰賴於外部事物，
-那我們就不可能保證它能夠根據相同的輸入對應返回相同的結果。
+Side effects 不符合 _純函式_ 的定義，  
+如果一個函式的結果必須仰賴於外部事物，  
+那我們就不可能保證它能夠根據相同的輸入，  
+對應後返回相同的結果。  
 
-我們接著更深入了解下，為何我們必須堅持 相同的輸入必須返回相同的結果。
-注意！我們要來複習一下你的國中數學了。
+在我們接著更深入了解下，為何我們必須堅持 相同的輸入必須返回相同的結果。   
+注意！我們要來複習一下你的國中數學了。   
 
-## 8th Grade Math
+## 8th Grade Math  
 
-From mathisfun.com:
+From mathisfun.com:  
 
-> A function is a special relationship between values:
-> Each of its input values gives back exactly one output value.
+> A function is a special relationship between values:  
+> Each of its input values gives back exactly one output value.  
 
-In other words, it's just a relation between two values: the input and the output. Though each input has exactly one output, that output doesn't necessarily have to be unique per input. Below shows a diagram of a perfectly valid function from `x` to `y`;
+In other words, it's just a relation between two values: the input and the output. Though each input has exactly one output, that output doesn't necessarily have to be unique per input. Below shows a diagram of a perfectly valid function from `x` to `y`;  
 
-<img src="images/function-sets.gif" alt="function sets" />(https://www.mathsisfun.com/sets/function.html)
+<img src="images/function-sets.gif" alt="function sets" />(https://www.mathsisfun.com/sets/function.html)  
 
-To contrast, the following diagram shows a relation that is _not_ a function since the input value `5` points to several outputs:
+To contrast, the following diagram shows a relation that is _not_ a function since the input value `5` points to several outputs:  
 
-<img src="images/relation-not-function.gif" alt="relation not function" />(https://www.mathsisfun.com/sets/function.html)
+<img src="images/relation-not-function.gif" alt="relation not function" />(https://www.mathsisfun.com/sets/function.html)  
 
-Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]` (It appears this function doubles its input).
+Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]` (It appears this function doubles its input).  
 
 Or perhaps a table:
 
