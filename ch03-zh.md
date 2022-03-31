@@ -14,7 +14,7 @@
 比如 `slice` 還有 `splice`，
 這兩個函式想達成的目的是一樣的，但用了完全不同的做法。  
 我們會說 `slice` 是 _純_ 的，因為我們可以保證拋入同樣的輸入值一定是回傳同樣的結果。  
-但是 `splice` 卻是直接將原陣列切掉後再吐回結果，而這個過程永遠的改變了原本的陣列，這就是個可被觀測的 side effect。  
+但是 `splice` 卻是直接將原陣列切掉後再吐回結果，而這個過程永遠的改變了原本的陣列，這就是個可被觀測的 side effect。
 
 ```js
 const xs = [1, 2, 3, 4, 5];
@@ -34,11 +34,11 @@ xs.splice(0, 3); // [4,5]
 xs.splice(0, 3); // []
 ```
 
-在函式編程中，我們討厭像是 `splice` 這種會改變資料的函式。   
-我們追求的是 可靠 且 每次都能回傳相同結果 的函式，   
-絕對不會是像 `splice` 那類每次執行都把資料搞得一團糟的類型。   
-  
-我們來看看另一個例子。   
+在函式編程中，我們討厭像是 `splice` 這種會改變資料的函式。  
+我們追求的是 可靠 且 每次都能回傳相同結果 的函式，  
+絕對不會是像 `splice` 那類每次執行都把資料搞得一團糟的類型。
+
+我們來看看另一個例子。
 
 ```js
 // impure 不純的
@@ -54,37 +54,37 @@ const checkAge = (age) => {
 
 在不純的版本中， `checkAge` 的結果取決於 `minimum` 這個可被異動的變數。  
 換句話說，他取決於系統狀態。  
-而這一點令人失望，因為它引入了外部的環境從而增加了[認知負荷](https://en.wikipedia.org/wiki/Cognitive_load)。  
+而這一點令人失望，因為它引入了外部的環境從而增加了[認知負荷](https://en.wikipedia.org/wiki/Cognitive_load)。
 
 這個例子可能還不是這麼嚴重，  
-但這個依賴關係就是導致系統複雜度的罪魁禍首(http://curtclifton.net/papers/MoseleyMarks06a.pdf)。   
+但這個依賴關係就是導致系統複雜度的罪魁禍首(http://curtclifton.net/papers/MoseleyMarks06a.pdf)。
 
 `checkAge` 可能會因為輸入值以外的因素導致回傳結果大不相同，  
 這不僅僅是不符合純函式的規範，  
 更是使我們每次在通靈時弄的我們苦不堪言。  
-但是另一邊，純函式的版本，他自己就能達到自給自足。  
+但是另一邊，純函式的版本，他自己就能達到自給自足。
 
 當然我們也可以將 `minimum` 做成不可變物件，  
 這樣做可以保證純粹性，因為他的狀態永遠不會改變。  
-為了實現這個，我們必須建立一個物件並將它凍結起來。  
+為了實現這個，我們必須建立一個物件並將它凍結起來。
 
 ```js
 const immutableState = Object.freeze({ minimum: 21 });
 ```
 
-## side effects 可能包括...  
+## side effects 可能包括...
 
 為了更清楚的理解，我們在深入討論下 "side effects"。  
-所以我們在*純函式*的定義中提到的 萬惡 _side effects_ 到底是什麼？  
-  
-我們可以理解 "effect 作用" 就是 所有除了計算結果之外，額外發生的其他事。  
+所以我們在*純函式*的定義中提到的 萬惡 _side effects_ 到底是什麼？
 
-其實 "effects" 本身並沒有什麼不好，而且在之後的章節隨處可見。   
-問題在於 _side_ 這個字，   
-水本身並不是滋生蚊蟲的原因，問題是在於他不流動。   
-同樣，_side_ effects 中的 _side_ 才是真正滋生 bug 的溫床。   
-   
-> _side effect_ 是在計算結果的過程中連帶導致系統狀態改變，或是跟外部世界進行可被觀測的互動. 
+我們可以理解 "effect 作用" 就是 所有除了計算結果之外，額外發生的其他事。
+
+其實 "effects" 本身並沒有什麼不好，而且在之後的章節隨處可見。  
+問題在於 _side_ 這個字，  
+水本身並不是滋生蚊蟲的原因，問題是在於他不流動。  
+同樣，_side_ effects 中的 _side_ 才是真正滋生 bug 的溫床。
+
+> _side effect_ 是在計算結果的過程中連帶導致系統狀態改變，或是跟外部世界進行可被觀測的互動.
 
 > **哈囉註解**
 > 何謂跟外部世界進行可被觀測的互動，請看下面這段
@@ -102,48 +102,53 @@ Side effects 可能包括，但不限於：
 
 這個列表當然可以繼續增加下去。  
 任何的對於函式外部的交互都是 side effect，  
-關於這點你可能會疑惑毫無 side effect 的程式是有什麼用。  
+關於這點你可能會疑惑毫無 side effect 的程式是有什麼用。
 
 函式編程的哲學就是假定這些 side effects 就是造成不當行為的主因。  
 但這並不是說我們要禁用它，  
 而是說，我們要掌握他們並要在我們的控制之下。  
 在之後的章節，我們將會學到使用 functors 跟 monads 來辦到這些，  
-但是現在，先讓我們試著避開這些危險的函式。  
+但是現在，先讓我們試著避開這些危險的函式。
 
 Side effects 不符合 _純函式_ 的定義，  
 如果一個函式的結果必須仰賴於外部事物，  
 那我們就不可能保證它能夠根據相同的輸入，  
-對應後返回相同的結果。  
+對應後返回相同的結果。
 
-在我們接著更深入了解下，為何我們必須堅持 相同的輸入必須返回相同的結果。   
-注意！我們要來複習一下你的國中數學了。   
+在我們接著更深入了解下，為何我們必須堅持 相同的輸入必須返回相同的結果。  
+注意！我們要來複習一下你的國中數學了。
 
-## 8th Grade Math  
+## 8th Grade Math
 
-From mathisfun.com:  
+## 8 年級數學
 
-> A function is a special relationship between values:  
-> Each of its input values gives back exactly one output value.  
+源自 mathisfun.com：
 
-In other words, it's just a relation between two values: the input and the output. Though each input has exactly one output, that output doesn't necessarily have to be unique per input. Below shows a diagram of a perfectly valid function from `x` to `y`;  
+> 函式 是各種數值間的特殊關係：即每一個輸入值皆會返回唯一一個結果值。
 
-<img src="images/function-sets.gif" alt="function sets" />(https://www.mathsisfun.com/sets/function.html)  
+換句話說，函式就是 輸入 跟 結果 兩個數值間的關係，
+儘管每個輸入都只會有一個結果，但結果並不一定是相同的輸入。
+下圖的關係模型展示，一個標準的函式 如何從 `x` 對應至 `y`。
 
-To contrast, the following diagram shows a relation that is _not_ a function since the input value `5` points to several outputs:  
+<img src="images/function-sets.gif" alt="function sets" />(https://www.mathsisfun.com/sets/function.html)
 
-<img src="images/relation-not-function.gif" alt="relation not function" />(https://www.mathsisfun.com/sets/function.html)  
+與之相對的，下圖的關係圖不是函式的關係模型，
+因為 `5` 指向了多個結果：
 
-Functions can be described as a set of pairs with the position (input, output): `[(1,2), (3,6), (5,10)]` (It appears this function doubles its input).  
+<img src="images/relation-not-function.gif" alt="relation not function" />(https://www.mathsisfun.com/sets/function.html)
 
-Or perhaps a table:
+函式可以被描述成一組 兩兩成對 的 集合 ( 輸入 , 結果 )： `[(1,2), (3,6), (5,10)]` (例如旁邊這組看起來是把數值翻倍)
+
+或是 一張表：
 
 <table> <tr> <th>Input</th> <th>Output</th> </tr> <tr> <td>1</td> <td>2</td> </tr> <tr> <td>2</td> <td>4</td> </tr> <tr> <td>3</td> <td>6</td> </tr> </table>
 
-Or even as a graph with `x` as the input and `y` as the output:
+甚至是一張 `x` 作為 輸入， `y` 作為 結果 的 線性圖表：
 
 <img src="images/fn_graph.png" width="300" height="300" alt="function graph" />
 
-There's no need for implementation details if the input dictates the output. Since functions are simply mappings of input to output, one could simply jot down object literals and run them with `[]` instead of `()`.
+如果能將輸入對應到結果，那便沒有必要在意怎麼出來實作，
+因為函式就只是將 輸入值 對應成 結果，那其實用物件就能滿足這個需求。
 
 ```js
 const toLowerCase = {
@@ -167,15 +172,33 @@ const isPrime = {
 isPrime[3]; // true
 ```
 
-Of course, you might want to calculate instead of hand writing things out, but this illustrates a different way to think about functions. (You may be thinking "what about functions with multiple arguments?". Indeed, that presents a bit of an inconvenience when thinking in terms of mathematics. For now, we can bundle them up in an array or just think of the `arguments` object as the input. When we learn about _currying_, we'll see how we can directly model the mathematical definition of a function.)
+當然，實際上你不會想一個個自己寫上去，會想用算的，
+不過上面的例子是表明了另一種思考韓式的方式。
 
-Here comes the dramatic reveal: Pure functions _are_ mathematical functions and they're what functional programming is all about. Programming with these little angels can provide huge benefits. Let's look at some reasons why we're willing to go to great lengths to preserve purity.
+(你可能會想 “那要是函式有多個參數呢？”
+確實這時只用數學的方式思考會有一些不方便。
+但現在，我們可以先把多個參數先整個當作一個陣列看待，
+或是把 `auguments` 物件當作輸入值。
+在之後我們會學到 _currying 柯里化_，
+就會知道如何直接為函式套上數學定義的建模。)
 
-## The Case for Purity
+非常戲劇化的就是：
+純函式指的就是數學的函式，而函式編程基本上就是數學。
+透過它能為我們的程式帶來大量的好處，
+讓我們來看看為何我們要追求函式的純粹性。
 
-### Cacheable
+> **哈囉註解**
+> 電腦，計算機科學一開始就是數學，
+> 包含 圖靈完備 到 Lambda 演算，
+> 他的誕生到設計全部皆是。
+> 函式編程某種意義上只是將程式設計導回正軌而已。
 
-For starters, pure functions can always be cached by input. This is typically done using a technique called memoization:
+## “純” 的理由
+
+### 可暫存性
+
+首先，純函式永遠可以根據輸入值來進行暫存。
+實現這個的典型手法就叫 memoization：
 
 ```js
 const squareNumber = memoize((x) => x * x);
@@ -189,7 +212,7 @@ squareNumber(5); // 25
 squareNumber(5); // 25, returns cache for input 5
 ```
 
-Here is a simplified implementation, though there are plenty of more robust versions available.
+這邊提供一個簡易的實作版本，儘管它還不夠完備。
 
 ```js
 const memoize = (f) => {
@@ -203,21 +226,31 @@ const memoize = (f) => {
 };
 ```
 
-Something to note is that you can transform some impure functions into pure ones by delaying evaluation:
+值得一提的是，透過它跟延遲執行的技巧，你可以將原本不純的函式轉變為純函式：
 
 ```js
 const pureHttpCall = memoize((url, params) => () => $.getJSON(url, params));
 ```
 
-The interesting thing here is that we don't actually make the http call - we instead return a function that will do so when called. This function is pure because it will always return the same output given the same input: the function that will make the particular http call given the `url` and `params`.
+這裡有趣的地方在於，我們並非實際去執行這個 http 請求 -
+取而代之的，我們回傳了一個函式，當調用他的時候才會真正執行。
+外面這個函式是純的，因為他永遠會根據相同的輸入，給予相同的結果：
+給定 `url` 跟 `params` 之後，他就只會返回一個發送 http 呼叫的函式。
 
-Our `memoize` function works just fine, though it doesn't cache the results of the http call, rather it caches the generated function.
+我們的 `memoize` 函式運作一切正常，
+雖然他並沒有暫存 http 的結果，
+但他暫存了那個生成函式。
 
-This is not very useful yet, but we'll soon learn some tricks that will make it so. The takeaway is that we can cache every function no matter how destructive they seem.
+現在來看這些還沒什麼實際用處，
+但是我們很快就會學到一些技巧來發掘他的用處，
+這邊的重點是我們可以暫存任何東西，儘管他看起來多麽有破壞性。
 
-### Portable / Self-documenting
+### 可攜性 / 自我文檔化
 
-Pure functions are completely self contained. Everything the function needs is handed to it on a silver platter. Ponder this for a moment... How might this be beneficial? For starters, a function's dependencies are explicit and therefore easier to see and understand - no funny business going on under the hood.
+純函式完全可以自給自足，
+所有需要只要單純的丟給他就行了。
+在這邊仔細思考一下... 自給自足的好處是什麼。
+首先，純函式的依賴關係非常明確，易於觀察跟理解 - 沒什麼黑魔法在背後運作。
 
 ```js
 // impure
@@ -233,29 +266,67 @@ const signUp = (Db, Email, attrs) => () => {
 };
 ```
 
-The example here demonstrates that the pure function must be honest about its dependencies and, as such, tell us exactly what it's up to. Just from its signature, we know that it will use a `Db`, `Email`, and `attrs` which should be telling to say the least.
+> **哈囉註解**
+> 請記得純函式的定義，在文章的開頭，
+> 並不是有依賴外部就不是純函式。
 
-We'll learn how to make functions like this pure without merely deferring evaluation, but the point should be clear that the pure form is much more informative than its sneaky impure counterpart which is up to who knows what.
+這邊的範例示範了純函式的依賴關係必須透明，
+這樣我們就能知道他的目的。
+在純函式版的 signUp 中，我們知道他將會用到 `Db`，`Email`，還有 `attrs`，這在最小程度上給予我們足夠的資訊。
 
-Something else to notice is that we're forced to "inject" dependencies, or pass them in as arguments, which makes our app much more flexible because we've parameterized our database or mail client or what have you (don't worry, we'll see a way to make this less tedious than it sounds). Should we choose to use a different Db we need only to call our function with it. Should we find ourselves writing a new application in which we'd like to reuse this reliable function, we simply give this function whatever `Db` and `Email` we have at the time.
+後面我們會學到不僅只是將函式延遲來將函式變純。
+不過這邊的重點應該很清楚，
+純函式的版本相較於不純的函式提供了更多的資訊，
+誰知道不純的函式背後到底做了些什麼。
 
-In a JavaScript setting, portability could mean serializing and sending functions over a socket. It could mean running all our app code in web workers. Portability is a powerful trait.
+還有值得注意的地方是，我們強制性的“注入”依賴，或是將它們當作參數傳遞，
+這讓我們的應用程式明顯個有彈性，因為我們將資料庫或是郵件客戶端或隨便的什麼東西都參數化了，
+(別擔心，我們有辦法讓這些看似不這麼單調)。
+如果要使用另一個 `Db`，你只需要傳另一個`Db`給他。
+如果想在一個新的應用程式使用這個函式，你儘管把 `Db` 跟 `Email` 丟進去就好了，簡單吧。
 
-Contrary to "typical" methods and procedures in imperative programming rooted deep in their environment via state, dependencies, and available effects, pure functions can be run anywhere our hearts desire.
+在 JS ，可攜性意味著你可以把函式序列化並透過 socket 發送。
+這更意味著你可以在 web workers 中運行應用程序的程式碼。可攜性是個非常強大的特性。
 
-When was the last time you copied a method into a new app? One of my favorite quotes comes from Erlang creator, Joe Armstrong: "The problem with object-oriented languages is they’ve got all this implicit environment that they carry around with them. You wanted a banana but what you got was a gorilla holding the banana... and the entire jungle".
+相對於 命令式編程中 ”典型“ 的方法跟過程都綁定在執行環境下，
+並依賴於狀態，依賴關係跟有效作用域。
+函式編程與之相反，他與環境無關，只要我有這個意願，我可以在任何地方執行它。
 
-### Testable
+想想把某個方法直接複用到新的應用的機會有多少？
+我最喜歡的名言之一就是 Erlang 的作者 Joe Armstrong 的一句話：
+“物件導向的問題是，他們永遠都需要攜帶隱含的環境。
+你明明只需要一根香蕉，卻得到了一個拿著香蕉的大猩猩... 跟整個叢林”。
 
-Next, we come to realize pure functions make testing much easier. We don't have to mock a "real" payment gateway or setup and assert the state of the world after each test. We simply give the function input and assert output.
+### 可測試性
 
-In fact, we find the functional community pioneering new test tools that can blast our functions with generated input and assert that properties hold on the output. It's beyond the scope of this book, but I strongly encourage you to search for and try _Quickcheck_ - a testing tool that is tailored for a purely functional environment.
+Next, we come to realize pure functions make testing much easier.
+We don't have to mock a "real" payment gateway or setup and assert the state of the world after each test.
+We simply give the function input and assert output.
 
-### Reasonable
+接著，純函式更加容易被測試。
+我們不需要去偽造一個“真實的”支付系統，或是每次測試之前都要配置，之後都要斷言環境狀態。
+我們只需要單純的給予函式輸入並斷言他的結果。
 
-Many believe the biggest win when working with pure functions is _referential transparency_. A spot of code is referentially transparent when it can be substituted for its evaluated value without changing the behavior of the program.
+事實上，我們發現函式編程社群正在開創些新的測試工具，
+能夠幫助我們自動生成輸入並斷言結果。
+這已經超過本書的範圍了，
+但我強烈推薦你去試試 _Quickcheck_ - 一個為函式編程量身定做的測試工具。
 
-Since pure functions don't have side effects, they can only influence the behavior of a program through their output values. Furthermore, since their output values can reliably be calculated using only their input values, pure functions will always preserve referential transparency. Let's see an example.
+> **哈囉註解**
+> Quickcheck 是 Haskell 的測試工具，非常強大。
+> 更延展了一個類別專指這類型的測試，叫 _Property Based Testing_。
+> 在 JS 的話，我推薦 fast-check，
+> 以後會在專門為大家講解。
+
+### 合理性
+
+大部分人會同意純函式最大的好處就是 _referential transparency 引用透明_。
+如果一段程式馬能直接替換成他的執行結果而不會影響整個程式的運作，那我們就會說這段是引用透明的。
+
+因為純函式沒有任何 side effects，
+唯一會影響到程式運作的方法就是他的結果。
+甚至，因為他們的結果完全是根據輸入值計算來的，
+純函式永遠會保證引用透明，我們來看下面的例子。
 
 ```js
 const { Map } = require("immutable");
@@ -270,44 +341,70 @@ const punch = (a, t) => (isSameTeam(a, t) ? t : decrementHP(t));
 punch(jobe, michael); // Map({name:'Michael', hp:19, team: 'green'})
 ```
 
-`decrementHP`, `isSameTeam` and `punch` are all pure and therefore referentially transparent. We can use a technique called _equational reasoning_ wherein one substitutes "equals for equals" to reason about code. It's a bit like manually evaluating the code without taking into account the quirks of programmatic evaluation. Using referential transparency, let's play with this code a bit.
+`decrementHP`, `isSameTeam` and `punch` are all pure and therefore referentially transparent.
+We can use a technique called _equational reasoning_ wherein one substitutes "equals for equals" to reason about code.
+It's a bit like manually evaluating the code without taking into account the quirks of programmatic evaluation.
+Using referential transparency, let's play with this code a bit.
 
-First we'll inline the function `isSameTeam`.
+`decrementHP`，`isSameTeam` 和 `punch` 都是純函式且皆是引用透明的。
+我們可以用一個技巧叫 _equational reasoning 等式推導_ 來分析程式碼。
+他有點像不考慮程式實際執行，而是透過人工分析的方式分析程式。
+我們來借助一下引用透明來分析一下程式碼。
+
+首先我們先將 `isSameTeam` 裡用到的函式直接寫進去。
 
 ```js
 const punch = (a, t) => (a.get("team") === t.get("team") ? t : decrementHP(t));
 ```
 
-Since our data is immutable, we can simply replace the teams with their actual value
+因為我們資料是不變的，我們可以簡單的將 teams 換作實際數值。
 
 ```js
 const punch = (a, t) => ("red" === "green" ? t : decrementHP(t));
 ```
 
-We see that it is false in this case so we can remove the entire if branch
+我們看到它執行結果是 fase，所以我們可以把 `if` 判斷的部分直接去掉。
 
 ```js
 const punch = (a, t) => decrementHP(t);
 ```
 
-And if we inline `decrementHP`, we see that, in this case, punch becomes a call to decrement the `hp` by 1.
+如果我們也攤平 `decrementHP`，我們就會發現，這個情況下，呼叫 `punch` 等同於讓 `hp` 減 1。
 
 ```js
 const punch = (a, t) => t.set("hp", t.get("hp") - 1);
 ```
 
-This ability to reason about code is terrific for refactoring and understanding code in general. In fact, we used this technique to refactor our flock of seagulls program. We used equational reasoning to harness the properties of addition and multiplication. Indeed, we'll be using these techniques throughout the book.
+等式推導對於重構跟理解程式碼是非常重要的。
+事實上，我們重構之前的海鷗程式碼就是運用這項技巧，
+我們透過等式推導來還原他的真相就只是加法跟乘法。
+我們整本書都會用到這個技巧，認真。
 
-### Parallel Code
+> **哈囉註解**
+> 實際上，日常跑專案幾乎都會用到等式推導。
+> 有些工程師甚至不知道他正在用的技巧就是這個名字。
+> 為這些籠統的概念進行抽象化跟專業化，
+> 才能把技術正確的傳達到下個世代。
 
-Finally, and here's the coup de grâce, we can run any pure function in parallel since it does not need access to shared memory and it cannot, by definition, have a race condition due to some side effect.
+### 平行運算
 
-This is very much possible in a server side js environment with threads as well as in the browser with web workers though current culture seems to avoid it due to complexity when dealing with impure functions.
+最後最重要的一點，我們可以對任何純函式做平行運算，
+因為他根本不需要共享記憶體，而且根據其定義，
+純函式根本就不會遇到 race condition。
 
-## In Summary
+JS 在伺服器端的環境跟瀏覽器的 web workers 是非常有機會遇到平行運算的，
+不過出於對非純函式的複雜性考量，當前主流觀點似乎避免使用到。
 
-We've seen what pure functions are and why we, as functional programmers, believe they are the cat's evening wear. From this point on, we'll strive to write all our functions in a pure way. We'll require some extra tools to help us do so, but in the meantime, we'll try to separate the impure functions from the rest of the pure code.
+## 總結
 
-Writing programs with pure functions is a tad laborious without some extra tools in our belt. We have to juggle data by passing arguments all over the place, we're forbidden to use state, not to mention effects. How does one go about writing these masochistic programs? Let's acquire a new tool called curry.
+我們已經了解純函式到底是什麼跟為什麼我們需要它，
+作為一個函式編程工程師，我們深信純函式是與眾不同的。
+從這裡開始，我們要致力於用純函式的方式撰寫所有函式。
+為此，我們還需要一些工具來幫助我們達到這個目的，
+同時也盡量將非純函式區分出來。
+
+如果手頭上沒有一些工具，那純函式撰寫起來就會有點吃力了。
+我們將不得不像雜耍似的通過到處傳遞參數來操作資料，而且還被禁止使用狀態，更別提 effect。
+沒有人會這樣自虐的，所以接下來我們要來學一個新工具，Curry。
 
 [Chapter 04: Currying](ch04.md)
