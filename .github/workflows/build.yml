@@ -5,6 +5,9 @@ on:
     branches:
       - master
 
+env:
+  BOOK_FILENAME: mostly-adequate-guide-to-functional-programming
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -33,22 +36,22 @@ jobs:
       - name: Generate PDF
         run: |
           npm run generate-pdf
-          mv book.pdf mostly-adequate-guide-to-functional-programming.pdf
+          mv book.pdf ${BOOK_FILENAME}.pdf
 
       - name: Generate EPUB
         run: |
           npm run generate-epub
-          mv book.epub mostly-adequate-guide-to-functional-programming.epub
+          mv book.epub ${BOOK_FILENAME}.epub
 
       - uses: actions/upload-artifact@v2
         with:
           name: PDF
-          path: mostly-adequate-guide-to-functional-programming.pdf
+          path: ${{ env.BOOK_FILENAME }}.pdf
 
       - uses: actions/upload-artifact@v2
         with:
           name: EPUB
-          path: mostly-adequate-guide-to-functional-programming.epub
+          path: ${{ env.BOOK_FILENAME }}.epub
 
       - run: echo "ID=$(git describe --tags --always)" >> $GITHUB_OUTPUT
         id: release-id
@@ -57,5 +60,5 @@ jobs:
         with:
           tag_name: ${{ steps.release-id.outputs.ID }}
           files: |
-            mostly-adequate-guide-to-functional-programming.pdf
-            mostly-adequate-guide-to-functional-programming.epub
+            ${{ env.BOOK_FILENAME }}.pdf
+            ${{ env.BOOK_FILENAME }}.epub
