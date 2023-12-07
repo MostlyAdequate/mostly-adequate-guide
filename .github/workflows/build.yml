@@ -28,6 +28,10 @@ jobs:
         with:
           node-version: 10.22.1
 
+      - name: Generate summary
+        run: |
+          npm run generate-summary
+
       - name: Setup gitbook
         run: |
           npm install
