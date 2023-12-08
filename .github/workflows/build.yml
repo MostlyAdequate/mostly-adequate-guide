@@ -5,15 +5,19 @@ on:
     branches:
       - master
 
+env:
+  BOOK_FILENAME: mostly-adequate-guide-to-functional-programming
+
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2.3.1
 
       - name: Install Calibre
         run: |
+          sudo apt install -y libopengl0 libegl1 libxcb-cursor0
           wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin
           mkdir -p ~/.local/bin
           ln -s /opt/calibre/calibre ~/.local/bin/calibre
@@ -24,6 +28,10 @@ jobs:
         with:
           node-version: 10.22.1
 
+      - name: Generate summary
+        run: |
+          npm run generate-summary
+
       - name: Setup gitbook
         run: |
           npm install
@@ -32,29 +40,29 @@ jobs:
       - name: Generate PDF
         run: |
           npm run generate-pdf
-          mv book.pdf mostly-adequate-guide-to-functional-programming.pdf
+          mv book.pdf ${BOOK_FILENAME}.pdf
 
       - name: Generate EPUB
         run: |
           npm run generate-epub
-          mv book.epub mostly-adequate-guide-to-functional-programming.epub
+          mv book.epub ${BOOK_FILENAME}.epub
 
       - uses: actions/upload-artifact@v2
         with:
           name: PDF
-          path: mostly-adequate-guide-to-functional-programming.pdf
+          path: ${{ env.BOOK_FILENAME }}.pdf
 
       - uses: actions/upload-artifact@v2
         with:
           name: EPUB
-          path: mostly-adequate-guide-to-functional-programming.epub
+          path: ${{ env.BOOK_FILENAME }}.epub
 
-      - run: echo "::set-output name=ID::$(git describe --tags --always)"
+      - run: echo "ID=$(git describe --tags --always)" >> $GITHUB_OUTPUT
         id: release-id
 
       - uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.release-id.outputs.ID }}
           files: |
-            mostly-adequate-guide-to-functional-programming.pdf
-            mostly-adequate-guide-to-functional-programming.epub
+            ${{ env.BOOK_FILENAME }}.pdf
+            ${{ env.BOOK_FILENAME }}.epub
