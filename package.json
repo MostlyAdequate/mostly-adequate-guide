@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "The Mostly Adequate Guide to Functional Programming",
   "dependencies": {
-    "gitbook-plugin-include-codeblock": "^3.2.2",
-    "gitbook-plugin-exercises": "git+https://github.com/MostlyAdequate/plugin-exercises.git"
+    "gitbook-plugin-exercises": "git+https://github.com/MostlyAdequate/plugin-exercises.git",
+    "gitbook-plugin-include-codeblock": "^3.2.2"
   },
   "devDependencies": {
     "gitbook-cli": "^2.3.2"
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/christiantakle/mostly-adequate-guide.git"
+    "url": "git+https://github.com/MostlyAdequate/mostly-adequate-guide.git"
   },
   "keywords": [
     "gitbook",
@@ -29,7 +29,7 @@
   "author": "Mostly Adequate Core Team",
   "license": "CC BY-SA",
   "bugs": {
-    "url": "https://github.com/christiantakle/mostly-adequate-guide/issues"
+    "url": "https://github.com/MostlyAdequate/mostly-adequate-guide/issues"
   },
-  "homepage": "https://github.com/christiantakle/mostly-adequate-guide#readme"
+  "homepage": "https://github.com/MostlyAdequate/mostly-adequate-guide#readme"
 }
