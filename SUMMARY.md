@@ -125,6 +125,7 @@
   * [concat](appendix_c.md#concat)
   * [eq](appendix_c.md#eq)
   * [filter](appendix_c.md#filter)
+  * [find](appendix_c.md#find)
   * [flip](appendix_c.md#flip)
   * [forEach](appendix_c.md#foreach)
   * [head](appendix_c.md#head)
