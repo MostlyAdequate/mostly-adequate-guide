@@ -1,6 +1,7 @@
 /* globals fastestCar */
 
 try {
+  console.log(fastestCar(cars));
   assert(
     fastestCar(cars) === 'Aston Martin One-77 is the fastest',
     'The function gives incorrect results.',
