@@ -60,7 +60,7 @@ jobs:
       - run: echo "ID=$(git describe --tags --always)" >> $GITHUB_OUTPUT
         id: release-id
 
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.release-id.outputs.ID }}
           files: |
