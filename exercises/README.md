@@ -31,6 +31,8 @@ your proposal can be verified by running:
 npm run ch04
 ```
 
+Remember to first install node dependencies being at the recommended node version of the project. More on this on [the main README of the project](../README.md#about-the-nodejs-version).
+
 Alternatively, you can also have a peak at the corresponding solution file: in this case
 `solution_a.js`. 
 

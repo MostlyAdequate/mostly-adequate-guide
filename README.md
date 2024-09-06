@@ -53,9 +53,39 @@ Find pre-generated **PDF** and **EPUB** as [build artifacts of the latest releas
 
 > ⚠️ This project setup is now a bit old and thus, you may run into various issues when building this locally. We recommend to use node v10.22.1 and the latest version of Calibre if possible. 
 
+### About the nodejs version
+
+As the recommended node version (v10.22.1) is a bit old now, is more than likely that you do not have it installed on your system. You can have multiple versions of nodejs installed on your system using [nvm](https://github.com/nvm-sh/nvm). Refer to that project to install it and then you will be able to:
+
+ - Install any node version that you need:
+```
+nvm install 10.22.1
+nvm install 20.2.0
+```
+ - Then you will be able to switch between node versions:
+```
+nvm use 10.22.1
+node -v // will show v10.22.1 
+nvm use 20.2.0
+node -v // will show v20.2.0
+```
+
+As this project has a .nvmrc file you can call `nvm install` and `nvm use` without specifying the node version:
+```
+// being anywhere inside this project
+nvm install
+node -v // will show v10.22.1
+```
+
+
+### Complete sequence of commands
+
+Considering the above about having nvm installed on your system, here is the complete sequence of commands to generate pdf and epub files by yourself:
+
 ```
 git clone https://github.com/MostlyAdequate/mostly-adequate-guide.git
 cd mostly-adequate-guide/
+nvm install
 npm install
 npm run setup
 npm run generate-pdf
