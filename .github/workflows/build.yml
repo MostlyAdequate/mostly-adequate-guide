@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v2.3.1
+        uses: actions/checkout@v4
 
       - name: Install Calibre
         run: |
@@ -24,7 +24,7 @@ jobs:
           ln -s /opt/calibre/ebook-convert ~/.local/bin/ebook-convert
 
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: 10.22.1
 
@@ -47,12 +47,12 @@ jobs:
           npm run generate-epub
           mv book.epub ${BOOK_FILENAME}.epub
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: PDF
           path: ${{ env.BOOK_FILENAME }}.pdf
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: EPUB
           path: ${{ env.BOOK_FILENAME }}.epub
@@ -60,7 +60,7 @@ jobs:
       - run: echo "ID=$(git describe --tags --always)" >> $GITHUB_OUTPUT
         id: release-id
 
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.release-id.outputs.ID }}
           files: |
