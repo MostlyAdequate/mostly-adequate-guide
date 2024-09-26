@@ -147,6 +147,7 @@ class Left extends Either {
     return `Left(${inspect(this.$value)})`;
   }
 
+
   // ----- Functor (Either a)
   map() {
     return this;
@@ -219,7 +220,7 @@ class Right extends Either {
   }
 
   traverse(of, fn) {
-    fn(this.$value).map(Either.of);
+    return fn(this.$value).map(Either.of);
   }
 }
 
@@ -360,11 +361,16 @@ class Map {
       .reduce((acc, k) => fn(acc, this.$value[k], k), zero);
   }
 
+  // ----- Pointed Map
+  static of(x) {
+    return new Map(x);
+  }
+
   // ----- Functor (Map a)
   map(fn) {
     return this.reduceWithKeys(
       (m, v, k) => m.insert(k, fn(v)),
-      new Map({}),
+      Map.of({}),
     );
   }
 
@@ -376,7 +382,7 @@ class Map {
   traverse(of, fn) {
     return this.reduceWithKeys(
       (f, a, k) => fn(a).map(b => m => m.insert(k, b)).ap(f),
-      of(new Map({})),
+      of(Map.of({})),
     );
   }
 }
